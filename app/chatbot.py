@@ -1,13 +1,21 @@
-from vector_store.file_load import load_pdf
+query = "Who did the type setting on this book ?"
+index_name = "history-text"
 
-file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/data/8_grade-11-history-text-book.pdf"
-chunk_size = 750
-chunk_overlap = 60
-result = load_pdf(file_path=file_path,chunk_overlap=chunk_overlap,chunk_size=chunk_size)
+from vector_store.vectore_search import search
 
-from vector_store.pinecorn_client import pinecone_db
+result = search(query,index_name)
 
-response = pinecone_db.create_index()
-upsert = pinecone_db.upsert(data=result)
+print(result)
 
-print(upsert)
+
+# from vector_store.file_load import load_pdf
+
+# file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/data/3_grade-11-history-text-book.pdf"
+# result = load_pdf(file_path=file_path)
+
+# from vector_store.pinecorn_client import pinecone_db
+
+# response = pinecone_db.create_index()
+# upsert = pinecone_db.upsert(data=result)
+
+# print(upsert)

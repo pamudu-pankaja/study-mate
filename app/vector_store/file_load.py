@@ -2,7 +2,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
 
-def load_pdf(file_path, chunk_size, chunk_overlap):
+def load_pdf(file_path, chunk_size=250, chunk_overlap=20):
 
     file_name = os.path.basename(file_path)
     base_name = os.path.splitext(file_name)[0]

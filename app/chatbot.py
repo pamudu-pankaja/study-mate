@@ -1,8 +1,13 @@
-from app import astra_db
+from vector_store.file_load import load_pdf
 
-db = astra_db()
+file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/data/8_grade-11-history-text-book.pdf"
+chunk_size = 750
+chunk_overlap = 60
+result = load_pdf(file_path=file_path,chunk_overlap=chunk_overlap,chunk_size=chunk_size)
 
-chunks = db.load_pdf("D:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\data\Future Minds Problem Statement.pdf", chunk_size=250, chunk_overlap=20)
-result = db.store_data(chunks,"future-mind-problem")
+from vector_store.pinecorn_client import pinecone_db
 
-print(result)
+response = pinecone_db.create_index()
+upsert = pinecone_db.upsert(data=result)
+
+print(upsert)

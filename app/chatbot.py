@@ -1,11 +1,11 @@
-query = "Who did the type setting on this book ?"
-index_name = "history-text"
+# query = "Who did the type setting on this book ?"
+# index_name = "history-text"
 
-from vector_store.vectore_search import search
+# from vector_store.vectore_search import search
 
-result = search(query,index_name)
+# result = search(query,index_name)
 
-print(result)
+# print(result)
 
 
 # from vector_store.file_load import load_pdf
@@ -19,3 +19,4 @@ print(result)
 # upsert = pinecone_db.upsert(data=result)
 
 # print(upsert)
+

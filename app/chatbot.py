@@ -20,6 +20,11 @@ file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/d
 
 # print(upsert)
 
-from agents import RAGAgent
-result=RAGAgent.vector_search(query,index_name)
-RAGAgent.import_file(file_path,index_name)
+# from agents import RAGAgent
+# result=RAGAgent.vector_search(query,index_name)
+# RAGAgent.import_file(file_path,index_name)
+
+from agents.web_search.web_agent import web_search
+
+result = web_search("Who is the sri lanka president")
+print(result)

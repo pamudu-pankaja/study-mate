@@ -20,7 +20,7 @@ def load_pdf(file_path, chunk_size=250, chunk_overlap=20):
 
         formatted_chunks = []
         for i, chunk in enumerate(chunks):
-            text = chunk.page_content.strip()
+            text = chunk.page_content.strip().lower()
 
             if len(text.split()) <= 90:
                 formatted_chunks.append({

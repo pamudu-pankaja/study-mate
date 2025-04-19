@@ -2,14 +2,13 @@ from google import genai
 from google.genai import types
 from config.config import GOOGLE_API_KEY
 
+client = genai.Client(api_key=GOOGLE_API_KEY)
+
 class Embedding:
     @staticmethod
     def get_embedding_query(query):
-        
-        client = genai.Client(api_key=GOOGLE_API_KEY)
 
-        query = query.lower()    
-        
+        query = query.lower()            
         try:
             result = client.models.embed_content(
                 model = "text-embedding-004",
@@ -23,7 +22,6 @@ class Embedding:
     @staticmethod
     def get_embedding_chunks(data_list):
         
-        client = genai.Client(api_key=GOOGLE_API_KEY)
         embeddings = []
 
         for text in data_list:

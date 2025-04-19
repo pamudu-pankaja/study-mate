@@ -28,7 +28,6 @@ def load_pdf(file_path, chunk_size=250, chunk_overlap=20):
                     "text": text
                 })
 
-        print("SUCCESSS FULL")
         return formatted_chunks
     except Exception as e:
         return f"Error while loading file : {e}"

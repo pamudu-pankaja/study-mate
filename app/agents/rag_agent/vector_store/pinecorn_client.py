@@ -3,11 +3,11 @@ from config.config import PINECORN_API_KEY
 import time
 
 pc = Pinecone(api_key=PINECORN_API_KEY)
-index_name = "history-text"
+
 
 class pinecone_db():
     @staticmethod
-    def create_index():        
+    def create_index(index_name):        
 
         try:
             if index_name not in pc.list_indexes():
@@ -27,8 +27,8 @@ class pinecone_db():
             else:
                 return f"Error while requasting : {e}"
     @staticmethod    
-    def upsert(data):
-        from vector_store.embedder import Embedding
+    def upsert(data,index_name):
+        from agents.rag_agent.vector_store.embedder import Embedding
 
         try:
             data_texts = [d['text'] for d in data]

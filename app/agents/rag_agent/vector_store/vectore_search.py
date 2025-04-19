@@ -1,4 +1,4 @@
-from vector_store.embedder import Embedding
+from agents.rag_agent.vector_store.embedder import Embedding
 from config.config import PINECORN_API_KEY
 from pinecone import Pinecone
 

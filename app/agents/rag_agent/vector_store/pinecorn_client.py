@@ -31,8 +31,12 @@ class pinecone_db():
         from agents.rag_agent.vector_store.embedder import Embedding
 
         try:
+            data = [d for d in data if isinstance(d, dict) and 'text' in d and 'id' in d]
             data_texts = [d['text'] for d in data]
             embeddings = Embedding.get_embedding_chunks(data_texts)
+            if len(embeddings) != len(data):
+                return f"Error: Mismatch between data ({len(data)}) and embeddings ({len(embeddings)})"
+
 
             while not pc.describe_index(index_name).status['ready']:
                 time.sleep(1)
@@ -41,12 +45,21 @@ class pinecone_db():
 
             vectors = []
             for d, e in zip(data, embeddings):
-                if e is not None:
+                if e is not None and isinstance(e,list) and len(e) == 768:
                     vectors.append({
-                        'id' : d['id'],
+                        'id' : str(d['id']),
                         'values' : e,
-                        'metadata' : {'text': d['text']}
+                        'metadata' : {
+                            'text': str(d['text']),
+                            'page': str(d.get("page")),
+                            'section':str(d.get("section"))
+                        }
                     })
+
+            import json
+            print("hello")
+            print(json.dumps(vectors[0], indent=2))  # ← check this carefully
+
 
             index.upsert(
                 vectors=vectors,

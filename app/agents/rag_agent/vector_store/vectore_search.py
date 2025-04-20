@@ -7,13 +7,23 @@ pc = Pinecone(api_key=PINECORN_API_KEY)
 def search(query,index_name):
     index = pc.Index(index_name)
 
-    query_vector = Embedding.get_embedding_query(query=query)
+    query_vector = Embedding.get_embedding_query(query=query )# + "include page numbers and sections")
 
-    result = index.query(
-        vector=query_vector,
+    results = index.query(
+        vector=query_vector ,
         top_k= 5,
         include_metadata=True,
         include_values=False
     )
-    return result
+
+    data = []
+
+    for match in results['matches']:
+        data.append({
+            "text": match['metadata'].get("text", ""),
+            "page": match['metadata'].get("page", "unknown"),
+            "section": match['metadata'].get("section", "unknown")
+        })
+        
+    return data
     

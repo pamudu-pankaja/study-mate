@@ -1,6 +1,7 @@
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
+import re
 
 def load_pdf(file_path, chunk_size=250, chunk_overlap=20):
 
@@ -19,13 +20,22 @@ def load_pdf(file_path, chunk_size=250, chunk_overlap=20):
         chunks = splitter.split_documents(docs)
 
         formatted_chunks = []
+        current_section = "Unknown"
+
         for i, chunk in enumerate(chunks):
             text = chunk.page_content.strip().lower()
+
+            match = re.search(r'(\d+(\.\d+)*\s+|^)([A-Za-z][A-Za-z\s]+)', chunks)
+
+            if match:
+                current_section = match.group(3).strip()
 
             if len(text.split()) <= 90:
                 formatted_chunks.append({
                     "id": f"{base_name}-vec{i+1}",
-                    "text": text
+                    "text": text,
+                    "page":chunk.metadata.get("page","unknown"),
+                    "section":current_section
                 })
 
         return formatted_chunks

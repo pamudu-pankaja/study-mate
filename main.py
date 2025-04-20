@@ -1,3 +1,2 @@
-from app import chatbot
-
-print(chatbot.run())
+import os
+print(os.urandom(12).hex())

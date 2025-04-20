@@ -11,7 +11,7 @@ def search(query,index_name):
 
     result = index.query(
         vector=query_vector,
-        top_k= 3,
+        top_k= 5,
         include_metadata=True,
         include_values=False
     )

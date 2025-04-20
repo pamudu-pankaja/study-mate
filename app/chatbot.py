@@ -1,6 +1,6 @@
-query = "How many Members are in the Economic and Social Concil ?"
+query = "Give a short explanation about Arrival of British in Asia during 1796 to 1798 "
 path = "vector"
-index_name = "history-text-1"
+index_name = "history-text"
 
 # from vector_store.vectore_search import search
 
@@ -11,7 +11,7 @@ index_name = "history-text-1"
 
 # from vector_store.file_load import load_pdf
 
-file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/data/8_grade-11-history-text-book.pdf"
+# file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/data/1_grade-11-history-text-book.pdf"
 # result = load_pdf(file_path=file_path)
 
 # from vector_store.pinecorn_client import pinecone_db
@@ -42,12 +42,8 @@ file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/d
 # result = GeminiLLM.get_response(query,context=data)
 # print(result)
 
-from agents import RAGAgent
-results = RAGAgent.import_file(file_path,index_name)
+from agents import ChatBotAgent
+results = ChatBotAgent.get_response(query,path,index_name)
 
-# from agents import ChatBotAgent
-
-# results = ChatBotAgent.get_response(query,path,index_name)
-
-print(f"\n\n{results}")
+print(results)
 

@@ -90,13 +90,18 @@
     },
     {
         "query_id": "44",
-        Answer: The growth of a capitalist economic system in Sri Lanka, fueled by salaried workers in factories and on land owned by an increasingly wealthy class of landowners and factory owners, led to the emergence of a new middle class.
-
-Context: was formed by the people who worked there for salary. Landowners and factory owners became the affluent class and they organized themselves separately as a wealthy, educated middle class.  The capitalist economic system grew in Sri Lanka
-
-Pages and Sections:
-- Pages: Page 2 (estimated)
-- Sections: 2.1 Arrival of British in Asia (estimated)
+        "question": "What led to the emergence of a new middle class in Sri Lanka during the British colonial period?",
+        "context": "A significant social change during British rule was the emergence of a new middle class... This class consisted of professionals such as doctors, lawyers, engineers, businessmen and teachers... They secured higher social and economic status due to English education and new job opportunities.",
+        "answer": "Economic liberalization and English education created a wealthy, professional class replacing traditional elites and forming a new middle class.",
+        "references": {
+            "sections": [
+                "Emergence of a Middle Class"
+            ],
+            "pages": [
+                "74",
+                "75",
+                "76"
+            ]
         }
     },
     {

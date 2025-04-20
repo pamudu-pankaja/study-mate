@@ -17,17 +17,17 @@ class ToolHandle():
         
         if path == "web":
             from agents.web_search.web_agent import web_search
-            from agents.chat_bot_agent.tools.summarizer import Summarizer
+            from agents.chat_bot_agent.tools.summarizer import get_summerize_result
             search=web_search(query)
-            result = Summarizer.get_summerize_result(search)
+            result = get_summerize_result(search)
+            print(result)
             return result
         
         if path == 'vector':
             from agents import RAGAgent
-            from agents.chat_bot_agent.tools.summarizer import Summarizer
-
             rag = RAGAgent()
             result = rag.vector_search(query,index_name)
+            print(result)
             return result
         
         else: 

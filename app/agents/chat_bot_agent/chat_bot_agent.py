@@ -5,6 +5,5 @@ class ChatBotAgent():
     @staticmethod
     def get_response(query,path,index_name = None):
         data = ToolHandle.get_context(query,path,index_name)
-        print(data.get())
-        result = GeminiLLM.get_response(query,context=data)
+        result = GeminiLLM.get_response(query,context=f"{data}")
         return result

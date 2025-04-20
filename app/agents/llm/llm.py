@@ -8,7 +8,24 @@ class GeminiLLM():
 
     @staticmethod 
     def get_response( query , context = None):
-        prompt=query if not context else f"{context}\n\nUser Query : {query} "
+        prompt=query if not context else f"""You are a helpful assistant extracting answers from historical documents.
+
+                        Use the provided context (retrieved via vector search) to answer the user query. Follow this exact format:
+
+                        Answer: A short, direct answer to the question. Focus only on what's asked.
+
+                        Context: Copy **directly relevant** sentence(s) from the context provided. No extra explanation or paraphrasing.
+
+                        Pages and Sections: Format it exactly like this, using bullet points
+                        - Pages: Use page numbers if given, else guess logically based on context (e.g., "Page 44",)
+                        - Sections: Use the section title from the text if visible (e.g. "Fig  8.12 – British fighter aircraft","3.2 Engagement in Public Debates")
+
+                        Context:
+                        {context}
+
+                        User Query: {query}
+                        """
+        print(context)
 
         try:
             response = client.models.generate_content(

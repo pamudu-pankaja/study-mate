@@ -1,4 +1,5 @@
-query = "Why did the British implement the dual administration system in Sri Lanka, and why did it fail? , vector_search"
+query = "Give a short explanation about Arrival of British in Asia during 1796 to 1798 "
+path = "vector"
 index_name = "history-text"
 
 # from vector_store.vectore_search import search
@@ -26,7 +27,7 @@ index_name = "history-text"
 
 # from agents.web_search.web_agent import web_search
 # from agents.chat_bot_agent.tools.summarizer import summerize_result
-from agents.llm.llm import GeminiLLM
+# from agents.llm.llm import GeminiLLM
 
 # data = web_search("Who is the sri lankan president")
 # print(data)
@@ -34,9 +35,15 @@ from agents.llm.llm import GeminiLLM
 # 'snippet': 'Ranil Wickremesinghe is a Sri Lankan politician who served as the ninth president of Sri Lanka from 2022 to 2024. Previously, he served as Prime Minister of\xa0...'}, {'title': "Anura Kumara Dissanayake sworn in as Sri Lanka's president", 'url': 'https://www.bbc.com/news/articles/cqxr03x4dvzo', 'snippet': "Sep 22, 2024 ... Sri Lanka swears in new left-leaning president ... Sri Lanka President Media via Reuters Sri Lanka's new president Anura Kumara Dissanayake speaks\xa0..."}, {'title': "Sri Lanka's Uprising Forces Out a President but Leaves System in ...", 'url': 'https://www.crisisgroup.org/asia/south-asia/sri-lanka/sri-lankas-uprising-forces-out-president-leaves-system-crisis', 'snippet': "Jul 18, 2022 ... Sri Lanka's Uprising Forces Out a President but Leaves System in Crisis. Crowds of ordinary Sri Lankans stormed the presidential residence on 9\xa0..."}]
 
 # summary = summerize_result(data)
-from agents.chat_bot_agent.tool_handler import ToolHandle 
+# from agents.chat_bot_agent.tool_handler import ToolHandle 
 
 
-data = ToolHandle.get_context(query,index_name=index_name)
-result = GeminiLLM.get_response(query,context=data)
-print(result)
+# data = ToolHandle.get_context(query,index_name=index_name)
+# result = GeminiLLM.get_response(query,context=data)
+# print(result)
+
+from agents import ChatBotAgent
+results = ChatBotAgent.get_response(query,path,index_name)
+
+print(results)
+

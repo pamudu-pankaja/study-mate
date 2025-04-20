@@ -5,7 +5,7 @@ service = build("customsearch","v1",developerKey=WEB_SEARCH_API_KEY)
 
 def web_search(query):
     try:
-        response = service.cse().list(q=query , cx=WEB_SEARC_ID , num=5).execute()
+        response = service.cse().list(q=query , cx=WEB_SEARC_ID , num=10).execute()
     except Exception as e:
         return f"Erro : {e}"
     

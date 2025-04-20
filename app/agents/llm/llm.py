@@ -8,7 +8,7 @@ class GeminiLLM():
 
     @staticmethod 
     def get_response( query , context = None):
-        prompt=query if not context else f"{context}\n\nUser Query : {query}"
+        prompt=query if not context else f"{context}\n\nUser Query : {query} "
 
         try:
             response = client.models.generate_content(

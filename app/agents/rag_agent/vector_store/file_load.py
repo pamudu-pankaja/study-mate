@@ -8,7 +8,7 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20):
 
     file_name = os.path.basename(file_path)
     base_name = os.path.splitext(file_name)[0]
-
+#ADD WHICH PAGE TO START FROM 
     def get_page_offset(index_name):
         if not os.path.exists("page_offsets.json"):
             return 0

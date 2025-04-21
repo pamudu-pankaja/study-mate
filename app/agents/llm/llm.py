@@ -18,7 +18,7 @@ class GeminiLLM():
 
                         Pages and Sections: Format it exactly like this, using bullet points
                         - Pages: Use page numbers if given, else guess logically based on context (e.g., "Page 44",)
-                        - Sections: Use the section title from the text if visible (e.g. "Fig  8.12 – British fighter aircraft","3.2 Engagement in Public Debates")
+                        - Sections: Use the section title from the text if visible  (e.g."3.2 Engagement in Public Debates") Or guess using provided text and Return the most highlited header
 
                         Context:
                         {context}

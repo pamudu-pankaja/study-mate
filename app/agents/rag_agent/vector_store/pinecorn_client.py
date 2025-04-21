@@ -33,7 +33,9 @@ class pinecone_db():
         try:
             data = [d for d in data if isinstance(d, dict) and 'text' in d and 'id' in d]
             data_texts = [d['text'] for d in data]
+
             embeddings = Embedding.get_embedding_chunks(data_texts)
+
             if len(embeddings) != len(data):
                 return f"Error: Mismatch between data ({len(data)}) and embeddings ({len(embeddings)})"
 

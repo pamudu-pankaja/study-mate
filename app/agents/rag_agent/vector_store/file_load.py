@@ -50,7 +50,6 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
         docs = loader.load()
 
         offset = get_page_offset(index_name)
-        print(f"Offset for {index_name}: {offset}")  # Debugging: print the current offset
 
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size,
@@ -67,16 +66,10 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
             pdf_page = chunk.metadata.get("page", 0)
             physical_page_number = pdf_page + offset + 1
 
-            # Debugging: check the physical page number before logical calculation
-            print(f"Physical page number for chunk {i + 1}: {physical_page_number}")
-
-            # Assign Roman numerals for pages before start_page, otherwise assign normal logical page number
             if physical_page_number < start_page:
                 logical_page = int_to_roman(physical_page_number)
-                print(f"Page {physical_page_number} is before start_page, using Roman numeral: {logical_page}")
             else:
                 logical_page = physical_page_number - start_page + 1
-                print(f"Page {physical_page_number} is after start_page, logical page: {logical_page}")
 
             match = re.search(r'(\d+(\.\d+)*\s+|^)([A-Za-z][A-Za-z\s]+)', text)
             if match:
@@ -91,7 +84,6 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
                 })
 
         last_page_used = max(chunk.metadata.get("page", 0) for chunk in chunks)
-        print(f"Last page used in this chunk: {last_page_used}")  # Debugging: last page used in the chunks
         update_page_offset(index_name, last_page_used)
 
         return formatted_chunks
@@ -99,8 +91,7 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
         return f"Error while loading file: {e}"
 
 
-# Example usage
-index_name = "history-text-1"
-file_path = "app/data/4_grade-11-history-text-book.pdf"
-result = load_pdf(file_path, index_name, start_page=12)
+# index_name = "history-text-1"
+# file_path = "app/data/4_grade-11-history-text-book.pdf"
+# result = load_pdf(file_path, index_name, start_page=12)
 

@@ -5,6 +5,7 @@ class RAGAgent(): #RAGAgent is more procedural than autonomous
         chunks=RAGAgent.get_chunks(file_path,index_name)
         RAGAgent.chunk_embedder(chunks)
         print(RAGAgent.upsert_chunks(chunks,index_name))
+        return "Importing Files successfull "
     
     @staticmethod
     def vector_search(query,inde_name):

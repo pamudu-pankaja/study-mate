@@ -10,7 +10,8 @@ class GeminiLLM():
     def get_response( query , context = None):
         prompt=query if not context else f"""You are a helpful assistant extracting answers from historical documents.
 
-                        Use the provided context (retrieved via vector search) to answer the user query. Follow this exact format:
+                        Use the provided context (retrieved via vector search) to answer the user query and Respond in the user's expected language and translate only if needed.
+                        Follow this exact format for the response:
 
                         Answer: A short, direct answer to the question. Focus only on what's asked.
 
@@ -18,7 +19,7 @@ class GeminiLLM():
 
                         Pages and Sections: Format it exactly like this, using bullet points
                         - Pages: Use page numbers if given, else guess logically based on context (e.g., "Page 44",)
-                        - Sections: Use the section title from the text if visible  (e.g."3.2 Engagement in Public Debates") Or guess using provided text and Return the most highlited header
+                        - Sections: Use the section title from the text if visible  (e.g."3.2 Engagement in Public Debates","Coal Industry") Or in the following text, which chapter or topic does it likely belong to
 
                         Context:
                         {context}
@@ -32,7 +33,7 @@ class GeminiLLM():
                 model="gemini-1.5-flash",
                 contents=[{"role": "user", "parts": [{"text": prompt}]}],
                 config=types.GenerateContentConfig(
-                    system_instruction=("You are an AI assistant that helps users learn from textbooks and reliable web sources. When using online information, include up to three trustworthy URLs. Keep answers concise and aligned with model answers. Match their key terms, phrasing, and structure exactly when available (e.g., 'It failed because...'). Avoid extra background, summaries, or phrases like 'consult the textbook' unless asked. Clearly state the purpose and result in cause-effect questions. If a question is unclear or broad, ask for clarification. Respond in the user's expected language and translate only if needed")
+                    system_instruction=("You are an AI assistant that helps users learn from textbooks and reliable web sources. When using online information, Keep answers short , concise and aligned with model answers. Match their key terms, phrasing, and structure exactly when available (e.g., 'It failed because...'). Avoid extra background, summaries, or phrases like 'consult the textbook' unless asked. Clearly state the purpose and result in cause-effect questions. If a question is unclear or broad, ask for clarification.")
                 )
             )
             return response.candidates[0].content.parts[0].text

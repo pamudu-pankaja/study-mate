@@ -1,4 +1,4 @@
-query = "Explain about George Stephenson ?"
+query = "What was the MacDowell’s mission ?"
 path = "vector"
 index_name = "history-text-1"
 
@@ -11,7 +11,7 @@ index_name = "history-text-1"
 
 # from vector_store.file_load import load_pdf
 
-file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/data/3_grade-11-history-text-book.pdf"
+file_path = "/app/data/4_grade-11-history-text-book.pdf"
 # result = load_pdf(file_path=file_path)
 
 # from vector_store.pinecorn_client import pinecone_db

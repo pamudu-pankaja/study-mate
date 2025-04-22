@@ -15,11 +15,11 @@ class GeminiLLM():
 
                         Answer: A short, direct answer to the question. Focus only on what's asked.
 
-                        Context: Copy **directly relevant** sentence(s) from the context provided. No extra explanation or paraphrasing.
+                        Context: Copy **directly relevant** sentence(s) from the context provided and make a short summary of that. No extra explanation or paraphrasing.
 
                         Pages and Sections: Format it exactly like this, using bullet points
                         - Pages: Use page numbers if given, else guess logically based on context (e.g., "Page 44",)
-                        - Sections: Use the section title from the text if visible  (e.g."3.2 Engagement in Public Debates","Coal Industry") Or in the following text, which chapter or topic does it likely belong to
+                        - Sections: Use the section title from the text if visible  (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution") Use only 2-4 words
 
                         Context:
                         {context}

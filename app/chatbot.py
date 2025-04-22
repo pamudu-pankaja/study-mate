@@ -1,4 +1,4 @@
-query = "What was the of MacDowell's mission  ?"
+query = "What are the three industries that based on industrial revolution in britian ?"
 path = "vector"
 index_name = "history-text-1"
 start_page = 11
@@ -43,12 +43,12 @@ file_path = "app/data/3_grade-11-history-text-book.pdf"
 # result = GeminiLLM.get_response(query,context=data)
 # print(result)
 
-from agents import RAGAgent
-results = RAGAgent.import_file(file_path,index_name,start_page=start_page)
+# from agents import RAGAgent
+# results = RAGAgent.import_file(file_path,index_name,start_page=start_page)
 
-# from agents import ChatBotAgent
+from agents import ChatBotAgent
 
-# results = ChatBotAgent.get_response(query,path,index_name)
+results = ChatBotAgent.get_response(query,path,index_name)
 
 print(f"\n\n{results}")
 

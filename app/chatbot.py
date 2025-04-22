@@ -1,6 +1,7 @@
-query = "What was the MacDowell’s mission ?"
+query = "What was the of MacDowell's mission  ?"
 path = "vector"
 index_name = "history-text-1"
+start_page = 11
 
 # from vector_store.vectore_search import search
 
@@ -11,7 +12,7 @@ index_name = "history-text-1"
 
 # from vector_store.file_load import load_pdf
 
-file_path = "/app/data/4_grade-11-history-text-book.pdf"
+file_path = "app/data/3_grade-11-history-text-book.pdf"
 # result = load_pdf(file_path=file_path)
 
 # from vector_store.pinecorn_client import pinecone_db
@@ -42,12 +43,12 @@ file_path = "/app/data/4_grade-11-history-text-book.pdf"
 # result = GeminiLLM.get_response(query,context=data)
 # print(result)
 
-# from agents import RAGAgent
-# results = RAGAgent.import_file(file_path,index_name)
+from agents import RAGAgent
+results = RAGAgent.import_file(file_path,index_name,start_page=start_page)
 
-from agents import ChatBotAgent
+# from agents import ChatBotAgent
 
-results = ChatBotAgent.get_response(query,path,index_name)
+# results = ChatBotAgent.get_response(query,path,index_name)
 
 print(f"\n\n{results}")
 

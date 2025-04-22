@@ -86,6 +86,7 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
         last_page_used = max(chunk.metadata.get("page", 0) for chunk in chunks)
         update_page_offset(index_name, last_page_used)
 
+        # print(f"Chunks ; {formatted_chunks[0:2]}")
         return formatted_chunks
     except Exception as e:
         return f"Error while loading file: {e}"
@@ -95,3 +96,4 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
 # file_path = "app/data/4_grade-11-history-text-book.pdf"
 # result = load_pdf(file_path, index_name, start_page=12)
 
+# print(result[0:2])

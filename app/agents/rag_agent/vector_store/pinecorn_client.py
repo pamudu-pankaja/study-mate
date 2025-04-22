@@ -36,37 +36,51 @@ class pinecone_db():
 
             embeddings = Embedding.get_embedding_chunks(data_texts)
 
+            # print(f"Embeddings length: {len(embeddings)}")
+
+            # print(f"First embedding sample (first 5 values): {embeddings[0][:5]}") if embeddings else print("No embeddings found.")
+
             if len(embeddings) != len(data):
                 return f"Error: Mismatch between data ({len(data)}) and embeddings ({len(embeddings)})"
 
+            vectors = []
+            for d, e in zip(data, embeddings):
+                if e is not None and isinstance(e,list):
+                    # print(f"Embedding for id {d['id']} has length {len(e)}")
+                    if len(e) == 768:
+                        vectors.append({
+                            'id' : str(d['id']),
+                            'values' : e,
+                            'metadata' : {
+                                'text': d['text'],
+                                'page': str(d.get("page")),
+                                'section':str(d.get("section"))
+                            }
+                        })
+                else:
+                    pass
+                    # print(f"Invalid embedding for id {d['id']}. Skipping ..")
+            else:
+                pass
+                # print(f"Skipping invalid embedding for id {d['id']} (embedding is None or not a list)")
+
+            # print(f"Vectors prepared for upsert: {len(vectors)} vectors")
+            if vectors:
+                pass
+                # print(f"Sample vector: {vectors[0]}")
 
             while not pc.describe_index(index_name).status['ready']:
                 time.sleep(1)
 
-            index = pc.Index(index_name)
+            index = pc.Index(index_name)            
 
-            vectors = []
-            for d, e in zip(data, embeddings):
-                if e is not None and isinstance(e,list) and len(e) == 768:
-                    vectors.append({
-                        'id' : str(d['id']),
-                        'values' : e,
-                        'metadata' : {
-                            'text': str(d['text']),
-                            'page': str(d.get("page")),
-                            'section':str(d.get("section"))
-                        }
-                    })
+            if not vectors:
+                return "No valid vectors to upsert (all embeddings may have failed or were invalid)."
 
-            import json
-            print("hello")
-            print(json.dumps(vectors[0], indent=2))  # ← check this carefully
+            res = index.upsert(vectors=vectors)
+            return f"SUCCESS: {len(vectors)} vectors were added. Pinecone response: {res}"
+            
 
-
-            index.upsert(
-                vectors=vectors,
-            )
-            return f" SUCCESS : {len(vectors)} Vectors were added"
         except Exception as e:
             return f"Erro while storing : {e}"
 

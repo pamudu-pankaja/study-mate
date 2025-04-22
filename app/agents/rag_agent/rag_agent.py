@@ -1,11 +1,10 @@
 class RAGAgent(): #RAGAgent is more procedural than autonomous
     #MAJOR FUNCs
     @staticmethod
-    def import_file(file_path ,index_name):
-        chunks=RAGAgent.get_chunks(file_path,index_name)
+    def import_file(file_path ,index_name,start_page):
+        chunks=RAGAgent.get_chunks(file_path,index_name,start_page)
         RAGAgent.chunk_embedder(chunks)
         print(RAGAgent.upsert_chunks(chunks,index_name))
-        return "Importing Files successfull "
     
     @staticmethod
     def vector_search(query,inde_name):
@@ -15,9 +14,9 @@ class RAGAgent(): #RAGAgent is more procedural than autonomous
 
     #MINOR FUNCs
     @staticmethod
-    def get_chunks(file_path , index_name):
+    def get_chunks(file_path , index_name , start_page):
         from agents.rag_agent.vector_store import  file_load
-        chunks = file_load.load_pdf(file_path,index_name)  
+        chunks = file_load.load_pdf(file_path,index_name,start_page=start_page)  
         return chunks
     
     @staticmethod

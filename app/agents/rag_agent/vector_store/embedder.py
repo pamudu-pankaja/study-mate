@@ -25,14 +25,25 @@ class Embedding:
         embeddings = []
 
         for text in data_list:
+            # print(f"Text passed to embedding: {text}")
             try :
                 result = client.models.embed_content(
                     model="text-embedding-004",
                     contents=f"{text}",
                     config=types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY")
                 )
-                embeddings.append(result.embeddings[0].values)
-                
+
+                # print(f"Embedding result for text (first 60 characters): {text[:60]}")
+                # print(f"Embedding response: {result}")
+
+                if result and result.embeddings and result.embeddings[0].values:
+                    embeddings.append(result.embeddings[0].values)
+
+                else:
+                    # print(f"Embedding failed for : {text[:60]}")
+                    embeddings.append(None)
+              
             except Exception as e:
-                return f"Error during embedding : {e}"
+                print(f"Error during embedding: {e}")
+                embeddings.append(None)
         return embeddings

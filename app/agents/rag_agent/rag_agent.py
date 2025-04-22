@@ -4,7 +4,7 @@ class RAGAgent(): #RAGAgent is more procedural than autonomous
     def import_file(file_path ,index_name,start_page):
         chunks=RAGAgent.get_chunks(file_path,index_name,start_page)
         RAGAgent.chunk_embedder(chunks)
-        print(RAGAgent.upsert_chunks(chunks,index_name))
+        RAGAgent.upsert_chunks(chunks,index_name)
     
     @staticmethod
     def vector_search(query,inde_name):
@@ -30,8 +30,8 @@ class RAGAgent(): #RAGAgent is more procedural than autonomous
     def upsert_chunks(chunks,index_name):
         from agents.rag_agent.vector_store import pinecorn_client
         db = pinecorn_client.pinecone_db()
-        print(db.create_index(index_name))
-        print(db.upsert(chunks,index_name))
+        db.create_index(index_name)
+        db.upsert(chunks,index_name)
 
 
     

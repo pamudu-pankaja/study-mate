@@ -83,7 +83,7 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
                     "section": current_section if current_section else "Unknown"
                 })
 
-        last_page_used = max(chunk.metadata.get("page", 0) for chunk in chunks)
+        last_page_used = max(chunk.metadata.get("page", 0) for chunk in chunks) 
         update_page_offset(index_name, last_page_used)
 
         # print(f"Chunks ; {formatted_chunks[0:2]}")

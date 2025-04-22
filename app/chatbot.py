@@ -1,4 +1,4 @@
-query = "What are the three industries that based on industrial revolution in britian ?"
+query = "Short explanation about Henri Bessemer’s oven  ?"
 path = "vector"
 index_name = "history-text-1"
 start_page = 11
@@ -12,7 +12,7 @@ start_page = 11
 
 # from vector_store.file_load import load_pdf
 
-file_path = "app/data/3_grade-11-history-text-book.pdf"
+file_path = "app/data/2_grade-11-history-text-book.pdf"
 # result = load_pdf(file_path=file_path)
 
 # from vector_store.pinecorn_client import pinecone_db

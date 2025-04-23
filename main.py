@@ -1,2 +1,7 @@
-import os
-print(os.urandom(12).hex())
+from app import chatbot
+
+def main():
+    chatbot.main()
+
+if __name__ == "__main__":
+    main()

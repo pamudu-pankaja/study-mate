@@ -1,6 +1,6 @@
 from google import genai
 from google.genai import types
-from config.config import GOOGLE_API_KEY
+from app.config.config import GOOGLE_API_KEY
 
 client = genai.Client(api_key=GOOGLE_API_KEY)
 
@@ -10,23 +10,27 @@ class GeminiLLM():
     def get_response( query , context = None):
         prompt=query if not context else f"""You are a helpful assistant extracting answers from historical documents.
 
-                        Use the provided context (retrieved via vector search) to answer the user query and Respond in the user's expected language and translate only if needed.
+                        Use the provided context (retrieved via a vector search or a web search) to answer the user query and Respond in the user's expected language and translate only if needed.
+                        If no context is given, use your own knowledge to answer the question clearly.
+
                         Follow this exact format for the response:
 
                         Answer: A short, direct answer to the question. Focus only on what's asked.
 
-                        Context: Copy **directly relevant** sentence(s) from the context provided and make a short summary of that. No extra explanation or paraphrasing.
+                        Context:
+                        - If context is provided: Copy **directly relevant** sentence(s) from the context and summarize. No extra explanation.  
+                        - If no context is provided: Write “No external context was provided, so this answer is based on general historical knowledge.”
 
                         Pages and Sections: Format it exactly like this, using bullet points
                         - Pages: Use page numbers if given, else guess logically based on context (e.g., "Page 44",)
-                        - Sections: Use the section title from the text if visible  (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution") Use only 2-4 words
+                        - Sections: Use the section title from the text if visible  (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution"," Impact on the Society") Use only 2-4 words else What might be the section for the context depending on the examples 
+                        - If not available, write: *Not specified*
 
                         Context:
-                        {context}
+                        {context} 
 
                         User Query: {query}
                         """
-        print(context)
 
         try:
             response = client.models.generate_content(

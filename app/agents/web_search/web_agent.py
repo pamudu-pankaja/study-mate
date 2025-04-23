@@ -1,5 +1,5 @@
 from googleapiclient.discovery import build
-from config.config import WEB_SEARCH_API_KEY,WEB_SEARC_ID
+from app.config.config import WEB_SEARCH_API_KEY,WEB_SEARC_ID
 
 service = build("customsearch","v1",developerKey=WEB_SEARCH_API_KEY)
 

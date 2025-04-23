@@ -1,5 +1,5 @@
-from agents.rag_agent.vector_store.embedder import Embedding
-from config.config import PINECORN_API_KEY
+from app.agents.rag_agent.vector_store.embedder import Embedding
+from app.config.config import PINECORN_API_KEY
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=PINECORN_API_KEY)
@@ -22,7 +22,7 @@ def search(query,index_name):
         data.append({
             "text": match['metadata'].get("text", ""),
             "page": match['metadata'].get("page", "unknown"),
-            "section": match['metadata'].get("section", "unknown")
+            # "section": match['metadata'].get("section", "unknown")
         })
         
     return data

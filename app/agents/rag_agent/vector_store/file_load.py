@@ -24,7 +24,7 @@ def int_to_roman(n):
             n -= val[i]
     return roman_num.lower()
 
-def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page=0):
+def load_pdf(file_path, index_name, chunk_size=500, chunk_overlap=20, start_page=0):
     file_name = os.path.basename(file_path)
     base_name = os.path.splitext(file_name)[0]
 
@@ -41,7 +41,10 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
                 offsets = json.load(f)
         else:
             offsets = {}
-        offsets[index_name] = last_page
+
+        current_offset = offsets.get(index_name,0)
+        offsets[index_name] = current_offset + last_page
+
         with open("page_offsets.json", "w") as f:
             json.dump(offsets, f)
 
@@ -83,17 +86,12 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
                     "section": current_section if current_section else "Unknown"
                 })
 
-        last_page_used = max(chunk.metadata.get("page", 0) for chunk in chunks) 
-        update_page_offset(index_name, last_page_used)
+        last_page_used = max(chunk.metadata.get("page", 0) for chunk in chunks)
+        update_page_offset(index_name, last_page_used + 1)
 
         # print(f"Chunks ; {formatted_chunks[0:2]}")
         return formatted_chunks
     except Exception as e:
-        return f"Error while loading file: {e}"
+        print(f"Error while loading file: {e}")
+        return None
 
-
-# index_name = "history-text-1"
-# file_path = "app/data/4_grade-11-history-text-book.pdf"
-# result = load_pdf(file_path, index_name, start_page=12)
-
-# print(result[0:2])

@@ -1,54 +1,89 @@
-query = "Short explanation about Henri Bessemer’s oven  ?"
-path = "vector"
-index_name = "history-text-1"
-start_page = 11
+from app.agents import ChatBotAgent
+from app.agents import RAGAgent  
 
-# from vector_store.vectore_search import search
+def ask_question():
+    while True:
+        print("\n=== Ask a Question ===")
+        print("1. Use Vector Search")
+        print("2. Use Web Search")        
+        print("3. Use LLM")
+        print("4. Previous")
+        choice = input("Choose a method (1-4): ")
 
-# result = search(query,index_name)
+        if choice == "4":
+            return
+        
+        index_name = ""
+        while True:
+            query = input("Enter your question (q to quit): ")
+            if query.lower() == "q":
+                ask_question()
+                break 
+            
+            if choice == "2":
+                result = ChatBotAgent.get_response(query,path="web")
+                print("\n--- Web Search Results ---")
+                print(f"\n{result}")
+                
+            elif choice == "1":
+                get_index_name = input("Enter the index name: ") if index_name == "" else index_name
+                index_name = get_index_name
+                result = ChatBotAgent.get_response(query,path="vector",index_name=index_name)
+                print("\n--- Vector Search Results ---")
+                print(f"\n{result}")
+            elif choice == "3":
+                result = ChatBotAgent.get_response(query,path=None)
+                print("\n--- LLM Response ---")
+                print(f"\n{result}")
+            else:
+                print("Invalid choice")
 
-# print(result)
+            next_action = input("\nAsk another question? (y/n): ")
+            if next_action.lower() != "y":
+                break
 
+def add_file_flow():
+    print("\n=== Add File to Index ===")
+    index_name = input("Enter index name: ")
+    file_path = input("Enter file path: ")
+    start_page = int(input("Enter logical start page: "))
+    
+    RAGAgent.import_file(file_path, index_name, start_page)
+    print("File indexed successfully.")
 
-# from vector_store.file_load import load_pdf
+    while True:
+        print("\n1. Add Another File")
+        print("2. Add New Index")
+        print("3. Previous")
+        choice = input("Choose an option (1-3): ")
 
-file_path = "app/data/2_grade-11-history-text-book.pdf"
-# result = load_pdf(file_path=file_path)
+        if choice == "1":
+            file_path = input("Enter file path: ")
+            RAGAgent.import_file(file_path, index_name, start_page)
+            print("File added to the existing index.")
+        elif choice == "2":
+            add_file_flow() 
+            break
+        elif choice == "3":
+            return
+        else:
+            print("Invalid option.")
 
-# from vector_store.pinecorn_client import pinecone_db
+def main():
+    while True:
+        print("\n=== AI Assistant CLI ===")
+        print("1. Ask a Question")
+        print("2. Add a File to Index")
+        print("3. Quit")
+        choice = input("Select an option (1-3): ")
 
-# response = pinecone_db.create_index()
-# upsert = pinecone_db.upsert(data=result)
-
-# print(upsert)
-
-# from agents import RAGAgent
-# result=RAGAgent.vector_search(query,index_name)
-# RAGAgent.import_file(file_path,index_name)
-
-# from agents.web_search.web_agent import web_search
-# from agents.chat_bot_agent.tools.summarizer import summerize_result
-# from agents.llm.llm import GeminiLLM
-
-# data = web_search("Who is the sri lankan president")
-# print(data)
-# data = [{'title': 'President of Sri Lanka - Wikipedia', 'url': 'https://en.wikipedia.org/wiki/President_of_Sri_Lanka', 'snippet': 'Anura Kumara Dissanayake is the 10th and current president, having assumed office on 23 September 2024, after being declared the winner of the 2024 presidential\xa0...'}, {'title': "Anura Kumara Dissanayake: Who is Sri Lanka's new president?", 'url': 'https://www.bbc.com/news/articles/c206l7pz5v1o', 'snippet': "Sep 22, 2024 ... Who is Sri Lanka's new president Anura Kumara Dissanayake? ... Left-leaning politician Anura Kumara Dissanayake has been elected as Sri Lanka's\xa0..."}, {'title': 'Ranil Wickremesinghe - Wikipedia', 'url': 'https://en.wikipedia.org/wiki/Ranil_Wickremesinghe', 
-# 'snippet': 'Ranil Wickremesinghe is a Sri Lankan politician who served as the ninth president of Sri Lanka from 2022 to 2024. Previously, he served as Prime Minister of\xa0...'}, {'title': "Anura Kumara Dissanayake sworn in as Sri Lanka's president", 'url': 'https://www.bbc.com/news/articles/cqxr03x4dvzo', 'snippet': "Sep 22, 2024 ... Sri Lanka swears in new left-leaning president ... Sri Lanka President Media via Reuters Sri Lanka's new president Anura Kumara Dissanayake speaks\xa0..."}, {'title': "Sri Lanka's Uprising Forces Out a President but Leaves System in ...", 'url': 'https://www.crisisgroup.org/asia/south-asia/sri-lanka/sri-lankas-uprising-forces-out-president-leaves-system-crisis', 'snippet': "Jul 18, 2022 ... Sri Lanka's Uprising Forces Out a President but Leaves System in Crisis. Crowds of ordinary Sri Lankans stormed the presidential residence on 9\xa0..."}]
-
-# summary = summerize_result(data)
-# from agents.chat_bot_agent.tool_handler import ToolHandle 
-
-
-# data = ToolHandle.get_context(query,index_name=index_name)
-# result = GeminiLLM.get_response(query,context=data)
-# print(result)
-
-# from agents import RAGAgent
-# results = RAGAgent.import_file(file_path,index_name,start_page=start_page)
-
-from agents import ChatBotAgent
-
-results = ChatBotAgent.get_response(query,path,index_name)
-
-print(f"\n\n{results}")
+        if choice == "1":
+            ask_question()
+        elif choice == "2":
+            add_file_flow()
+        elif choice == "3":
+            print("Exiting program. Goodbye!")
+            break
+        else:
+            print("Invalid choice.")
 

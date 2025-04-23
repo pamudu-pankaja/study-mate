@@ -1,5 +1,5 @@
 from pinecone import Pinecone,ServerlessSpec
-from config.config import PINECORN_API_KEY
+from app.config.config import PINECORN_API_KEY
 import time
 
 pc = Pinecone(api_key=PINECORN_API_KEY)
@@ -75,12 +75,13 @@ class pinecone_db():
             index = pc.Index(index_name)            
 
             if not vectors:
-                return "No valid vectors to upsert (all embeddings may have failed or were invalid)."
-
+                print( "No valid vectors to upsert (all embeddings may have failed or were invalid).")
+                return None
             res = index.upsert(vectors=vectors)
-            return f"SUCCESS: {len(vectors)} vectors were added. Pinecone response: {res}"
+            print(f"SUCCESS: {len(vectors)} vectors were added. Pinecone response: {res}")
             
 
         except Exception as e:
-            return f"Erro while storing : {e}"
+            print( f"Erro while storing : {e}")
+            return None
 

@@ -1,6 +1,6 @@
 from google import genai
 from google.genai import types
-from config.config import GOOGLE_API_KEY
+from app.config.config import GOOGLE_API_KEY
 
 client = genai.Client(api_key=GOOGLE_API_KEY)
 

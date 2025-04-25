@@ -8,7 +8,7 @@ A simple command-line tool that lets you choose how you want to search:
 
 This app mainly focuses on **vector-based search** for study material and textbooks.
 
-**The web search option is still developing.** 
+### **The web search option is still developing.** 
 
 ---
 

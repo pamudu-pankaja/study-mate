@@ -38,10 +38,6 @@ def ask_question():
             else:
                 print("Invalid choice")
 
-            next_action = input("\nAsk another question? (y/n): ")
-            if next_action.lower() != "y":
-                break
-
 def add_file_flow():
     from app.agents import RAGAgent  
     print("\n=== Add File to Index ===")

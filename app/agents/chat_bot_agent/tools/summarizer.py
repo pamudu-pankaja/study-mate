@@ -45,7 +45,7 @@ class Summarizer():
         
         parser = PlaintextParser.from_string(text,Tokenizer("english"))
         summarizer = LsaSummarizer()
-        summary_sentences = summarizer(parser.document,sentences_count=10)
+        summary_sentences = summarizer(parser.document,sentences_count=3)
 
         return summary_sentences
 

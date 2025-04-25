@@ -18,6 +18,7 @@ class ToolHandle():
             from app.agents.web_search.web_agent import web_search
             from app.agents.chat_bot_agent.tools.summarizer import Summarizer
             search=web_search(query)
+            result = search
             result = Summarizer.get_summerize_result(search)
             return result
         

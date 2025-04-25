@@ -85,10 +85,10 @@ Thanks to **Code Jam: Future Minds** for giving me this problem and the inspirat
 ## 🤝 Contribute
 
 Feel free to open issues or pull requests if you find bugs or want to improve anything. I'm still learning and always open to feedback!
+
 ---
 
-## 📜 License :
+## 📜 License 
 
 This project is under the MIT License.
 
-```

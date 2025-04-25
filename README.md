@@ -14,7 +14,7 @@ The web search option is still developing.
 ## ✨ Features
 
 - Upload PDF files and have them automatically split and indexed
-- Tracks real and logical page numbers (including Roman numerals for preface pages)
+- Tracks real and logical page numbers (including Roman numerals for preface pages,You can set the start logical page as the page you want to start counting)
 - Recognizes sections even across multiple PDF files
 - Choose between:
   - General Gemini LLM response

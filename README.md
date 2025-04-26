@@ -8,7 +8,9 @@ A simple command-line tool that lets you choose how you want to search:
 
 This app mainly focuses on **vector-based search** for study material and textbooks.
 
-### **The web search option is still developing.** 
+---
+
+### ⚠️ **The web search option is still developing.** 
 
 ---
 
@@ -39,8 +41,8 @@ This app mainly focuses on **vector-based search** for study material and textbo
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/pamudu-pankaja/text-book-chat-bot.git
+cd text-book-chat-bot
 ```
 
 ### 2. Install requirements

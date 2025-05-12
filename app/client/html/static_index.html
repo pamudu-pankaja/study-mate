@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<meta name="description" content="A conversational AI system that listens, learns, and challenges" />
+
+	<meta property="og:title" content="StudyMate" />
+	<meta property="og:image" content="/app/client/img/book.png" />
+	<meta property="og:description" content="A conversational AI system that help users with school works" />
+	<meta property="og:url" content="http://127.0.0.1:5500/app/client/html/static_index.html" />
+
+	<title>StudyMate</title>
+
+	<!-- Styles -->
+	<link rel="stylesheet" href="/app/client/css/style.css" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/app/client/img/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" sizes="32x32" href="/app/client/img/favicon-32x32.png" />
+	<link rel="icon" type="image/png" sizes="16x16" href="/app/client/img/favicon-16x16.png" />
+	<link rel="manifest" href="/app/client/img/site.webmanifest" />
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css" />
+</head>
+
+<body data-urlprefix="/">
+	<div class="main-container">
+		<div class="box sidebar">
+			<div class="top">
+				<button class="button" onclick="new_conversation()">
+					<i class="fa-regular fa-plus"></i>
+					<span>New Conversation</span>
+				</button>
+				<div class="spinner"></div>
+			</div>
+			<div class="sidebar-footer">
+				<button class="button" onclick="delete_conversations()">
+					<i class="fa-regular fa-trash"></i>
+					<span>Clear Conversations</span>
+				</button>
+				<div class="settings-container">
+					<div class="checkbox field">
+						<span>Dark Mode</span>
+						<input type="checkbox" id="theme-toggler" />
+						<label for="theme-toggler"></label>
+					</div>
+					<!-- <div class="field">
+						<span>Language</span>
+						<select class="dropdown" id="language" onchange="changeLanguage(this.value)"></select>
+					</div> -->
+				</div>
+				<a class="info" href="https://github.com/pamudu-pankaja/text-book-chat-bot" target="_blank">
+					<i class="fa-brands fa-github"></i>
+					<span class="conversation-title"> Version: 0.1.0 </span>
+				</a>
+			</div>
+		</div>
+
+		<div class="conversation">
+			<div class="stop-generating stop-generating-hidden">
+				<button class="button" id="cancelButton">
+					<span>Stop Generating</span>
+				</button>
+			</div>
+
+			<div class="box" id="messages"></div>
+
+			<div class="user-input">
+				<div class="box input-box">
+					<textarea id="message-input" placeholder="Ask a question" cols="30" rows="10" style="white-space: pre-wrap"></textarea>
+					<div id="send-button">
+						<i class="fa-regular fa-paper-plane-top"></i>
+					</div>
+				</div>
+			</div>
+
+			<div class="options-container">
+				<!-- <div class="buttons">
+					<div class="field">
+						<select class="dropdown" name="model" id="model">
+							<option value="gpt-3.5-turbo">GPT-3.5</option>
+							<option value="gpt-3.5-turbo-16k">GPT-3.5-turbo-16k</option>
+							<option value="gpt-4" selected>GPT-4</option>
+						</select>
+					</div> -->
+					<!-- <div class="field">
+						<select class="dropdown" name="jailbreak" id="jailbreak">
+							<option value="default" selected>Default</option>
+							<option value="gpt-dan-11.0">DAN</option>
+							<option value="gpt-evil">Evil</option>
+						</select>
+					</div>
+				</div> -->
+
+				<div class="field checkbox toogle-group" id="resourceToggleGroup">
+					<input type="checkbox" id="switch_web" onchange="toggleOff(this)" />
+					<label for="switch_web"></label>
+					<span>Using Web</span>
+
+					<input type="checkbox" id="switch_book" onchange="toggleOff(this)"/>
+					<label for="switch_book" class="switch_book"></label>
+					<span>Using PDF</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="hidden box sidebar right-sidebar " id="rightSidebar">
+		<div class="top">
+			<span>Right Sidebar</span>
+		</div>
+		<div class="sidebar-content">
+			<!-- Add whatever content you want here -->
+			<p>This is the right sidebar content</p>
+		</div>
+	</div>
+
+	<!-- Toggle button (can go inside .conversation or wherever you want) -->
+	<!-- <div class="menu-button" onclick="toggleRightSidebar()">
+	<i class="fa-solid fa-gear"></i>
+	</div> -->
+	
+	<div class="menu-button">
+		<i class="fa-solid fa-bars"></i>
+	</div>
+	
+	
+
+	
+
+	<!-- Scripts -->
+	<script>
+		window.conversation_id = "static_index.html";
+	</script>
+	<script src="/app/client/js/icons.js"></script>
+	<script src="/app/client/js/chat.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"></script>
+	<script src="/app/client/js/highlight.min.js"></script>
+	<script src="/app/client/js/highlightjs-copy.min.js"></script>
+	<script src="/app/client/js/theme-toggler.js"></script>
+	<script src="/app/client/js/sidebar-toggler.js"></script>
+	<script src="/app/client/js/change-language.js"></script>
+	<script src="/app/client/js/toggle-button.js"></script>
+</body>
+</html>

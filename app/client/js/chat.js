@@ -10,8 +10,8 @@ const box_conversations = document.querySelector(`.top`);
 const spinner = box_conversations.querySelector(".spinner");
 const stop_generating = document.querySelector(`.stop-generating`);
 const send_button = document.querySelector(`#send-button`);
-const user_image = `<img src="${url_prefix}/assets/img/user.png" alt="User Avatar">`;
-const gpt_image = `<img src="${url_prefix}/assets/img/gpt.png" alt="GPT Avatar">`;
+const user_image = `<img src="${url_prefix}app/client/img/user.png" alt="User Avatar">`;
+const gpt_image = `<img src="${url_prefix}app/client/img/book.png" alt="Book Avatar">`;
 let prompt_lock = false;
 
 hljs.addPlugin(new CopyButtonPlugin());
@@ -241,7 +241,8 @@ const delete_conversation = async (conversation_id) => {
 };
 
 const set_conversation = async (conversation_id) => {
-	history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
+	// history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
+	history.pushState({}, '','static_index.html' )
 	window.conversation_id = conversation_id;
 
 	await clear_conversation();
@@ -250,7 +251,8 @@ const set_conversation = async (conversation_id) => {
 };
 
 const new_conversation = async () => {
-	history.pushState({}, null, `${url_prefix}/chat/`);
+	// history.pushState({}, null, `${url_prefix}/chat/`);
+	history.pushState({}, '','static_index.html' )
 	window.conversation_id = uuid();
 
 	await clear_conversation();

@@ -14,3 +14,7 @@ label {
 	overflow: hidden;
 	transition: 0.33s;
 }
+
+.switch_book{
+	margin-left: 20px;
+}

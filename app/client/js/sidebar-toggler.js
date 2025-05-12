@@ -14,12 +14,14 @@ function toggleSidebar(event) {
 function showSidebar(target) {
     sidebar.classList.remove("hidden");
     icon.classList.add("rotated");
+    menuButton.classList.toggle("rotated")
     document.body.style.overflow = "auto";
 }
 
 function hideSidebar(target) {
     sidebar.classList.add("hidden");
     icon.classList.remove("rotated");
+    menuButton.classList.toggle("rotated")
     document.body.style.overflow = "hidden";
 }
 

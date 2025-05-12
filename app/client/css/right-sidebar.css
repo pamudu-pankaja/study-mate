@@ -1,0 +1,31 @@
+.right-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 100%;
+  background-color: #1e1e1e;
+  color: white;
+  z-index: 999;
+  padding: 1rem;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+  border-color: hsl(0, 0%, 30%);
+  
+}
+
+.hidden {
+  transform: translateX(100%);
+}
+
+#data_base_span{
+    margin-top: 5px;
+    /* background-color: hsl(0, 0%, 17%); */
+    padding: 5px;
+    border-radius: 8px;
+    padding-right: 5px;
+    height: 32px;
+    background: flex;
+}

@@ -136,7 +136,7 @@
 
 .menu-button-2 {
 	position: absolute;
-	top: 15px;
+	top: 12px;
 	right: 20px;
 	padding: 10px;
 	z-index: 1000;
@@ -164,7 +164,7 @@
 }
 
 .menu-button:hover{
-	background-color: #3a3a3a;
+	background-color: hsl(0, 0%, 23%);
 }
 
 .menu-button i {
@@ -184,12 +184,12 @@
 
 .menu-button-2.rotated {
 	padding: 10px;
-	right: 25px;
-	top: 18px;
+	right: 24px;
+	top: 19px;
 }
 
 .menu-button.rotated:hover{
-	background-color: hsl(0, 0%, 17%);
+	background-color: hsl(0, 0%, 20%);
 }
 
 .rotated::after.menu-button{

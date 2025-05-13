@@ -105,21 +105,28 @@
 	</div>
 
 	
-	<div class="  hidden box sidebar right-sidebar " id="rightSidebar">
+	<div class=" hidden box right-sidebar " id="rightSidebar">
 		<div class="top">
 			<span id="data_base_span">Data Base Information</span>
 		</div>
-		<div class="sidebar-content  user-input input-box" >
-			<div class="index">
-				<textarea></textarea>
-				<label for="index"></label>
-				<span>Index</span>
+		<div class="sidebar-content" >
+			<div class="index">					
+				<span > <i class="fa-solid fa-server" style="margin-right: 8px;"></i> Vector Index</span>								
+				<div>
+					<input  type="text" placeholder="Your index name" id="index">
+				</div>				
+			</div>
+
+			<div class="submit_btn">				
+				<button id="submit_btn" onclick="setIndex()">
+					<i class="fa-regular fa-layer-plus" style="margin-right: 6px; font-size:14px;"></i> Set Index
+				</button>		
 			</div>
 			
 		</div>
 	</div>
 	<div class="menu-button menu-button-2">
-		<i class="fa-solid fa-gear"></i>
+		<i class="fa-regular fa-database"></i>
 	</div>
 
 	<div class="menu-button menu-button-1">
@@ -142,5 +149,6 @@
 	<script src="/app/client/js/sidebar-toggler.js"></script>
 	<script src="/app/client/js/change-language.js"></script>
 	<script src="/app/client/js/toggle-button.js"></script>
+	<script src="/app/client/js/data-base-info.js"></script>
 </body>
 </html>

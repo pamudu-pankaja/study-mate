@@ -7,19 +7,21 @@
 	<meta name="description" content="A conversational AI system that listens, learns, and challenges" />
 
 	<meta property="og:title" content="StudyMate" />
-	<meta property="og:image" content="/app/client/img/book.png" />
+	<meta property="og:image" content="/app/static/img/book.png" />
 	<meta property="og:description" content="A conversational AI system that help users with school works" />
-	<meta property="og:url" content="http://127.0.0.1:5500/app/client/html/static_index.html" />
+	<meta property="og:url" content="http://127.0.0.1:5500/app/templates/html/static_index.html" />
 
 	<title>StudyMate</title>
 
 	<!-- Styles -->
-	<link rel="stylesheet" href="/app/client/css/style.css" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/app/client/img/apple-touch-icon.png" />
-	<link rel="icon" type="image/png" sizes="32x32" href="/app/client/img/favicon-32x32.png" />
-	<link rel="icon" type="image/png" sizes="16x16" href="/app/client/img/favicon-16x16.png" />
-	<link rel="manifest" href="/app/client/img/site.webmanifest" />
+	<link rel="stylesheet" href="/app/static/css/style.css" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/app/static/img/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" sizes="32x32" href="/app/static/img/favicon-32x32.png" />
+	<link rel="icon" type="image/png" sizes="16x16" href="/app/static/img/favicon-16x16.png" />
+	<link rel="manifest" href="/app/static/img/site.webmanifest" />
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css" />
+	<!-- <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css" > -->
+
 </head>
 
 <body data-urlprefix="/">
@@ -105,25 +107,35 @@
 	</div>
 
 	
-	<div class=" hidden box right-sidebar " id="rightSidebar">
+	<div class="  box right-sidebar " id="rightSidebar">
 		<div class="top">
 			<span id="data_base_span">Data Base Information</span>
 		</div>
 		<div class="sidebar-content" >
-			<div class="index">					
-				<span > <i class="fa-solid fa-server" style="margin-right: 8px;"></i> Vector Index</span>								
-				<div>
-					<input  type="text" placeholder="Your index name" id="index">
-				</div>				
-			</div>
 
-			<div class="submit_btn">				
+			<div class="index" style="margin-top: 13px;">					
+				<span > <i class="fa-solid fa-server" style="margin-right: 7px;"></i> Vector Index</span>												
+				<input  type="text" placeholder="Your index name" id="index" style="margin-top: 4px;">				
 				<button id="submit_btn" onclick="setIndex()">
 					<i class="fa-regular fa-layer-plus" style="margin-right: 6px; font-size:14px;"></i> Set Index
-				</button>		
+				</button>
+			</div>
+
+			<div class="file_input">
+				<span ><i class="fa-solid fa-file-circle-plus" style="margin-right: 8px;"></i>Import PDF File </span>
+				<input type="file" id="file_input" accept="application/pdf">
+				<!-- <br>
+				<button onclick="uploadFile()">
+					<i class="fa-regular fa-layer-plus" style="margin-right: 6px; font-size:14px;"></i> Set Index
+				</button>
+				<div id="file-fallback-message">Must Be Under 1MB</div> -->
 			</div>
 			
+			
+						
+			
 		</div>
+		
 	</div>
 	<div class="menu-button menu-button-2">
 		<i class="fa-regular fa-database"></i>
@@ -140,15 +152,15 @@
 	<script>
 		window.conversation_id = "static_index.html";
 	</script>
-	<script src="/app/client/js/icons.js"></script>
-	<script src="/app/client/js/chat.js" defer></script>
+	<script src="/app/static/js/icons.js"></script>
+	<script src="/app/static/js/chat.js" defer></script>
 	<script src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"></script>
-	<script src="/app/client/js/highlight.min.js"></script>
-	<script src="/app/client/js/highlightjs-copy.min.js"></script>
-	<script src="/app/client/js/theme-toggler.js"></script>
-	<script src="/app/client/js/sidebar-toggler.js"></script>
-	<script src="/app/client/js/change-language.js"></script>
-	<script src="/app/client/js/toggle-button.js"></script>
-	<script src="/app/client/js/data-base-info.js"></script>
+	<script src="/app/static/js/highlight.min.js"></script>
+	<script src="/app/static/js/highlightjs-copy.min.js"></script>
+	<script src="/app/static/js/theme-toggler.js"></script>
+	<script src="/app/static/js/sidebar-toggler.js"></script>
+	<script src="/app/static/js/change-language.js"></script>
+	<script src="/app/static/js/toggle-button.js"></script>
+	<script src="/app/static/js/data-base-info.js"></script>
 </body>
 </html>

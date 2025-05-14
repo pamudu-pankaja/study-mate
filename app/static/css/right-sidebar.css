@@ -5,7 +5,6 @@
   width: 260px;
   height: 100%;
   background-color: hsl(0, 0%, 12%);
-  color: white;
   z-index: 999;
   padding: 1rem;
   box-shadow: -2px 0 5px hsla(0, 0%, 0%, 0.5);
@@ -14,6 +13,12 @@
   border-bottom-left-radius: 40px;
   border-color: hsl(0, 0%, 16%);
 }
+
+.hidden {
+  transform: translateX(100%);
+}
+
+/* Main Span */
 
 #data_base_span{
     color: hsl(0, 0%, 85%);
@@ -24,6 +29,7 @@
     height: 32px;
     background: flex;
     top: 12px;
+    bottom: 500px;
 }
 
 .sidebar-content div{
@@ -37,7 +43,7 @@
   display: flow;
   color: hsl(0, 0%, 79%);
   background-color: hsl(0, 0%, 12%);
-  top: 50px;
+  top: 55px;
   bottom: 15px;
   font-family: sans-serif;
   font-size: 15px;
@@ -46,21 +52,23 @@
   padding: 5px;
 }
 
-.sidebar-content i{
-  font-size: 13px;
+/* Index name input area */
+
+.sidebar-content .index i{
+  font-size: 17px;
 }
 
 .sidebar-content #index{
   font-size: 15px;
   text-align: center;
   background-color: hsl(200, 4%, 17%);
-  color: #dadada;
+  color: #DADADA;
   border: 0px solid #000;
   border-radius: 5px;
   height: 40px;
   width: 230px;
-  top: 70px;
-  bottom: 20px;
+  top: 60px;
+  bottom: 50px;
 }
 
 .sidebar-content input::placeholder{
@@ -73,10 +81,10 @@
 
 #submit_btn {
   padding: 8px 12px;
-  color: #dadada;
+  color: #DADADA;
   background-color:transparent;
   border: 1px solid #555555;
-  top: 80px;
+  top: 69px;
   width: 230px;
   border-radius: 8px;
   height: 35px;
@@ -88,7 +96,58 @@
   background-color:hsl(0, 0%, 11%) ;
 }
 
-.hidden {
-  transform: translateX(100%);
+/* File input area */
+
+.file_input {
+  position: relative;
+  overflow: hidden;
 }
 
+.file_input span{
+  margin-top: 65px;
+}
+
+.file_input i {
+  font-size: 20px;
+}
+
+.file_input input{
+  margin-top: 65px;
+  top: 0;
+  left: 0;
+  width: 230px;
+  height: 40px;
+  color: transparent;
+  cursor: pointer;
+  }
+
+.file_input input::-webkit-file-upload-button {
+  visibility: hidden;
+  
+}
+.file_input input[type="file"]::before {
+  content: '+ Select a file';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  text-align: center;
+  background-color: hsl(200, 4%, 17%);
+  color: hsl(0, 0%, 78%);
+  border-radius: 5px;
+  height: 40px;
+  width: 230px;
+  bottom: 50px;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* .file_input input:hover::before {
+  color: ;
+} */
+
+.file_input input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}

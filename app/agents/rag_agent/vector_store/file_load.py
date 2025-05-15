@@ -95,3 +95,8 @@ def load_pdf(file_path, index_name, chunk_size=500, chunk_overlap=20, start_page
         print(f"Error while loading file: {e}")
         return None
 
+
+file_path = "D:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\problem\Future Minds Problem Statement.pdf"
+index_name = "number 2"
+start_page = 10
+load_pdf(file_path,index_name,start_page=start_page)

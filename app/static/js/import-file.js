@@ -24,7 +24,8 @@ input.addEventListener('change' ,() => {
         return;
     }
     
-    fallBackDisplay.classList.remove('visible')
+    fallBackDisplay.textContent=" ✔ File added successfully"
+    fallBackDisplay.classList.add('visible')
     display.textContent = file.name;
     display.title = file.name;
 })

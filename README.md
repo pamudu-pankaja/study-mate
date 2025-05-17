@@ -94,3 +94,4 @@ Feel free to open issues or pull requests if you find bugs or want to improve an
 ## 📜 License 
 
 This project is under the MIT License.
+

@@ -1,7 +1,7 @@
-from app.agents import ChatBotAgent
-from app.agents import RAGAgent  
+
 
 def ask_question():
+    from app.agents import ChatBotAgent
     while True:
         print("\n=== Ask a Question ===")
         print("1. Use Vector Search")
@@ -38,14 +38,11 @@ def ask_question():
             else:
                 print("Invalid choice")
 
-            next_action = input("\nAsk another question? (y/n): ")
-            if next_action.lower() != "y":
-                break
-
 def add_file_flow():
+    from app.agents import RAGAgent  
     print("\n=== Add File to Index ===")
     index_name = input("Enter index name: ")
-    file_path = input("Enter file path: ")
+    file_path = input("Enter file path (reccomend:under 1mb): ")
     start_page = int(input("Enter logical start page: "))
     
     RAGAgent.import_file(file_path, index_name, start_page)
@@ -58,7 +55,7 @@ def add_file_flow():
         choice = input("Choose an option (1-3): ")
 
         if choice == "1":
-            file_path = input("Enter file path: ")
+            file_path = input("Enter file path (reccomend:under 1mb): ")
             RAGAgent.import_file(file_path, index_name, start_page)
             print("File added to the existing index.")
         elif choice == "2":

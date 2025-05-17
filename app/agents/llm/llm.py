@@ -4,43 +4,50 @@ from app.config.config import GOOGLE_API_KEY
 
 client = genai.Client(api_key=GOOGLE_API_KEY)
 
+chat_history = []
+
 class GeminiLLM():
 
     @staticmethod 
-    def get_response( query , context = None):
-        prompt=query if not context else f"""You are a helpful assistant extracting answers from historical documents.
+    def get_response( prompt,query):
 
-                        Use the provided context (retrieved via a vector search or a web search) to answer the user query and Respond in the user's expected language and translate only if needed.
-                        If no context is given, use your own knowledge to answer the question clearly.
+        contents =[]
 
-                        Follow this exact format for the response:
+        if len(chat_history) > 2:
+            older_history = chat_history[:-2]
+            recent_history = chat_history[-2:]
 
-                        Answer: A short, direct answer to the question. Focus only on what's asked.
+            history_text = "\n".join([msg["role"] + " : " + msg["content"] for msg in older_history ])
+            from app.agents.chat_bot_agent.tools.summarizer import Summarizer
+            summary = Summarizer.get_summerize_text(history_text)
 
-                        Context:
-                        - If context is provided: Copy **directly relevant** sentence(s) from the context and summarize. No extra explanation.  
-                        - If no context is provided: Write “No external context was provided, so this answer is based on general historical knowledge.”
+            contents.append({"role": "user", "parts": [{"text": f"Summary of previous conversation: {summary}"}]})
 
-                        Pages and Sections: Format it exactly like this, using bullet points
-                        - Pages: Use page numbers if given, else guess logically based on context (e.g., "Page 44",)
-                        - Sections: Use the section title from the text if visible  (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution"," Impact on the Society") Use only 2-4 words else What might be the section for the context depending on the examples 
-                        - If not available, write: *Not specified*
+            for msg in recent_history:
+                contents.append({"role":msg["role"] , "parts":[{"text": msg["content"]}]})
+        else:
+            for msg in chat_history:
+                contents.append({"role":msg["role"] , "parts":[{"text": msg["content"]}]})
 
-                        Context:
-                        {context} 
-
-                        User Query: {query}
-                        """
-
+        contents.append({'role' : "user", "parts":[{"text" : prompt}]})
         try:
             response = client.models.generate_content(
                 model="gemini-1.5-flash",
-                contents=[{"role": "user", "parts": [{"text": prompt}]}],
+                contents=contents,
                 config=types.GenerateContentConfig(
                     system_instruction=("You are an AI assistant that helps users learn from textbooks and reliable web sources. When using online information, Keep answers short , concise and aligned with model answers. Match their key terms, phrasing, and structure exactly when available (e.g., 'It failed because...'). Avoid extra background, summaries, or phrases like 'consult the textbook' unless asked. Clearly state the purpose and result in cause-effect questions. If a question is unclear or broad, ask for clarification.")
                 )
             )
-            return response.candidates[0].content.parts[0].text
+
+            full_response = response.candidates[0].content.parts[0].text
+
+            answer_only = full_response.split("Context:")[0].replace("Answer:", "").strip()
+
+            chat_history.append({"role": "model", "content": answer_only})
+            chat_history.append({"role": "model", "content": query})
+
+
+            return full_response
         except Exception as e:
              return f"LLM Error : {e}"
              

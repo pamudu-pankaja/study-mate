@@ -28,7 +28,7 @@ class pinecone_db():
                 return f"Error while requasting : {e}"
     @staticmethod    
     def upsert(data,index_name):
-        from agents.rag_agent.vector_store.embedder import Embedding
+        from app.agents.rag_agent.vector_store.embedder import Embedding
 
         try:
             data = [d for d in data if isinstance(d, dict) and 'text' in d and 'id' in d]

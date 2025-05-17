@@ -11,7 +11,7 @@ def search(query,index_name):
 
     results = index.query(
         vector=query_vector ,
-        top_k= 4,
+        top_k= 5,
         include_metadata=True,
         include_values=False
     )
@@ -22,7 +22,7 @@ def search(query,index_name):
         data.append({
             "text": match['metadata'].get("text", ""),
             "page": match['metadata'].get("page", "unknown"),
-            # "section": match['metadata'].get("section", "unknown")
+            "section": match['metadata'].get("section", "unknown")
         })
         
     return data

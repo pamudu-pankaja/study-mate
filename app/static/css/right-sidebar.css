@@ -38,7 +38,6 @@
     height: 32px;
     background: flex;
     top: 12px;
-    bottom: 500px;
 }
 
 .sidebar-content div{
@@ -138,7 +137,7 @@
   display: inline-block;
   position: relative;
   /* overflow: hidden; */
-  top: -20px;
+  top: -35px;
 }
 
 .file_input i {
@@ -211,7 +210,40 @@
   align-items: center;
   width: 100%;
   gap: 8px;
+}
 
+.tooltip-wrapper a{
+  color: unset;
+}
+
+.file_input .tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  align-items: left;
+}
+
+.file_input .tooltip-text {
+  visibility: hidden;
+  display: flow;
+  width: 220px;
+  height: 80px;
+  background-color: hsl(0, 0%, 13%);
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  top: -10px;
+  left: 110%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 13px;
+}
+
+.file_input .tooltip-wrapper:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 .file_input .info-icon{
@@ -256,12 +288,13 @@
   color: #DADADA;
   background-color:transparent;
   border: 1px solid #555555;
-  top: -13px;
+  top: -21px;
   width: 230px;
   border-radius: 8px;
   height: 35px;
   font-size: 14.5px;
   cursor: pointer;
+  margin-bottom: 50px;
 }
 
 .file_input button:hover{
@@ -272,4 +305,24 @@
   top: 3px;
   text-align: center;
   font-size: 14px;
+
+}
+
+/* current info  */
+
+.sidebar-content .current-info-container {
+  position: absolute;
+  bottom: 1px;
+  left: 10px;
+  right: 10px;
+  font-size: 14px;
+  padding: 8px;
+  background-color: hsl(0, 0%, 10%);
+  border-radius: 8px;
+  color: hsl(0, 0%, 80%);
+  opacity: 0.9;
+}
+
+#current-index,#start-page{
+  text-align: center;
 }

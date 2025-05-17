@@ -107,7 +107,7 @@
 	</div>
 
 	
-	<div class="  box right-sidebar " id="rightSidebar">
+	<div class=" box right-sidebar " id="rightSidebar">
 		<div class="top">
 			<span id="data_base_span">Data Base Information</span>
 		</div>
@@ -129,9 +129,14 @@
 				<input type="file" id="file_input" accept=".pdf" >
 
 				<div class="starting-page">
-					<a>
-						<i class="fa fa-info-circle  info-icon" title="If the book you are choosing has any credits in the front pages please set the page you would like to start counting. CLICK FOR MORE DETAILS" ></i>
-					</a>					
+					<div class="tooltip-wrapper">
+						<a href="index.html" target="_blank">
+							<i class="fa fa-info-circle  info-icon"  ></i>
+						</a>						
+						<span class="tooltip-text">
+							If the book you are choosing has any credits in the front pages please set the page you would like to start counting, else keep it as zero.     CLICK for more DETAILS
+						</span>
+					</div>					
 					<input value="0" autocomplete="on" spellcheck="false" type="number" placeholder="Which page to start counting" id="starting-page" >					
 				</div>				
 				<br>
@@ -140,6 +145,13 @@
 				</button>
 				
 				<div id="file-fallback-message" class="error"></div>
+			</div>
+
+			<div class="current-info-container">
+				<div id="current-status-div" style="margin-bottom: 10px; font-size: 15px;">Current Status</div>
+				<div id="current-index">Index: Not set</div>
+				<div id="start-page">Start Page: Not set</div>
+
 			</div>
 						
 		</div>
@@ -152,8 +164,6 @@
 	<div class="menu-button menu-button-1">
 		<i class="fa-solid fa-bars"></i>
 	</div>
-	
-
 	
 
 	<!-- Scripts -->

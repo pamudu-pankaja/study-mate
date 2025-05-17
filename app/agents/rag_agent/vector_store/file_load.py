@@ -119,12 +119,4 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
         print(f"Error while loading file: {e}")
         return None
 
-    
-# file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/data/3_grade-11-history-text-book.pdf"
-# start_page=11
-# index_name="history_text_5"
 
-# result = load_pdf(file_path,index_name=index_name)
-
-# for d in result:
-#     print(d.get("section"))

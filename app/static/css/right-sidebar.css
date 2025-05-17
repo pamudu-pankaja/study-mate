@@ -40,6 +40,13 @@
     top: 12px;
 }
 
+/* Other things which I have no idea why i did  */
+
+.sidebar-content{
+  position: relative;
+  height: 100%;
+}
+
 .sidebar-content div{
   display: block;
   text-align: center;
@@ -294,7 +301,7 @@
   height: 35px;
   font-size: 14.5px;
   cursor: pointer;
-  margin-bottom: 50px;
+
 }
 
 .file_input button:hover{
@@ -310,9 +317,9 @@
 
 /* current info  */
 
-.sidebar-content .current-info-container {
+.current-info-container {
   position: absolute;
-  bottom: 1px;
+  bottom: 50px;
   left: 10px;
   right: 10px;
   font-size: 14px;
@@ -321,8 +328,4 @@
   border-radius: 8px;
   color: hsl(0, 0%, 80%);
   opacity: 0.9;
-}
-
-#current-index,#start-page{
-  text-align: center;
 }

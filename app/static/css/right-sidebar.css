@@ -320,12 +320,77 @@
 .current-info-container {
   position: absolute;
   bottom: 50px;
+  width: 220px;
+  max-width: 220px;
+  max-height: 79px;
   left: 10px;
   right: 10px;
   font-size: 14px;
   padding: 8px;
-  background-color: hsl(0, 0%, 10%);
+  background-color: hsl(0, 0%, 11%);
   border-radius: 8px;
   color: hsl(0, 0%, 80%);
   opacity: 0.9;
+
+}
+
+#current-index,#starting-page{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#messages{
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.message pre{
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 15px;
+  line-height: 1.4;
+  font-family: 'Inter', system-ui, sans-serif;
+  text-align: left;
+}
+
+.message p{
+  font-size: 15px;
+  line-height: 1.4;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.message.user{
+  display: flex;
+  align-items: flex-start;
+  margin: 10px 0;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: -3px;
+}
+
+.message.user .avatar-container{
+  margin-right: 5px;
+  order: 2;
+  margin-left: 10px;
+}
+
+.message.user .content{
+  margin-left: auto;
+  order: 1;
+  background-color: hsl(0, 0%, 20%);
+  padding: 10px;
+  border-radius: 18px;
+  text-align: right;
+  max-width: 80%;
+  width: fit-content;
+  word-break: break-word;
+}
+
+
+.message.chat-bot .content{
+  margin-left: 10px;
+  width: 100%;
+  
 }

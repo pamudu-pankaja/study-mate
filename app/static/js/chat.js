@@ -10,8 +10,8 @@ const box_conversations = document.querySelector(`.top`);
 const spinner = box_conversations.querySelector(".spinner");
 const stop_generating = document.querySelector(`.stop-generating`);
 const send_button = document.querySelector(`#send-button`);
-const user_image = `<img src="${url_prefix}app/client/img/user.png" alt="User Avatar">`;
-const gpt_image = `<img src="${url_prefix}app/client/img/book.png" alt="Book Avatar">`;
+const user_image = `<img src="${url_prefix}app/static/img/user.png" alt="User Avatar">`;
+const gpt_image = `<img src="${url_prefix}app/static/img/book.png" alt="Book Avatar">`;
 let prompt_lock = false;
 
 hljs.addPlugin(new CopyButtonPlugin());
@@ -77,7 +77,7 @@ const ask_gpt = async (message) => {
 		window.scrollTo(0, 0);
 
 		message_box.innerHTML += `
-            <div class="message">
+            <div class="message chat-bot">
                 <div class="avatar-container">
                     ${gpt_image}
                 </div>
@@ -190,7 +190,7 @@ const ask_gpt = async (message) => {
 };
 
 const add_user_message_box = (message) => {
-	const messageDiv = createElement("div", { classNames: ["message"] });
+	const messageDiv = createElement("div", { classNames: ["message","user"] });
 	const avatarContainer = createElement("div", { classNames: ["avatar-container"], innerHTML: user_image });
 	const contentDiv = createElement("div", {
 		classNames: ["content"],
@@ -283,7 +283,7 @@ const load_conversation = async (conversation_id) => {
 };
 
 const load_user_message_box = (content) => {
-	const messageDiv = createElement("div", { classNames: ["message"] });
+	const messageDiv = createElement("div", { classNames: ["message","user"] });
 	const avatarContainer = createElement("div", { classNames: ["avatar-container"], innerHTML: user_image });
 	const contentDiv = createElement("div", { classNames: ["content"] });
 	const preElement = document.createElement("pre");
@@ -297,7 +297,7 @@ const load_user_message_box = (content) => {
 
 const load_gpt_message_box = (content) => {
 	return `
-            <div class="message">
+            <div class="message chat-bot">
                 <div class="avatar-container">
                     ${gpt_image}
                 </div>

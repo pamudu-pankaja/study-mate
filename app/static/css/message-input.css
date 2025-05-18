@@ -1,23 +1,51 @@
 #message-input {
-	margin-right: 30px;
+	/* margin-right: 30px; */
 	height: 64px;
+	padding-right: 33px;
 }
 
 #message-input::-webkit-scrollbar {
 	width: 5px;
+	
 }
 
 #message-input::-webkit-scrollbar-track {
-	background: #f1f1f1;
+	background: transparent;
 }
 
 #message-input::-webkit-scrollbar-thumb {
-	background: #c7a2ff;
+	background: #585858;
+	border-radius: 5px;
+	margin-left: 10px;
 }
 
-#message-input::-webkit-scrollbar-thumb:hover {
+/* #message-input::-webkit-scrollbar-thumb:hover {
 	background: #8b3dff;
+} */
+
+/* .input-box {
+	display: flex;
+	flex-direction: column; 
 }
+
+#message-input {
+	width: 100%;
+	resize: vertical;
+	box-sizing: border-box;
+}
+
+#send-button {
+	margin-top: 8px; 
+	align-self: flex-end; 
+	cursor: pointer;
+} */
+
+#send-button{
+	background-color: transparent;
+	margin-right: -5px;
+}
+
+
 
 @media screen and (max-width: 360px) {
 	#message-input {

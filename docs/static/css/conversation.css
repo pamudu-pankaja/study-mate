@@ -84,6 +84,38 @@
 	height: 15px;
 }
 
+/* Extra */
+
+.hide{
+	display: none;
+	width: 0px;
+	height: 0px;
+	transition: display 0.3s ease-out;
+}
+
+#welcome-msg{
+	font-family: Helvetica;
+	font-size: 25px;
+	text-align: center;
+	margin-top: 20%;
+	transition: text-shadow 0.3s ease ;	
+}
+
+#welcome-msg {
+	background: linear-gradient(90deg, #00dbde, #fc00ff);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	transition: 0.4s ease;
+}
+
+#welcome-msg:hover {
+	text-shadow: 0 0 6px rgba(0, 200, 180, 0.3), 0 0 12px rgba(120, 0, 200, 0.2);
+	transform: translateY(-2px);
+	cursor: default;
+	transition: all 0.3s ease;
+}
+
 @keyframes blink {
 	0% {
 		background: #ffffff00;

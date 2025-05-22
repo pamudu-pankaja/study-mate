@@ -1,7 +1,7 @@
 #message-input {
-	/* margin-right: 30px; */
 	height: 64px;
-	padding-right: 33px;
+	padding-right: 10px;
+	width: 95%;
 }
 
 #message-input::-webkit-scrollbar {
@@ -10,39 +10,24 @@
 }
 
 #message-input::-webkit-scrollbar-track {
-	background: transparent;
+	background: #181818;
 }
 
 #message-input::-webkit-scrollbar-thumb {
 	background: #585858;
 	border-radius: 5px;
-	margin-left: 10px;
 }
 
-/* #message-input::-webkit-scrollbar-thumb:hover {
-	background: #8b3dff;
-} */
 
-/* .input-box {
-	display: flex;
-	flex-direction: column; 
+.input-box {
+	position: relative;
 }
-
-#message-input {
-	width: 100%;
-	resize: vertical;
-	box-sizing: border-box;
-}
-
-#send-button {
-	margin-top: 8px; 
-	align-self: flex-end; 
-	cursor: pointer;
-} */
 
 #send-button{
+	position: absolute;
 	background-color: transparent;
-	margin-right: -5px;
+	right: 0px;
+	bottom: 25px;
 }
 
 

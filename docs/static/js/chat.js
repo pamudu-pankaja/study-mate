@@ -10,8 +10,9 @@ const box_conversations = document.querySelector(`.top`);
 const spinner = box_conversations.querySelector(".spinner");
 const stop_generating = document.querySelector(`.stop-generating`);
 const send_button = document.querySelector(`#send-button`);
-const user_image = `<img src="${url_prefix}docs/static/img/user.png" alt="User Avatar">`;
-const gpt_image = `<img src="${url_prefix}docs/static/img/book.png" alt="Book Avatar">`;
+const welcome_msg = document.getElementById("welcome-msg")
+const user_image = `<img src="${url_prefix}app/static/img/user.png" alt="User Avatar">`;
+const gpt_image = `<img src="${url_prefix}app/static/img/book.png" alt="Book Avatar">`;
 let prompt_lock = false;
 
 hljs.addPlugin(new CopyButtonPlugin());
@@ -38,6 +39,7 @@ const handle_ask = async () => {
 		message_input.value = ``;
 		message_input.dispatchEvent(new Event("input"));
 		console.log("Users message : ",message)
+		welcome_msg.classList.add("hide")
 		await ask_gpt(message);
 	}
 };
@@ -189,6 +191,8 @@ const ask_gpt = async (message) => {
 	}
 };
 
+
+
 const add_user_message_box = (message) => {
 	const messageDiv = createElement("div", { classNames: ["message","user"] });
 	const avatarContainer = createElement("div", { classNames: ["avatar-container"], innerHTML: user_image });
@@ -223,11 +227,17 @@ const clear_conversations = async () => {
 };
 
 const clear_conversation = async () => {
-	let messages = message_box.getElementsByTagName(`div`);
+  // Get all message divs except welcome message
+  let messages = Array.from(message_box.children).filter(
+    el => el.id !== 'welcome-msg'
+  );
 
-	while (messages.length > 0) {
-		message_box.removeChild(messages[0]);
-	}
+  for (let msg of messages) {
+    message_box.removeChild(msg);
+  }
+
+  // Show welcome message again when conversation cleared
+  document.getElementById('welcome-msg').classList.remove('hide');
 };
 
 const delete_conversation = async (conversation_id) => {
@@ -242,7 +252,7 @@ const delete_conversation = async (conversation_id) => {
 
 const set_conversation = async (conversation_id) => {
 	// history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
-	history.pushState({}, '','index.html' )
+	history.pushState({}, '','static_index.html' )
 	window.conversation_id = conversation_id;
 
 	await clear_conversation();
@@ -252,34 +262,37 @@ const set_conversation = async (conversation_id) => {
 
 const new_conversation = async () => {
 	// history.pushState({}, null, `${url_prefix}/chat/`);
-	history.pushState({}, '','index.html' )
+	history.pushState({}, '','static_index.html' )
 	window.conversation_id = uuid();
-
+	
 	await clear_conversation();
 	await load_conversations(20, 0, true);
+	
 };
 
 const load_conversation = async (conversation_id) => {
-	let conversation = await JSON.parse(localStorage.getItem(`conversation:${conversation_id}`));
-	console.log(conversation, conversation_id);
+  document.getElementById('welcome-msg').classList.add('hide');
 
-	for (item of conversation.items) {
-		if (is_assistant(item.role)) {
-			message_box.innerHTML += load_gpt_message_box(item.content);
-		} else {
-			message_box.innerHTML += load_user_message_box(item.content);
-		}
-	}
+  let conversation = await JSON.parse(localStorage.getItem(`conversation:${conversation_id}`));
+  console.log(conversation, conversation_id);
 
-	document.querySelectorAll(`code`).forEach((el) => {
-		hljs.highlightElement(el);
-	});
+  for (item of conversation.items) {
+    if (is_assistant(item.role)) {
+      message_box.innerHTML += load_gpt_message_box(item.content);
+    } else {
+      message_box.innerHTML += load_user_message_box(item.content);
+    }
+  }
 
-	message_box.scrollTo({ top: message_box.scrollHeight, behavior: "smooth" });
+  document.querySelectorAll(`code`).forEach((el) => {
+    hljs.highlightElement(el);
+  });
 
-	setTimeout(() => {
-		message_box.scrollTop = message_box.scrollHeight;
-	}, 500);
+  message_box.scrollTo({ top: message_box.scrollHeight, behavior: "smooth" });
+
+  setTimeout(() => {
+    message_box.scrollTop = message_box.scrollHeight;
+  }, 500);
 };
 
 const load_user_message_box = (content) => {

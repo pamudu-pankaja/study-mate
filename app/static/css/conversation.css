@@ -168,6 +168,11 @@
 		width: 100%;
 		height: 90%;
 	}
+
+	#welcome-msg{
+		margin-top: 200px;
+		font-size: 21px;
+	}
 }
 
 @media screen and (max-height: 720px) {
@@ -178,6 +183,7 @@
 	.conversation .user-input textarea {
 		font-size: 0.875rem;
 	}
+
 }
 
 @media screen and (max-width: 360px) {
@@ -191,4 +197,5 @@
 	.conversation .user-input {
 		margin: 2px 0 8px 0;
 	}
+	
 }

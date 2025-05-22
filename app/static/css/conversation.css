@@ -93,6 +93,10 @@
 	transition: display 0.3s ease-out;
 }
 
+/* .show{
+	display: block;
+} */
+
 #welcome-msg{
 	font-family: Helvetica;
 	font-size: 25px;

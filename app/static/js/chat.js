@@ -33,13 +33,15 @@ const delete_conversations = async () => {
 const handle_ask = async () => {
 	message_input.style.height = `80px`;
 	window.scrollTo(0, 0);
-	let message = message_input.value;
+	let message = message_input.value;	
 
 	if (message.length > 0) {
+		document.getElementById("welcome-msg").classList.add("hide")
+
 		message_input.value = ``;
 		message_input.dispatchEvent(new Event("input"));
 		console.log("Users message : ",message)
-		welcome_msg.classList.add("hide")
+		
 		await ask_gpt(message);
 	}
 };
@@ -227,17 +229,15 @@ const clear_conversations = async () => {
 };
 
 const clear_conversation = async () => {
-  // Get all message divs except welcome message
-  let messages = Array.from(message_box.children).filter(
-    el => el.id !== 'welcome-msg'
-  );
+	let messages = Array.from(message_box.children).filter(
+		el => el.id !== 'welcome-msg'
+	);
 
-  for (let msg of messages) {
-    message_box.removeChild(msg);
-  }
-
-  // Show welcome message again when conversation cleared
-  document.getElementById('welcome-msg').classList.remove('hide');
+	for (let msg of messages) {
+		message_box.removeChild(msg);
+	}
+	welcome_msg.classList.remove('hide');
+	
 };
 
 const delete_conversation = async (conversation_id) => {
@@ -254,7 +254,8 @@ const set_conversation = async (conversation_id) => {
 	// history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
 	history.pushState({}, '','static_index.html' )
 	window.conversation_id = conversation_id;
-
+	
+	welcome_msg.classList.add('hide');
 	await clear_conversation();
 	await load_conversation(conversation_id);
 	await load_conversations(20, 0, true);
@@ -265,34 +266,37 @@ const new_conversation = async () => {
 	history.pushState({}, '','static_index.html' )
 	window.conversation_id = uuid();
 	
+
 	await clear_conversation();
 	await load_conversations(20, 0, true);
-	
+	document.getElementById('welcome-msg').classList.remove('hide');
+
+	console.log("convo done")	
 };
 
 const load_conversation = async (conversation_id) => {
-  document.getElementById('welcome-msg').classList.add('hide');
+	document.getElementById('welcome-msg').classList.add('hide');
 
-  let conversation = await JSON.parse(localStorage.getItem(`conversation:${conversation_id}`));
-  console.log(conversation, conversation_id);
+	let conversation = await JSON.parse(localStorage.getItem(`conversation:${conversation_id}`));
+	console.log(conversation, conversation_id);
 
-  for (item of conversation.items) {
-    if (is_assistant(item.role)) {
-      message_box.innerHTML += load_gpt_message_box(item.content);
-    } else {
-      message_box.innerHTML += load_user_message_box(item.content);
-    }
-  }
+	for (item of conversation.items) {
+		if (is_assistant(item.role)) {
+		message_box.innerHTML += load_gpt_message_box(item.content);
+		} else {
+		message_box.innerHTML += load_user_message_box(item.content);
+		}
+	}
 
-  document.querySelectorAll(`code`).forEach((el) => {
-    hljs.highlightElement(el);
-  });
+	document.querySelectorAll(`code`).forEach((el) => {
+		hljs.highlightElement(el);
+	});
 
-  message_box.scrollTo({ top: message_box.scrollHeight, behavior: "smooth" });
+	message_box.scrollTo({ top: message_box.scrollHeight, behavior: "smooth" });
 
-  setTimeout(() => {
-    message_box.scrollTop = message_box.scrollHeight;
-  }, 500);
+	setTimeout(() => {
+		message_box.scrollTop = message_box.scrollHeight;
+	}, 500);
 };
 
 const load_user_message_box = (content) => {
@@ -357,7 +361,6 @@ const add_message = async (conversation_id, role, content) => {
 const load_conversations = async (limit, offset, loader) => {
 	//console.log(loader);
 	//if (loader === undefined) box_conversations.appendChild(spinner);
-
 	let conversations = [];
 	for (let i = 0; i < localStorage.length; i++) {
 		if (localStorage.key(i).startsWith("conversation:")) {

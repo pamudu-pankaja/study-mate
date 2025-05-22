@@ -26,6 +26,6 @@ input.addEventListener('change' ,() => {
     
     fallBackDisplay.textContent=" ✔ File added successfully"
     fallBackDisplay.classList.add('visible')
-    display.textContent = file.name;
+    display.textContent = ` ${file.name} `;
     display.title = file.name;
 })

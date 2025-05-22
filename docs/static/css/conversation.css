@@ -93,6 +93,10 @@
 	transition: display 0.3s ease-out;
 }
 
+/* .show{
+	display: block;
+} */
+
 #welcome-msg{
 	font-family: Helvetica;
 	font-size: 25px;
@@ -155,7 +159,7 @@
 }
 
 .conversation #messages::-webkit-scrollbar-thumb {
-	background-color: #555555;
+	background-color: var(--conversations); 
 	border-radius: 10px;
 }
 

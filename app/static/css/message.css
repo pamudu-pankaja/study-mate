@@ -86,7 +86,7 @@
 .message.user .content{
   margin-left: auto;
   order: 1;
-  background-color: hsl(0, 0%, 20%);
+  background-color: var(--user-msg-bg);
   padding: 10px;
   border-radius: 18px;
   text-align: right;

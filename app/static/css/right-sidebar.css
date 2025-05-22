@@ -4,14 +4,17 @@
   right: 0;
   width: 264px;
   height: 100%;
-  background-color: hsl(0, 0%, 12%);
+  background-color: var(--right-sidebar);
   z-index: 999;
   padding: 1rem;
-  box-shadow: -2px 0 5px hsla(0, 0%, 0%, 0.5);
+  box-shadow: -2px 0 5px var(--box-shadow);
   transition: transform 0.3s ease;
-  border-top-left-radius: 40px;
-  border-bottom-left-radius: 40px;
-  border-color: hsl(0, 0%, 16%);
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  /* border-color: hsl(0, 0%, 16%); */
+  border-color: var(--blur-border);
 }
 
 .hidden {
@@ -30,7 +33,7 @@
 /* Main Span */
 
 #data_base_span{
-    color: hsl(0, 0%, 85%);
+    color: var(--colour-3);
     margin-top: 5px;
     padding: 5px;
     border-radius: 8px;
@@ -56,13 +59,13 @@
 .sidebar-content span{
   text-align: left;
   display: flow;
-  color: hsl(0, 0%, 79%);
-  background-color: hsl(0, 0%, 12%);
+  color: var(--colour-3);
+  background-color: var(--right-sidebar);
   top: 55px;
   bottom: 15px;
   font-family: sans-serif;
   font-size: 15px;
-  border: 0px solid #555555;
+  border: 0px solid var(--conversations);
   border-radius: 8px;
   padding: 5px;
 }
@@ -76,9 +79,10 @@
 .sidebar-content #index{
   font-size: 15px;
   text-align: center;
-  background-color: hsl(200, 4%, 17%);
-  color: #DADADA;
-  border: 0px solid #000;
+  /* background-color: #2a2c2d; */
+  background-color: var(--blur-bg);
+  color: var(--colour-3);
+  border: 1px solid var(--blur-border);
   border-radius: 5px;
   height: 40px;
   width: 230px;
@@ -87,16 +91,16 @@
 }
 
 .sidebar-content #index:-webkit-autofill {
-  background-color: hsl(200, 4%, 17%) !important; 
-  -webkit-box-shadow: 0 0 0 1000px hsl(200, 4%, 17%) inset !important;
-  -webkit-text-fill-color: #DADADA !important; 
+  background-color: var(--blur-bg) !important; 
+  -webkit-box-shadow: 0 0 0 1000px var(--blur-bg) inset !important;
+  -webkit-text-fill-color: var(--colour-3) !important; 
   transition: background-color 9999s ease-in-out 0s;
-  color: #DADADA !important;
-  caret-color: #DADADA;
+  color: var(--colour-3) !important;
+  caret-color: var(--colour-3);
 }
 
 .sidebar-content #index:-webkit-autofill:focus::after{
-  -webkit-text-fill-color: #DADADA;
+  -webkit-text-fill-color: var(--colour-3);
 }
 
 .sidebar-content input::placeholder{
@@ -110,9 +114,9 @@
 #submit_btn {
   display: flow;
   padding: 8px 12px;
-  color: #DADADA;
+  color: var(--colour-3);
   background-color:transparent;
-  border: 1px solid #555555;
+  border: 1px solid var(--conversations);
   top: 76px;
   width: 230px;
   border-radius: 8px;
@@ -122,11 +126,7 @@
 }
 
 #submit_btn:hover{
-  background-color:hsl(0, 0%, 11%);
-}
-
-.fallback-icon{
-  background-color: red;
+  background-color: color-mix(in srgb, var(--right-sidebar) 95%, black)
 }
 
 .index #index-fallback-message{
@@ -156,8 +156,8 @@
   top: 44px;
   font-size: 14px;
   text-align: center;
-  background-color: hsl(200, 4%, 17%);
-  color: #CACACA;
+  background-color: transparent;
+  color: var(--colour-3);
   border: 0px solid #000;
   border-radius: 5px;
   height: 32px;
@@ -190,8 +190,8 @@
   justify-content: center;
   font-size: 15px;
   text-align: center;
-  background-color: hsl(200, 4%, 14.5%);
-  color: hsl(0, 0%, 75%);
+  background-color: var(--blur-bg);
+  color: var(--colour-3);
   border-radius: 5px;
   height: 40px;
   width: 230px;
@@ -233,8 +233,8 @@
   visibility: hidden;
   display: flow;
   width: 220px;
-  height: 80px;
-  background-color: hsl(0, 0%, 13%);
+  height: 100px;
+  background-color: var(--colour-6);
   color: #fff;
   text-align: left;
   border-radius: 6px;
@@ -263,9 +263,9 @@
 
 #starting-page{
   font-size: 15px;
-  background-color: hsl(200, 4%, 17%);
-  color: #DADADA;
-  border: 0px solid #000;
+  background-color: var(--blur-bg);
+  color: var(--colour-3);
+  border: 1px solid var(--blur-border);
   border-radius: 5px;
   height: 40px;
   width: 200px;
@@ -275,7 +275,7 @@
 }
 
 #starting-page::placeholder{
-  font-size: 14px;
+  font-size: 13px;
 }
 
 #starting-page::-webkit-outer-spin-button,
@@ -292,9 +292,9 @@
 .file_input button{
   position: relative;
   padding: 8px 12px;
-  color: #DADADA;
+  color: var(--colour-3);
   background-color:transparent;
-  border: 1px solid #555555;
+  border: 1px solid var(--conversations);
   top: -21px;
   width: 230px;
   border-radius: 8px;
@@ -305,7 +305,7 @@
 }
 
 .file_input button:hover{
-  background-color:hsl(0, 0%, 11%);
+  background-color: color-mix(in srgb, var(--right-sidebar) 95%, black)
 }
 
 .file_input #file-fallback-message{
@@ -327,9 +327,10 @@
   right: 10px;
   font-size: 14px;
   padding: 8px;
-  background-color: hsl(0, 0%, 11%);
+  background-color: var(--blur-bg);
+  border: 1px solid var(--conversations);
   border-radius: 8px;
-  color: hsl(0, 0%, 80%);
+  color: var(--colour-3);
   opacity: 0.9;
 
 }

@@ -2,6 +2,7 @@
 	height: 64px;
 	padding-right: 10px;
 	width: 95%;
+	padding-top: 1px;
 }
 
 #message-input::-webkit-scrollbar {
@@ -10,7 +11,7 @@
 }
 
 #message-input::-webkit-scrollbar-track {
-	background: #181818;
+	background: var(--blur-bg);
 }
 
 #message-input::-webkit-scrollbar-thumb {

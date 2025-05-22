@@ -140,7 +140,6 @@
 	right: 20px;
 	padding: 10px;
 	z-index: 1000;
-	color: white;
 	border: none;
 	cursor: pointer;
 	border-radius: 5px;
@@ -164,7 +163,7 @@
 }
 
 .menu-button:hover{
-	background-color: hsl(0, 0%, 23%);
+	background-color: var(--hover)
 }
 
 .menu-button i {
@@ -188,9 +187,9 @@
 	top: 18px;
 }
 
-.menu-button.rotated:hover{
+/* .menu-button.rotated:hover{
 	background-color: hsl(0, 0%, 20%);
-}
+} */
 
 .rotated::after.menu-button{
 	background-color: aliceblue;
@@ -208,10 +207,14 @@
 	}
 }
 
-@media (max-width: 990px) {
+@media screen and (max-width: 990px) {
 	.sidebar .top {
 		padding-top: 48px;
 	}
+
+	.menu-button:hover{
+		background-color: transparent;
+}
 }
 
 @media (min-width: 768px) {

@@ -20,7 +20,7 @@
 }
 
 .button:hover{
-	background-color: hsl(0, 0%, 13%);
+	background-color: color-mix(in srgb, var(--right-sidebar) 95%, black)
 }
 
 @media screen and (max-width: 990px) {

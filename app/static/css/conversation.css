@@ -159,7 +159,7 @@
 }
 
 .conversation #messages::-webkit-scrollbar-thumb {
-	background-color: #555555;
+	background-color: var(--conversations); 
 	border-radius: 10px;
 }
 

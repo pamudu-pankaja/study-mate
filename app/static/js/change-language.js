@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', fetchLanguages);
 async function fetchLanguages() {  
     try {  
         const [languagesResponse, currentLanguageResponse] = await Promise.all([  
-            fetch(`${url_prefix}/get-languages`),  
-            fetch(`${url_prefix}/get-locale`)  
+            // fetch(`${url_prefix}/get-languages`),  
+            // fetch(`${url_prefix}/get-locale`)  
         ]);  
   
         const languages = await languagesResponse.json();  

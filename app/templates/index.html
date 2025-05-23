@@ -7,24 +7,23 @@
 	<meta name="description" content="A conversational AI system that listens, learns, and challenges" />
 
 	<meta property="og:title" content="StudyMate" />
-	<meta property="og:image" content="/app/static/img/book.png" />
+	<meta property="og:image" content="{{ url_for('static', filename='img/book.png') }}" />
 	<meta property="og:description" content="A conversational AI system that help users with school works" />
-	<meta property="og:url" content="http://127.0.0.1:5500/app/templates/html/static_index.html" />
+	<meta property="og:url" content="{{request.url}}" />
 
 	<title>StudyMate</title>
 
 	<!-- Styles -->
-	<link rel="stylesheet" href="/app/static/css/style.css" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/app/static/img/apple-touch-icon.png" />
-	<link rel="icon" type="image/png" sizes="32x32" href="/app/static/img/favicon-32x32.png" />
-	<link rel="icon" type="image/png" sizes="16x16" href="/app/static/img/favicon-16x16.png" />
-	<link rel="manifest" href="/app/static/img/site.webmanifest" />
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css" />
-	<!-- <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css" > -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" />
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}" />
+	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}" />
+	<link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}" />
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css" />	<!-- <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css" > -->
 
 </head>
 
-<body data-urlprefix="/">
+<body data-urlprefix="{{ url_prefix }}">
 	<div class="main-container">
 		<div class="box sidebar">
 			<div class="top">
@@ -65,7 +64,7 @@
 			</div>
 
 			<div class="box" id="messages">
-				<div id="welcome-msg" >What do you want to know ?</div>
+				<div id="welcome-msg" style="display: none;" >What do you want to know ?</div>
 			</div>
 
 			<div class="user-input">
@@ -169,18 +168,18 @@
 
 	<!-- Scripts -->
 	<script>
-		window.conversation_id = "static_index.html";
+		window.conversation_id = "{{ chat_id or '' }}";
 	</script>
-	<script src="/app/static/js/icons.js"></script>
-	<script src="/app/static/js/chat.js" defer></script>
-	<script src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"></script>
-	<script src="/app/static/js/highlight.min.js"></script>
-	<script src="/app/static/js/highlightjs-copy.min.js"></script>
-	<script src="/app/static/js/theme-toggler.js"></script>
-	<script src="/app/static/js/sidebar-toggler.js"></script>
-	<script src="/app/static/js/change-language.js"></script>
-	<script src="/app/static/js/toggle-button.js"></script>
-	<script src="/app/static/js/index-name.js"></script>
-	<script src="/app/static/js/import-file.js"></script>
+	<script src="{{ url_for('static', filename='js/icons.js') }}" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js" defer></script>
+	<script src="{{ url_for('static', filename='js/highlight.min.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='js/theme-toggler.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='js/sidebar-toggler.js') }}" defer></script>
+	<!-- <script src="{{ url_for('static', filename='js/change-language.js') }}" defer></script> -->
+	<script src="{{ url_for('static', filename='js/toggle-button.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='js/index-name.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='js/import-file.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
 </body>
 </html>

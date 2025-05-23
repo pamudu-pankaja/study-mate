@@ -11,8 +11,8 @@ const spinner = box_conversations.querySelector(".spinner");
 const stop_generating = document.querySelector(`.stop-generating`);
 const send_button = document.querySelector(`#send-button`);
 const welcome_msg = document.getElementById("welcome-msg")
-const user_image = `<img src="${url_prefix}app/static/img/user.png" alt="User Avatar">`;
-const gpt_image = `<img src="${url_prefix}app/static/img/book.png" alt="Book Avatar">`;
+const user_image = `<img src="${url_prefix}/static/img/user.png" alt="User Avatar">`;
+const gpt_image = `<img src="${url_prefix}/static/img/book.png" alt="Book Avatar">`;
 let prompt_lock = false;
 
 hljs.addPlugin(new CopyButtonPlugin());
@@ -37,6 +37,7 @@ const handle_ask = async () => {
 
 	if (message.length > 0) {
 		document.getElementById("welcome-msg").classList.add("hide")
+		document.getElementById('welcome-msg').style.display = 'none';
 
 		message_input.value = ``;
 		message_input.dispatchEvent(new Event("input"));
@@ -61,12 +62,20 @@ const ask_gpt = async (message) => {
 		message_input.innerHTML = ``;
 		message_input.innerText = ``;
 
+		console.log(conversation_id);
+
+		if (!window.conversation_id) {
+			window.conversation_id = uuid();
+		}
+		console.log(conversation_id);
+
 		add_conversation(window.conversation_id, message.substr(0, 16));
+		console.log("Adding conversation Done")
 		window.scrollTo(0, 0);
 		window.controller = new AbortController();
 
-		jailbreak = document.getElementById("jailbreak");
-		model = document.getElementById("model");
+		// jailbreak = document.getElementById("jailbreak");
+		// model = document.getElementById("model");
 		prompt_lock = true;
 		window.text = ``;
 		window.token = message_id();
@@ -96,7 +105,8 @@ const ask_gpt = async (message) => {
 		await new Promise((r) => setTimeout(r, 1000));
 		window.scrollTo(0, 0);
 
-		const response = await fetch(`${url_prefix}/backend-api/v2/conversation`, {
+
+		const response = await fetch(`${url_prefix}/chat/${window.conversation_id}`, {
 			method: `POST`,
 			signal: window.controller.signal,
 			headers: {
@@ -106,13 +116,13 @@ const ask_gpt = async (message) => {
 			body: JSON.stringify({
 				conversation_id: window.conversation_id,
 				action: `_ask`,
-				model: model.options[model.selectedIndex].value,
-				jailbreak: jailbreak.options[jailbreak.selectedIndex].value,
+				// model: model.options[model.selectedIndex].value,
+				// jailbreak: jailbreak.options[jailbreak.selectedIndex].value,
 				meta: {
 					id: window.token,
 					content: {
 						conversation: await get_conversation(window.conversation_id),
-						internet_access: document.getElementById("switch").checked,
+						// internet_access: document.getElementById("switch").checked,
 						content_type: "text",
 						parts: [
 							{
@@ -133,13 +143,21 @@ const ask_gpt = async (message) => {
 
 			chunk = decodeUnicode(new TextDecoder().decode(value));
 
+			chunk.split("\n").forEach(line => {
+				if (line.startsWith("data: ")) {
+					const cleaned = line.slice(6); // Remove "data: "
+					text += cleaned;
+				}
+			});
+
 			if (
-				chunk.includes(`<form id="challenge-form" action="${url_prefix}/backend-api/v2/conversation?`)
+				// chunk.includes(`<form id="challenge-form" action="${url_prefix}/backend-api/v2/conversation?`)
+				chunk.includes(`<form id="challenge-form" action="${url_prefix}/chat?`)
 			) {
 				chunk = `cloudflare token expired, please refresh the page.`;
 			}
 
-			text += chunk;
+			// text += chunk;
 
 			document.getElementById(`gpt_${window.token}`).innerHTML = markdown.render(text);
 			document.querySelectorAll(`code`).forEach((el) => {
@@ -158,6 +176,8 @@ const ask_gpt = async (message) => {
 
 		add_message(window.conversation_id, "user", message);
 		add_message(window.conversation_id, "assistant", text);
+
+		history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
 
 		message_box.scrollTop = message_box.scrollHeight;
 		await remove_cancel_button();
@@ -184,9 +204,11 @@ const ask_gpt = async (message) => {
 
 			document.getElementById(`gpt_${window.token}`).innerHTML = error_message;
 			add_message(window.conversation_id, "assistant", error_message);
+			history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
 		} else {
 			document.getElementById(`gpt_${window.token}`).innerHTML += ` [aborted]`;
-			add_message(window.conversation_id, "assistant", text + ` [aborted]`);
+			add_message(window.conversation_id, "assistant", text + `[aborted]`);
+			history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
 		}
 
 		window.scrollTo(0, 0);
@@ -251,8 +273,8 @@ const delete_conversation = async (conversation_id) => {
 };
 
 const set_conversation = async (conversation_id) => {
-	// history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
-	history.pushState({}, '','static_index.html' )
+	history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
+	// history.pushState({}, '','static_index.html' )
 	window.conversation_id = conversation_id;
 	
 	welcome_msg.classList.add('hide');
@@ -262,23 +284,34 @@ const set_conversation = async (conversation_id) => {
 };
 
 const new_conversation = async () => {
-	// history.pushState({}, null, `${url_prefix}/chat/`);
-	history.pushState({}, '','static_index.html' )
+	history.pushState({}, null, `${url_prefix}/chat`);
+	// history.pushState({}, '','static_index.html' )
 	window.conversation_id = uuid();
 	
-
 	await clear_conversation();
 	await load_conversations(20, 0, true);
 	document.getElementById('welcome-msg').classList.remove('hide');
-
-	console.log("convo done")	
+	document.getElementById('welcome-msg').style.display = 'unset';
 };
 
 const load_conversation = async (conversation_id) => {
-	document.getElementById('welcome-msg').classList.add('hide');
-
+	
 	let conversation = await JSON.parse(localStorage.getItem(`conversation:${conversation_id}`));
 	console.log(conversation, conversation_id);
+
+	if(!conversation || !conversation.items){
+		document.getElementById('welcome-msg').classList.add('hide');
+		const fallback = document.createElement('p');
+		fallback.textContent = 'No conversation found. Start a new chat!';
+		fallback.style.padding = '1rem';
+		fallback.style.color = '#888';
+		message_box.appendChild(fallback);
+		return;
+	}
+
+	document.getElementById('welcome-msg').classList.add('hide');
+	document.getElementById('welcome-msg').style.display = 'none';
+	
 
 	for (item of conversation.items) {
 		if (is_assistant(item.role)) {
@@ -335,7 +368,7 @@ const get_conversation = async (conversation_id) => {
 };
 
 const add_conversation = async (conversation_id, title) => {
-	if (localStorage.getItem(`conversation:${conversation_id}`) == null) {
+	if (localStorage.getItem(`conversation:${conversation_id}`) == null ) {
 		localStorage.setItem(
 			`conversation:${conversation_id}`,
 			JSON.stringify({
@@ -421,7 +454,7 @@ const message_id = () => {
 };
 
 window.onload = async () => {
-	load_settings_localstorage();
+	// load_settings_localstorage();
 
 	conversations = 0;
 	for (let i = 0; i < localStorage.length; i++) {
@@ -458,8 +491,22 @@ window.onload = async () => {
 		await handle_ask();
 	});
 
-	register_settings_localstorage();
+	// register_settings_localstorage();
 };
+
+window.addEventListener("DOMContentLoaded", () => {
+	const path = window.location.pathname;
+	const uuidRegex = /^\/chat\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+	if (path === `${url_prefix}/chat` || path === `${url_prefix}/`) {
+    	document.getElementById('welcome-msg').style.display="unset";
+  	}
+
+	if (!uuidRegex.test(window.location.pathname)) {
+		document.getElementById('welcome-msg').classList.remove('hide');
+		// document.getElementById('welcome-msg').style.display = 'unset';
+	}
+});
 
 const register_settings_localstorage = async () => {
 	settings_ids = ["switch", "model", "jailbreak"];

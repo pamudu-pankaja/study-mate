@@ -1,7 +1,7 @@
-from app import chatbot
+from app import app
 
 def main():
-    chatbot.main()
+    app.main()
 
 if __name__ == "__main__":
     main()

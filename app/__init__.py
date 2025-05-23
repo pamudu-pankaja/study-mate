@@ -1,3 +1,3 @@
 from .config.config import *
-from app import chatbot
+from app import app
 from app.agents import *

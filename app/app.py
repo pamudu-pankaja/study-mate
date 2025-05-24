@@ -1,50 +1,55 @@
-
-
 def ask_question():
     from app.agents import ChatBotAgent
+
     while True:
         print("\n=== Ask a Question ===")
         print("1. Use Vector Search")
-        print("2. Use Web Search")        
+        print("2. Use Web Search")
         print("3. Use LLM")
         print("4. Previous")
         choice = input("Choose a method (1-4): ")
 
         if choice == "4":
             return
-        
+
         index_name = ""
         while True:
             query = input("Enter your question (q to quit): ")
             if query.lower() == "q":
                 ask_question()
-                break 
-            
+                break
+
             if choice == "2":
-                result = ChatBotAgent.get_response(query,path="web")
+                result = ChatBotAgent.get_response(query, path="web")
                 print("\n--- Web Search Results ---")
                 print(f"\n{result}")
-                
+
             elif choice == "1":
-                get_index_name = input("Enter the index name: ") if index_name == "" else index_name
+                get_index_name = (
+                    input("Enter the index name: ") if index_name == "" else index_name
+                )
                 index_name = get_index_name
-                result = ChatBotAgent.get_response(query,path="vector",index_name=index_name)
+                result = ChatBotAgent.get_response(
+                    query, path="vector", index_name=index_name
+                )
                 print("\n--- Vector Search Results ---")
                 print(f"\n{result}")
             elif choice == "3":
-                result = ChatBotAgent.get_response(query,path=None)
+                result = ChatBotAgent.get_response(query, path=None)
                 print("\n--- LLM Response ---")
                 print(f"\n{result}")
             else:
                 print("Invalid choice")
 
+
 def add_file_flow():
-    from app.agents import RAGAgent  
+    from app.agents import RAGAgent
+
     print("\n=== Add File to Index ===")
     index_name = input("Enter index name: ")
     file_path = input("Enter file path (reccomend:under 1mb): ")
     start_page = int(input("Enter logical start page: "))
-    
+
     RAGAgent.import_file(file_path, index_name, start_page)
     print("File indexed successfully.")
 
@@ -59,12 +64,13 @@ def add_file_flow():
             RAGAgent.import_file(file_path, index_name, start_page)
             print("File added to the existing index.")
         elif choice == "2":
-            add_file_flow() 
+            add_file_flow()
             break
         elif choice == "3":
             return
         else:
             print("Invalid option.")
+
 
 def main():
     while True:
@@ -83,4 +89,3 @@ def main():
             break
         else:
             print("Invalid choice.")
-

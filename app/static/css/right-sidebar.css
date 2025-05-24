@@ -21,49 +21,48 @@
   transform: translateX(100%);
 }
 
-.error{
+.error {
   opacity: 0;
   min-height: 20px;
   margin-bottom: 0px;
 }
 
-.error.visible{
+.error.visible {
   opacity: 1;
   color: red;
 }
 
-.error.success{
+.error.success {
   opacity: 1;
-  color: lime;
+  color: lime !important;
 }
 
 /* Main Span */
 
-#data_base_span{
-    color: var(--colour-3);
-    margin-top: 5px;
-    padding: 5px;
-    border-radius: 8px;
-    padding-right: 5px;
-    height: 32px;
-    background: flex;
-    top: 12px;
+#data_base_span {
+  color: var(--colour-3);
+  margin-top: 5px;
+  padding: 5px;
+  border-radius: 8px;
+  padding-right: 5px;
+  height: 32px;
+  background: flex;
+  top: 12px;
 }
 
 /* Other things which I have no idea why i did  */
 
-.sidebar-content{
+.sidebar-content {
   position: relative;
   height: 100%;
 }
 
-.sidebar-content div{
+.sidebar-content div {
   display: block;
   text-align: center;
-  
 }
 
-.sidebar-content span{
+.sidebar-content span {
   text-align: left;
   display: flow;
   color: var(--colour-3);
@@ -79,11 +78,11 @@
 
 /* Index name input area */
 
-.sidebar-content .index i{
+.sidebar-content .index i {
   font-size: 18px;
 }
 
-.sidebar-content #index{
+.sidebar-content #index {
   font-size: 15px;
   text-align: center;
   /* background-color: #2a2c2d; */
@@ -98,31 +97,31 @@
 }
 
 .sidebar-content #index:-webkit-autofill {
-  background-color: var(--blur-bg) !important; 
+  background-color: var(--blur-bg) !important;
   -webkit-box-shadow: 0 0 0 1000px var(--blur-bg) inset !important;
-  -webkit-text-fill-color: var(--colour-3) !important; 
+  -webkit-text-fill-color: var(--colour-3) !important;
   transition: background-color 9999s ease-in-out 0s;
   color: var(--colour-3) !important;
   caret-color: var(--colour-3);
 }
 
-.sidebar-content #index:-webkit-autofill:focus::after{
+.sidebar-content #index:-webkit-autofill:focus::after {
   -webkit-text-fill-color: var(--colour-3);
 }
 
-.sidebar-content input::placeholder{
+.sidebar-content input::placeholder {
   font-size: 15px;
 }
 
-.sidebar-content input:focus{
+.sidebar-content input:focus {
   outline: none;
 }
 
-#submit_btn {
+#index-name-btn {
   display: flow;
   padding: 8px 12px;
   color: var(--colour-3);
-  background-color:transparent;
+  background-color: transparent;
   border: 1px solid var(--conversations);
   top: 76px;
   width: 230px;
@@ -132,11 +131,11 @@
   cursor: pointer;
 }
 
-#submit_btn:hover{
-  background-color: color-mix(in srgb, var(--right-sidebar) 95%, black)
+#index-name-btn:hover {
+  background-color: color-mix(in srgb, var(--right-sidebar) 95%, black);
 }
 
-.index #index-fallback-message{
+.index #index-fallback-message {
   font-size: 14px;
   top: 83px;
   text-align: center;
@@ -158,7 +157,7 @@
   font-size: 19px;
 }
 
-#file_name{
+#file_name {
   padding: 8px;
   top: 44px;
   font-size: 14px;
@@ -173,10 +172,10 @@
   margin-bottom: 35px;
   text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
-.file_input input{
+.file_input input {
   margin-top: 10px;
   top: 0;
   left: 0;
@@ -184,14 +183,13 @@
   height: 40px;
   color: transparent;
   cursor: pointer;
-  }
+}
 
 .file_input input::-webkit-file-upload-button {
   visibility: hidden;
-  
 }
 .file_input input[type="file"]::before {
-  content: '+ Select a file';
+  content: "+ Select a file";
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,7 +215,7 @@
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 } */
 
-.file_input .starting-page{
+.file_input .starting-page {
   top: 1px;
   display: flex;
   justify-content: flex-end;
@@ -226,7 +224,7 @@
   gap: 8px;
 }
 
-.tooltip-wrapper a{
+.tooltip-wrapper a {
   color: unset;
 }
 
@@ -260,7 +258,7 @@
   opacity: 1;
 }
 
-.file_input .info-icon{
+.file_input .info-icon {
   font-size: 18px;
   top: -20px;
   opacity: 0.6;
@@ -268,7 +266,7 @@
   padding: 0px;
 }
 
-#starting-page{
+#starting-page {
   font-size: 15px;
   background-color: var(--blur-bg);
   color: var(--colour-3);
@@ -281,12 +279,12 @@
   cursor: unset;
 }
 
-#starting-page::placeholder{
+#starting-page::placeholder {
   font-size: 13px;
 }
 
 #starting-page::-webkit-outer-spin-button,
-#starting-page::-webkit-inner-spin-button{
+#starting-page::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -295,12 +293,11 @@
   -moz-appearance: textfield;
 } */
 
-
-.file_input button{
+.file_input button {
   position: relative;
   padding: 8px 12px;
   color: var(--colour-3);
-  background-color:transparent;
+  background-color: transparent;
   border: 1px solid var(--conversations);
   top: -21px;
   width: 230px;
@@ -308,18 +305,16 @@
   height: 35px;
   font-size: 14.5px;
   cursor: pointer;
-
 }
 
-.file_input button:hover{
-  background-color: color-mix(in srgb, var(--right-sidebar) 95%, black)
+.file_input button:hover {
+  background-color: color-mix(in srgb, var(--right-sidebar) 95%, black);
 }
 
-.file_input #file-fallback-message{
+.file_input #file-fallback-message {
   top: -12px;
   text-align: center;
   font-size: 15px;
-
 }
 
 /* current info  */
@@ -339,17 +334,17 @@
   border-radius: 8px;
   color: var(--colour-3);
   opacity: 0.9;
-
 }
 
-#current-index,#starting-page{
+#current-index,
+#starting-page {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-@media screen  and (min-width:300px) and (min-height:720px) {
-  .menu-button-2{
+@media screen and (min-width: 300px) and (min-height: 720px) {
+  .menu-button-2 {
     right: 0px;
     top: 5px;
   }
@@ -361,6 +356,6 @@
   }
 
   .menu-button i {
-	  transition: 0.55s;
-}
+    transition: 0.55s;
+  }
 }

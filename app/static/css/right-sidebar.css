@@ -251,6 +251,7 @@
   opacity: 0;
   transition: opacity 0.3s;
   font-size: 13px;
+  box-shadow: -2px 0 5px var(--box-shadow);
 }
 
 .file_input .tooltip-wrapper:hover .tooltip-text {

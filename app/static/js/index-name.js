@@ -1,3 +1,5 @@
+const showIndex = document.getElementById("current-index");
+
 function setIndex() {
   const indexName = document.getElementById("index").value;
   const fallBackDisplay = document.getElementById("index-fallback-message");
@@ -40,6 +42,7 @@ function setIndex() {
             fallBackDisplay.classList.remove("visible");
             fallBackDisplay.textContent = data.message;
             console.log(`Index submitted : ${indexName}`);
+            showIndex.textContent = `Index Name : ${indexName}`;
           }
 
           if (data.status == "error") {
@@ -47,6 +50,7 @@ function setIndex() {
             fallBackDisplay.classList.remove("success");
             fallBackDisplay.textContent = data.message;
             console.log(data.error_msg);
+            showIndex.textContent = `Index Name : Not set`;
           }
         })
 
@@ -56,6 +60,7 @@ function setIndex() {
           fallBackDisplay.style.fontSize = "12px";
           fallBackDisplay.textContent = "[check console] Something went wrong";
           console.error("fetch error :", error);
+          showIndex.textContent = `Index Name : Not set`;
         })
 
         .finally(() => {
@@ -64,3 +69,18 @@ function setIndex() {
     }, 500);
   }
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  let chatID = window.conversation_id;
+  let endpoint = chatID
+    ? `${url_prefix}/chat/${chatID}/index-name`
+    : `${url_prefix}/chat/index-name`;
+
+  fetch(endpoint)
+    .then((res) => res.json())
+    .then((data) => {
+      const currentIndex = data.index_name || "Index Name : Not set";
+      console.log("Current index name:", currentIndex);
+      showIndex.textContent = currentIndex;
+    });
+});

@@ -62,7 +62,7 @@ def chat_req(conversation_id=None):
 
 @app.route("/chat/index-name", methods=["POST"])
 @app.route("/chat/<conversation_id>/index-name", methods=["POST"])
-def index_name_req(conversation_id=None):
+def index_name_post(conversation_id=None):
     global index_name
     try:
         data = request.get_json()
@@ -70,12 +70,15 @@ def index_name_req(conversation_id=None):
 
         if not index_name:
             index_name = ""
-            return jsonify(
-                {
-                    "status": "error",
-                    "message": "Something went wrong",
-                    "error_msg": "index_name not provided",
-                }
+            return (
+                jsonify(
+                    {
+                        "status": "error",
+                        "message": "Something went wrong",
+                        "error_msg": "index_name not provided",
+                    }
+                ),
+                400,
             )
 
         print(f"Index Name updated : {index_name}")
@@ -85,9 +88,28 @@ def index_name_req(conversation_id=None):
 
     except Exception as e:
         print(f"Something went wrong while getting index : {e}")
-        return jsonify(
-            {"status": "error", "message": "Something went wrong", "error_msg": str(e)}
+        return (
+            jsonify(
+                {
+                    "status": "error",
+                    "message": "Something went wrong",
+                    "error_msg": str(e),
+                }
+            ),
+            500,
         )
+
+
+@app.route("/chat/index-name", methods=["GET"])
+@app.route("/chat/<conversation_id>/index-name", methods=["GET"])
+def index_name_get(conversation_id=None):
+    global index_name
+    if index_name:
+        print(f"Sending... index name : {index_name} ")
+        return jsonify({"index_name": f"Index Name : {index_name}"})
+    if not index_name:
+        print(f"Sending... Empty index name")
+        return jsonify({"index_name": "Index Name : Not set"})
 
 
 # def main():

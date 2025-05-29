@@ -8,6 +8,7 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
         RAGAgent.chunk_embedder(chunks)
         print("Upserting...")
         RAGAgent.upsert_chunks(chunks, index_name)
+        return "success"
 
     @staticmethod
     def vector_search(query, index_name):

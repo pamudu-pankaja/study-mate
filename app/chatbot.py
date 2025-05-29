@@ -1,19 +1,23 @@
 from flask import Flask, render_template, Response, jsonify, request, url_for, redirect
 from flask_cors import CORS
-import json
+from datetime import datetime
+from werkzeug.utils import secure_filename
 import time
-
-index_name = ""
-starting_page = 0
-
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 
+index_name = ""
+starting_page = 0
+
+app.config["UPLOAD_FOLDER"] = os.path.join("app", "data", "uploads")
+
+
 @app.route("/", methods=["GET"])
 def home():
-    return render_template("index.html")
+    return redirect(url_for("chat_page"))
 
 
 @app.route("/chat", methods=["GET"])
@@ -106,12 +110,90 @@ def index_name_get(conversation_id=None):
     global index_name
     if index_name:
         print(f"Sending... index name : {index_name} ")
-        return jsonify({"index_name": f"Index Name : {index_name}"})
+        return jsonify(
+            {"index_name": f"Index Name : {index_name}", "indexName": index_name}
+        )
     if not index_name:
         print(f"Sending... Empty index name")
-        return jsonify({"index_name": "Index Name : Not set"})
+        return jsonify(
+            {"index_name": "Index Name : Not set", "indexName": index_name}
+        )
 
 
+@app.route("/chat/import-file", methods=["POST"])
+@app.route("/chat/<conversation_id>/import-file", methods=["POST"])
+def import_file(conversation_id=None):
+    global index_name, starting_page
+
+    try:
+
+        if "pdf" not in request.files:
+            print("error : No file has given ")
+            return jsonify({"message": "No file has given", "status": "error"}), 400
+
+        file = request.files["pdf"]
+        if file.filename == "":
+            print("error :  No file has selected")
+            return jsonify({"message": "No file has selected", "status": "error"}), 400
+
+        start_page = request.form.get("startPage")
+        starting_page = int(start_page) if start_page and start_page.strip() != '' else 0
+
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        folder_path = os.path.join(app.config["UPLOAD_FOLDER"], today_str)
+        os.makedirs(folder_path, exist_ok=True)
+
+        file_name = secure_filename(file.filename)
+        file_path = os.path.join(folder_path, file_name)
+        file.save(file_path)
+
+        from app.agents.rag_agent.rag_agent import RAGAgent
+
+        result = RAGAgent.import_file(file_path , index_name , starting_page)
+
+        if result == 'success':
+            print(
+            f"""
+            file path = {file_path}    
+            index_name = {index_name}
+            start_page = {starting_page}"""
+        )
+            
+            return jsonify(
+                {
+                    'message' : 'File added successfully',
+                    'status' : 'success'
+                }
+            )
+        else :
+            return jsonify({
+                'message': 'Failed to process PDF'
+            }),500
+
+
+    except Exception as e:
+        print(f"Error during file importing : {e}")
+        return (
+            jsonify(
+                {
+                    "message": "Error during file import",
+                    "status": "error",
+                    "error_msg": f"Something went wrong while importing file : {e}",
+                }
+            ),
+            500,
+        )
+
+@app.route("/chat/start-page", methods=["GET"])
+@app.route("/chat/<conversation_id>/start-page", methods=["GET"])
+def starting_page_get(conversation_id=None):
+    global starting_page
+    if starting_page:
+        print(f"Sending... start page : {starting_page} ")
+        return jsonify(
+            {"start_page": f"Start Page : {starting_page}", "startPage": starting_page}
+        )
+        
 # def main():
 #     app.run(debug=True)
 

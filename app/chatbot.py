@@ -40,28 +40,62 @@ def chat_page_with_id(conversation_id):
 @app.route("/chat", methods=["POST"])
 @app.route("/chat/<conversation_id>", methods=["POST"])
 def chat_req(conversation_id=None):
+    global index_name
     try:
         data = request.get_json()
-        print("Received:", data)
+        print("Received:", data["meta"]["content"]["parts"][0]["content"])
 
         user_message = data["meta"]["content"]["parts"][0]["content"]
+        path = data["searchPath"]
+        
+        if path == "none" :
+            path = None
+        else :
+            path = path
 
-        # from app.agents import ChatBotAgent
-        # reply = ChatBotAgent.get_response(user_message,path=None)
+        from app.agents import ChatBotAgent
+        reply = ChatBotAgent.get_response(user_message, path=path, index_name=index_name)
 
-        reply = (
-            "Hello ! from back-end. how are you doing ? .I guess you are doing fine "
-        )
+        # reply = (
+        #     "Hello ! from back-end. how are you doing ? .I guess you are doing fine "
+        # )
 
-        def event_stream():
-            for word in reply.split():
-                time.sleep(0.1)
-                yield f"data: {word} \n\n"
+        if reply.startswith("Answer:"):
+            reply = reply[len("Answer:"):].strip()
+
+        reply = reply.replace("Pages and Sections:", "Relevant Pages and Sections Below 👇")
+        reply = reply.replace("- Pages:", "- 📄 Pages:")
+        reply = reply.replace("- Sections:", "- 📚 Sections:")
+        
+        if path == None:
+            def event_stream():
+                for word in reply.split():
+                    time.sleep(0.1)               
+                    yield f"data: {word} \n\n"
+        else:
+            def event_stream():
+                for word in reply.splitlines():
+                    time.sleep(0.1)               
+                    yield f"data: {word} \n\n"
+        
+        
+
+                
+        print("\nSending:", "\n"+ reply)
 
         return Response(event_stream(), mimetype="text/event-stream")
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(e)
+        reply = "Something went wrong while vector searching"
+        def event_stream():
+            for word in reply.split():
+                time.sleep(0.1)
+                yield f"data: {word} \n\n"
+        
+        print("Sending:", reply)
+        
+        return Response(event_stream(), mimetype="text/event-stream"),500
 
 
 @app.route("/chat/index-name", methods=["POST"])
@@ -194,8 +228,8 @@ def starting_page_get(conversation_id=None):
             {"start_page": f"Start Page : {starting_page}", "startPage": starting_page}
         )
         
-# def main():
-#     app.run(debug=True)
+def main():
+    app.run(debug=True)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -69,7 +69,7 @@ const ask_gpt = async (message) => {
     }
     console.log(`Current conversation id : ${window.conversation_id}`);
 
-    add_conversation(window.conversation_id, message.substr(0, 16));
+    add_conversation(window.conversation_id, message);
     window.scrollTo(0, 0);
     window.controller = new AbortController();
 
@@ -104,6 +104,20 @@ const ask_gpt = async (message) => {
     await new Promise((r) => setTimeout(r, 1000));
     window.scrollTo(0, 0);
 
+    const vectorBtn = document.getElementById("switch_book");
+    const webBtn = document.getElementById("switch_web");
+    let searchPath = "none";
+
+    if (vectorBtn.checked) {
+      searchPath = "vector";
+    } else if (webBtn.checked) {
+      searchPath = "web";
+    } else if (!webBtn.checked && !vectorBtn.checked) {
+      searchPath = "none";
+    } else {
+      searchPath = "none";
+    }
+
     const response = await fetch(
       `${url_prefix}/chat/${window.conversation_id}`,
       {
@@ -115,6 +129,7 @@ const ask_gpt = async (message) => {
         },
         body: JSON.stringify({
           conversation_id: window.conversation_id,
+          searchPath: searchPath,
           action: `_ask`,
           // model: model.options[model.selectedIndex].value,
           // jailbreak: jailbreak.options[jailbreak.selectedIndex].value,
@@ -137,6 +152,8 @@ const ask_gpt = async (message) => {
     );
 
     const reader = response.body.getReader();
+    const error = response.body.error;
+    console.log(error);
 
     while (true) {
       const { value, done } = await reader.read();
@@ -147,7 +164,7 @@ const ask_gpt = async (message) => {
       chunk.split("\n").forEach((line) => {
         if (line.startsWith("data: ")) {
           const cleaned = line.slice(6); // Remove "data: "
-          text += cleaned;
+          text += cleaned + "\n";
         }
       });
 
@@ -382,16 +399,36 @@ const get_conversation = async (conversation_id) => {
   return conversation.items;
 };
 
-const add_conversation = async (conversation_id, title) => {
+const add_conversation = async (conversation_id, message) => {
   if (localStorage.getItem(`conversation:${conversation_id}`) == null) {
-    localStorage.setItem(
-      `conversation:${conversation_id}`,
-      JSON.stringify({
-        id: conversation_id,
-        title: title,
-        items: [],
-      })
-    );
+    let endpoint = window.conversation_id
+      ? `${url_prefix}/chat/${window.conversation_id}/generate-title`
+      : `${url_prefix}/chat/generate-title`;
+
+    let chatTitle = message.substr(0, 16);
+
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      });
+      const data = await res.json();
+      chatTitle = data.title || message.substr(0, 16);
+    } catch (err) {
+      console.error("Failed to generate title" , err)
+    } finally {
+      localStorage.setItem(
+        `conversation:${conversation_id}`,
+        JSON.stringify({
+          id: conversation_id,
+          title: chatTitle,
+          items: [],
+        })
+      );
+    }
   }
 };
 
@@ -430,9 +467,9 @@ const load_conversations = async (limit, offset, loader) => {
             <div class="conversation-sidebar">
                 <div class="left" onclick="set_conversation('${conversation.id}')">
                     <i class="fa-regular fa-comments"></i>
-                    <span class="conversation-title">${conversation.title}</span>
+                    <span class="conversation-title" style="text-overflow:ellipsis;">${conversation.title}</span>
                 </div>
-                <i onclick="delete_conversation('${conversation.id}')" class="fa-regular fa-trash"></i>
+                <i onclick="delete_conversation('${conversation.id}')" class="fa-solid fa-trash"></i>
             </div>
         `;
   }

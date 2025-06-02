@@ -43,13 +43,15 @@ class GeminiLLM:
                 )
 
         contents.append({"role": "user", "parts": [{"text": prompt}]})
+        
+        
         try:
             response = client.models.generate_content(
                 model="gemini-1.5-flash",
                 contents=contents,
                 config=types.GenerateContentConfig(
                     system_instruction=(
-                        "You are an AI assistant that helps users learn from textbooks and reliable web sources. When using online information, Keep answers short , concise and aligned with model answers. Match their key terms, phrasing, and structure exactly when available (e.g., 'It failed because...'). Avoid extra background, summaries, or phrases like 'consult the textbook' unless asked. Clearly state the purpose and result in cause-effect questions. If a question is unclear or broad, ask for clarification."
+                        "You are an AI assistant that helps users learn from textbooks and reliable web sources. When using online information, Keep answers short , concise and aligned with model answers. Match their key terms, phrasing, and structure exactly when available (e.g., 'It failed because...'). Avoid extra background, summaries, or phrases like 'consult the textbook' unless asked. Clearly state the purpose and result in cause-effect questions. If a question is unclear or broad, ask for clarification. If the user asks for answers for the given context feel free to provide them without hesitating"
                     )
                 ),
             )
@@ -64,5 +66,19 @@ class GeminiLLM:
             chat_history.append({"role": "model", "content": query})
 
             return full_response
-        except Exception as e:
+        except Exception as e:            
             return f"LLM Error : {e}"
+        
+    def generate_title(message):
+        prompt =  f"Summarize the user's message into a short, relevant title. No punctuation, no quotes.:\n\nUser: {message}"
+        
+        response = client.models.generate_content(
+                model="gemini-1.5-flash",
+                contents=[types.ContentPart.text(prompt)],
+                config=types.GenerateContentConfig(
+                    max_output_tokens=10,
+                    temperature=0.3
+                ),
+            )
+        
+        return response.text.strip().title()

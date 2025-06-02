@@ -17,6 +17,8 @@ input.addEventListener("change", () => {
   }
 
   if (file.type !== "application/pdf") {
+    fallBackDisplay_index.classList.remove("visble");
+    fallBackDisplay_index.classList.remove("success");
     fallBackDisplay.textContent = "Only PDF file are allowed";
     fallBackDisplay.classList.add("visible");
     input.value = "";
@@ -25,6 +27,8 @@ input.addEventListener("change", () => {
   }
 
   if (file.size >= max_size) {
+    fallBackDisplay_index.classList.remove("visble");
+    fallBackDisplay_index.classList.remove("success");
     fallBackDisplay.textContent = "File must be under 1 MB";
     fallBackDisplay.classList.add("visible");
     input.value = "";
@@ -33,7 +37,7 @@ input.addEventListener("change", () => {
   }
 
   // fallBackDisplay.textContent = "File added successfully";
-  // fallBackDisplay.classList.remove("visible");
+  fallBackDisplay.classList.remove("visible");
   // fallBackDisplay.classList.add("success");
   display.textContent = ` ${file.name} `;
   display.title = file.name;
@@ -41,7 +45,7 @@ input.addEventListener("change", () => {
 
 async function uploadFile() {
   const startPage = document.getElementById("starting-page").value;
-  // const index_name = document.getElementById("index").value;
+
   const file = input.files[0];
   const url_prefix = document
     .querySelector("body")
@@ -101,6 +105,8 @@ async function uploadFile() {
 
     // If you are not me just dont get your head fucked up with these class names check the css file right side bar
     if (data.status == "success") {
+      fallBackDisplay_index.classList.remove("visble");
+      fallBackDisplay_index.classList.remove("success");      
       fallBackDisplay.classList.add("success");
       fallBackDisplay.classList.remove("visible");
       fallBackDisplay.textContent = data.message;
@@ -108,6 +114,8 @@ async function uploadFile() {
     }
 
     if (data.status == "error" || !data) {
+      fallBackDisplay_index.classList.remove("visble");
+      fallBackDisplay_index.classList.remove("success");
       fallBackDisplay.classList.add("visible");
       fallBackDisplay.classList.remove("success");
       fallBackDisplay.textContent = data.message;

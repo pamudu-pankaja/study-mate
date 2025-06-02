@@ -120,6 +120,18 @@
 	transition: all 0.3s ease;
 }
 
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	border: 1px solid black; 
+	padding: 8px;
+	text-align: center;
+}
+
+
 @keyframes blink {
 	0% {
 		background: #ffffff00;

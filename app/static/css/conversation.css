@@ -39,7 +39,7 @@
 
 .conversation-sidebar:hover{
 	border-radius: 8px;
-	background-color: var(--hover);
+	background-color: var(--user-msg-bg);
 }
 
 .conversation .user-input textarea {

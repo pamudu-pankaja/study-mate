@@ -133,6 +133,8 @@ async function uploadFile() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  let chatID = window.conversation_id;
+
   let endpointStartPage = chatID
     ? `${url_prefix}/chat/${chatID}/start-page`
     : `${url_prefix}/chat/start-page`;
@@ -140,8 +142,8 @@ window.addEventListener("DOMContentLoaded", () => {
   fetch(endpointStartPage)
     .then((res) => res.json())
     .then((data) => {
-      const currentPage = data.start_page || "Start Page : Not set";
-      console.log("Current Starting Page:", data.startPage || 0);
+      const currentPage = data.start_page;
+      console.log(data.startPage || 0);
       showStartPage.textContent = currentPage;
     });
 });

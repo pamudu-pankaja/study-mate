@@ -74,7 +74,7 @@ class GeminiLLM:
         
         response = client.models.generate_content(
                 model="gemini-1.5-flash",
-                contents=[types.ContentPart.text(prompt)],
+                contents=prompt,
                 config=types.GenerateContentConfig(
                     max_output_tokens=10,
                     temperature=0.3

@@ -36,6 +36,20 @@ def chat_page_with_id(conversation_id):
         return redirect(url_for("chat_page"))
     return render_template("index.html", chat_id=conversation_id)
 
+@app.route("/chat/generate-title", methods=["POST"])
+@app.route("/chat/<conversation_id>/generate-title", methods=["POST"])
+def get_title(conversation_id = None):
+    data = request.json
+    user_msg = data.get('message', '')
+    
+    if not user_msg:
+        return jsonify({"error": "No message provided"}), 400
+
+    from app.agents.llm.llm import GeminiLLM
+    
+    title = GeminiLLM.generate_title(user_msg)
+    print(f"Sending Title : {title}")
+    return jsonify({"title": title})
 
 @app.route("/chat", methods=["POST"])
 @app.route("/chat/<conversation_id>", methods=["POST"])
@@ -222,11 +236,18 @@ def import_file(conversation_id=None):
 @app.route("/chat/<conversation_id>/start-page", methods=["GET"])
 def starting_page_get(conversation_id=None):
     global starting_page
-    if starting_page:
+    if starting_page > 0:
         print(f"Sending... start page : {starting_page} ")
         return jsonify(
             {"start_page": f"Start Page : {starting_page}", "startPage": starting_page}
         )
+        
+    else:
+        print(f"Sending... start page : {starting_page} ")
+        return jsonify(
+            {"start_page": "Start Page : Not set", "startPage": 0}
+        )
+                
         
 def main():
     app.run(debug=True)

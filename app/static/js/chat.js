@@ -405,7 +405,7 @@ const add_conversation = async (conversation_id, message) => {
       ? `${url_prefix}/chat/${window.conversation_id}/generate-title`
       : `${url_prefix}/chat/generate-title`;
 
-    let chatTitle = message.substr(0, 16);
+    let chatTitle = '';
 
     try {
       const res = await fetch(endpoint, {

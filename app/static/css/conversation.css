@@ -34,6 +34,12 @@
 .conversation-title {
 	color: var(--colour-3);
 	font-size: 14px;
+	text-overflow: ellipsis;	
+}
+
+.conversation-sidebar:hover{
+	border-radius: 8px;
+	background-color: var(--hover);
 }
 
 .conversation .user-input textarea {

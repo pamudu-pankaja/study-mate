@@ -3,6 +3,7 @@ from flask_cors import CORS
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import time
+import re
 import os
 
 app = Flask(__name__)
@@ -11,6 +12,8 @@ CORS(app)
 
 index_name = ""
 starting_page = 0
+
+context = None
 
 app.config["UPLOAD_FOLDER"] = os.path.join("app", "data", "uploads")
 
@@ -51,13 +54,23 @@ def get_title(conversation_id = None):
     print(f"Sending Title : {title}")
     return jsonify({"title": title})
 
+@app.route("/chat/context-data", methods=["GET"])
+@app.route("/chat/<conversation_id>/context-data", methods=["GET"])
+def get_context(conversation_id=None):
+    global context
+    print("Sending Context Data...")
+    return jsonify({
+        "context": context if context is not None else "None"
+    })
+
 @app.route("/chat", methods=["POST"])
 @app.route("/chat/<conversation_id>", methods=["POST"])
 def chat_req(conversation_id=None):
-    global index_name
+    global index_name, context
     try:
         data = request.get_json()
-        print("Received:", data["meta"]["content"]["parts"][0]["content"])
+        # print("Received:", data["meta"]["content"]["parts"][0]["content"])
+        print(data)        
 
         user_message = data["meta"]["content"]["parts"][0]["content"]
         path = data["searchPath"]
@@ -66,9 +79,24 @@ def chat_req(conversation_id=None):
             path = None
         else :
             path = path
+        
+        if path == 'vector' and index_name =="":
+            reply = "Please set a valid index name , using the side bar "
+            def event_stream():
+                for word in reply.split():
+                    time.sleep(0.1)
+                    yield f"data: {word} \n\n"
+            
+            print("Sending:", reply)
+            
+            return Response(event_stream(), mimetype="text/event-stream"),500           
+            
 
         from app.agents import ChatBotAgent
-        reply = ChatBotAgent.get_response(user_message, path=path, index_name=index_name)
+        response = ChatBotAgent.get_response(user_message, path=path, chat_history=data ,index_name=index_name)
+        
+        reply = response['reply']
+        context = response['context']
 
         # reply = (
         #     "Hello ! from back-end. how are you doing ? .I guess you are doing fine "
@@ -83,14 +111,14 @@ def chat_req(conversation_id=None):
         
         if path == None:
             def event_stream():
-                for word in reply.split():
-                    time.sleep(0.1)               
-                    yield f"data: {word} \n\n"
+                for chunk in re.findall(r'.+?[\n.?!]', reply):
+                    time.sleep(0.1)
+                    yield f"data: {chunk.strip()} \n\n"
         else:
             def event_stream():
                 for word in reply.splitlines():
-                    time.sleep(0.1)               
                     yield f"data: {word} \n\n"
+                    time.sleep(0.1)               
         
         
 
@@ -101,7 +129,7 @@ def chat_req(conversation_id=None):
 
     except Exception as e:
         print(e)
-        reply = "Something went wrong while vector searching"
+        reply = "Something went wrong while answering"
         def event_stream():
             for word in reply.split():
                 time.sleep(0.1)

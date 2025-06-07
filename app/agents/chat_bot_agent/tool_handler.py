@@ -29,8 +29,8 @@ class ToolHandle:
             from app.agents.chat_bot_agent.tools.summarizer import Summarizer
 
             rag = RAGAgent()
-            result = rag.vector_search(query, index_name)
-            return result
+            data = rag.vector_search(query, index_name)
+            return data
 
         else:
             return None

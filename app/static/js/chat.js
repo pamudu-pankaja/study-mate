@@ -198,8 +198,26 @@ const ask_gpt = async (message) => {
     }
 
     add_message(window.conversation_id, "user", message);
-    add_message(window.conversation_id, "assistant", text);
+
+    let contextData = "";
+    if (searchPath != "none") {
+      let endpointContext = window.conversation_id
+        ? `${url_prefix}/chat/${window.conversation_id}/context-data`
+        : `${url_prefix}/chat/context-data`;
+
+      try {
+        const res = await fetch(endpointContext);
+        const data = await res.json();
+        contextData = data.context || "";
+      } catch (e) {
+        console.log(`Error while getting the contextData :  ${e}`);
+        contextData = "";
+      }
+    }
+
+    add_message(window.conversation_id, "assistant", text, contextData);   
     console.log(`Asisstant's message : ${text}`);
+
 
     history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
 
@@ -405,7 +423,7 @@ const add_conversation = async (conversation_id, message) => {
       ? `${url_prefix}/chat/${window.conversation_id}/generate-title`
       : `${url_prefix}/chat/generate-title`;
 
-    let chatTitle = '';
+    let chatTitle = "";
 
     try {
       const res = await fetch(endpoint, {
@@ -418,7 +436,7 @@ const add_conversation = async (conversation_id, message) => {
       const data = await res.json();
       chatTitle = data.title || message.substr(0, 16);
     } catch (err) {
-      console.error("Failed to generate title" , err)
+      console.error("Failed to generate title", err);
     } finally {
       localStorage.setItem(
         `conversation:${conversation_id}`,
@@ -432,15 +450,21 @@ const add_conversation = async (conversation_id, message) => {
   }
 };
 
-const add_message = async (conversation_id, role, content) => {
+const add_message = async (conversation_id, role, content, context) => {
   before_adding = JSON.parse(
     localStorage.getItem(`conversation:${conversation_id}`)
   );
 
-  before_adding.items.push({
+  const message = {
     role: role,
     content: content,
-  });
+  };
+
+  if (role == "assistant" && context) {
+    message.used_context = context;
+  }
+
+  before_adding.items.push(message);
 
   localStorage.setItem(
     `conversation:${conversation_id}`,

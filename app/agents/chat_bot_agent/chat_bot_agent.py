@@ -5,7 +5,7 @@ import re
 
 class ChatBotAgent:
     @staticmethod
-    def get_response(query, path, index_name=None):
+    def get_response(query, path, chat_history ,index_name=None ):
 
         # if (
         # (query.startswith('"') and query.endswith('"')) or
@@ -15,13 +15,18 @@ class ChatBotAgent:
         #     query = query[1:-1].strip()
 
         print(
-            f"Answering using {"LLM Knowledge" if path == None else path.capitalize() + " Search"}..."
+            f"Answering using {'LLM Knowledge' if path is None else path.capitalize() + 'Search'}..."
         )
 
         data = ToolHandle.get_context(query, path, index_name)
 
         prompt = ""
         if path == "vector":
+            
+            from app.agents.chat_bot_agent.tools.summarizer import Summarizer
+            
+            # data  = Summarizer.get_summerize_text(data,amount=3)
+            
             prompt = (
                 query
                 if not data
@@ -29,6 +34,10 @@ class ChatBotAgent:
 
                         Use the provided context (retrieved via a vector search or a web search) to answer the user query and Respond in the user's expected language and translate only if needed.
                         If no context is given, use your own knowledge to answer the question clearly.
+                        
+                        Context: {data} 
+
+                        User Query: {query}
 
                         Follow this exact format for the response:
 
@@ -39,10 +48,6 @@ class ChatBotAgent:
                         - Pages:  Only the page numbers that were used to get the answer,
                         - Sections: No extra explanation Just the sections. Use Only 1-2 sections titles that were used to get the answer. Use the given sections . But if the sections are not given , What might be the section for the given context depending on the examples in the given context (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution"," Receiving of Independence to Sri Lanka"," Impact on the Society"). 
                         
-                        Context:
-                        {data} 
-
-                        User Query: {query}
                         """
             )
         if path == None:
@@ -57,8 +62,11 @@ class ChatBotAgent:
 
                         Question: {query}"""
 
-        result = GeminiLLM.get_response(prompt, query)
-        return result
+        result = GeminiLLM.get_response(prompt, query , chat_history)
+        return {
+            "reply" : result,
+            "context": data if path != None else None
+        }
 
 
 

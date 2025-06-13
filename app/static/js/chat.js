@@ -218,7 +218,7 @@ const ask_gpt = async (message) => {
         "An error occurred, please reload / refresh cache and try again.";
     }
 
-    add_message(window.conversation_id, "user", message , searchPath);
+    add_message(window.conversation_id, "user", message);
 
     let contextData = "";
     if (searchPath != "none") {
@@ -236,7 +236,7 @@ const ask_gpt = async (message) => {
       }
     }
 
-    add_message(window.conversation_id, "assistant", text, contextData);
+    add_message(window.conversation_id, "assistant", text, contextData , searchPath);
     console.log(`Asisstant's message : ${text}`);
 
     history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);

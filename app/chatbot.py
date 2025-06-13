@@ -1,7 +1,8 @@
-from flask import Flask, render_template, Response, jsonify, request, url_for, redirect
+from flask import Flask, render_template, Response, jsonify, request, url_for, redirect , stream_with_context
 from flask_cors import CORS
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from nltk import sent_tokenize
 import time
 import re
 import os
@@ -93,14 +94,90 @@ def chat_req(conversation_id=None):
             
 
         from app.agents import ChatBotAgent
-        response = ChatBotAgent.get_response(user_message, path=path, chat_history=data ,index_name=index_name)
-        
-        reply = response['reply']
-        context = response['context']
+        # response = ChatBotAgent.get_response(user_message, path=path, chat_history=data ,index_name=index_name)
 
-        # reply = (
-        #     "Hello ! from back-end. how are you doing ? .I guess you are doing fine "
-        # )
+        # reply = response['reply']
+        # context = response['context']
+
+        reply = (
+            ''' 
+Sure, I can help with that! Here are some examples you can use to test the front end of your chatbot app:
+
+### Code Snippets
+*   Displaying a Message
+```javascript
+// Displaying a user message
+function displayUserMessage(message) {
+const chatBox = document.getElementById('chatBox');
+const userDiv = document.createElement('div');
+userDiv.className = 'user-message';
+userDiv.textContent = message;
+chatBox.appendChild(userDiv);
+}
+
+// Displaying a bot message
+function displayBotMessage(message) {
+const chatBox = document.getElementById('chatBox');
+const botDiv = document.createElement('div');
+botDiv.className = 'bot-message';
+botDiv.textContent = message;
+chatBox.appendChild(botDiv);
+}
+```
+*   Handling User Input
+```javascript
+// Getting user input from a text input field
+const inputField = document.getElementById('userInput');
+const message = inputField.value;
+inputField.value = ''; // Clear the input field
+
+// Sending the message to the bot (example)
+displayUserMessage(message);
+displayBotMessage("I received your message: " + message);
+```
+*   Styling Messages (CSS)
+```css
+.user-message {
+background-color: #DCF8C6;
+text-align: right;
+padding: 8px;
+margin: 4px;
+border-radius: 8px;
+}
+
+.bot-message {
+background-color: #FFFFFF;
+text-align: left;
+padding: 8px;
+margin: 4px;
+border-radius: 8px;
+}
+```
+### Points for Testing
+1.  **Input Handling**:
+    *   Ensure the input field correctly captures user input.
+    *   Verify that the input field clears after sending a message.
+2.  **Message Display**:
+    *   Confirm that user and bot messages are displayed correctly in the chat interface.
+    *   Check that the messages are styled appropriately (e.g., different backgrounds for user and bot).
+3.  **Scrolling**:
+    *   Make sure the chat box scrolls automatically to the bottom when new messages are added.
+4.  **Responsiveness**:
+    *   Test the chat interface on different screen sizes (desktop, tablet, mobile) to ensure it is responsive.
+5.  **Error Handling**:
+    *   Implement error messages for invalid input or failed API calls.
+6.  **Loading States**:
+    *   Show a loading indicator when waiting for the bot's response.
+7.  **Accessibility**:
+    *   Ensure the chat interface is accessible to users with disabilities (e.g., proper ARIA attributes, keyboard navigation).
+### Example Test Cases
+*   Sending a simple text message ("Hello, bot!") and verifying it appears correctly.
+*   Testing long messages to ensure they wrap properly within the chat bubbles.
+*   Sending special characters or emojis to check they are displayed correctly.
+*   Testing the responsiveness of the chat interface by resizing the browser window.
+These examples should give you a solid foundation for testing your chatbot's front end. If you need more specific examples or have any questions, just let me know!        
+            '''
+        )
 
         if reply.startswith("Answer:"):
             reply = reply[len("Answer:"):].strip()
@@ -110,10 +187,21 @@ def chat_req(conversation_id=None):
         reply = reply.replace("- Sections:", "- 📚 Sections:")
         
         if path == None:
+            # def event_stream():
+            #     for chunk in  re.split(r'''(?<!\d)(?<=[.?!])\s+(?=[A-Z0-9*•\-])|\n{2,}''', reply, flags=re.VERBOSE):
+            #         yield f"data: {chunk.strip()} \n\n"
+            #         time.sleep(0.1)
             def event_stream():
-                for chunk in re.findall(r'.+?[\n.?!]', reply):
+                for chunk in reply.splitlines():
+                    yield f"data: {chunk}\n\n"
                     time.sleep(0.1)
-                    yield f"data: {chunk.strip()} \n\n"
+            # def event_stream():
+            #     for i in range(0, len(reply), 50):  # 50-character chunks
+            #         chunk = reply[i:i+50]
+            #         yield f'data: {chunk}\n\n'
+            #         time.sleep(0.05)
+
+            
         else:
             def event_stream():
                 for word in reply.splitlines():
@@ -274,8 +362,7 @@ def starting_page_get(conversation_id=None):
         print(f"Sending... start page : {starting_page} ")
         return jsonify(
             {"start_page": "Start Page : Not set", "startPage": 0}
-        )
-                
+        )               
         
 def main():
     app.run(debug=True)

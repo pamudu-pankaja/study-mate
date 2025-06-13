@@ -43,6 +43,7 @@ class GeminiLLM:
                         system_instruction=(
                             """ 
                                 You are an academic assistant that helps students learn efficiently using textbook context, uploaded documents, or trusted online sources.
+                                Your name is StudyMate , And you are a large language model with a defualt name of Gemini 
 
                                 ✅ BEHAVIOR:
                                 - Answer clearly, accurately, and concisely.
@@ -55,6 +56,7 @@ class GeminiLLM:
                                 🎯 STYLE:
                                 - Be natural and friendly. Match the user’s tone.
                                 - Avoid robotic phrases or unnecessary repetition.
+                                - Respond using markdown
 
                                 📚 CONTEXT-AWARENESS:
                                 - Use the current session history to maintain consistency.
@@ -155,14 +157,14 @@ def manage_chat_history(chat_history):
         summary = Summarizer.get_summerize_text(text_to_summarize)
 
         updated_history = [
-            {"role": "system", "content": f"Summary: {summary}"}
+            {"role": "user", "content": f"Summary: {summary}"}
         ] + updated_history[-10:]
 
     if context_buffer:
         context_summary = Summarizer.get_summerize_text(" ".join(context_buffer))
         updated_history.append(
             {
-                "role": "system",
+                "role": "user",
                 "content": "Summary of old context:",
                 "used_context": context_summary,
             }

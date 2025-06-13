@@ -99,7 +99,16 @@
 .message.chat-bot .content{
   margin-left: 10px;
   width: 100%;
-  
+  margin-bottom: 50px;
+}
+
+.search-label {
+  font-size: 0.90rem;
+  color: var(--conversations);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 3px;
+  display: inline-block;
 }
 
 

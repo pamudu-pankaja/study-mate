@@ -5,7 +5,11 @@ const query = (obj) =>
 const url_prefix = document
   .querySelector("body")
   .getAttribute("data-urlprefix");
-const markdown = window.markdownit();
+const markdown = window.markdownit({
+  html:true,
+  linkify:true,
+  typographer:true
+});
 const message_box = document.getElementById(`messages`);
 const message_input = document.getElementById(`message-input`);
 const box_conversations = document.querySelector(`.top`);
@@ -107,16 +111,22 @@ const ask_gpt = async (message) => {
     const vectorBtn = document.getElementById("switch_book");
     const webBtn = document.getElementById("switch_web");
     let searchPath = "none";
+    let searchLabel = ''
 
     if (vectorBtn.checked) {
       searchPath = "vector";
+      searchLabel = `<div class="search-label">[ 📚 Vector Search ]</div>`;
     } else if (webBtn.checked) {
       searchPath = "web";
+      searchLabel = `<div class="search-label">[ 🌐 Web Search ]</div>`;
     } else if (!webBtn.checked && !vectorBtn.checked) {
       searchPath = "none";
+      searchLabel = '';
     } else {
       searchPath = "none";
+      searchLabel = '';
     }
+
 
     const response = await fetch(
       `${url_prefix}/chat/${window.conversation_id}`,
@@ -152,19 +162,24 @@ const ask_gpt = async (message) => {
     );
 
     const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
     const error = response.body.error;
     console.log(error);
+
+    let tect  = "";
 
     while (true) {
       const { value, done } = await reader.read();
       if (done) break;
 
-      chunk = decodeUnicode(new TextDecoder().decode(value));
+      // let chunk = decodeUnicode(new TextDecoder().decode(value));
+      let chunk = decoder.decode(value, { stream: true });
 
       chunk.split("\n").forEach((line) => {
         if (line.startsWith("data: ")) {
-          const cleaned = line.slice(6); // Remove "data: "
-          text += cleaned + "\n";
+          const cleaned = line.slice(6).trim(); // Remove "data: "
+          text += `${cleaned}` + "\n";
+          console.log(cleaned);
         }
       });
 
@@ -178,6 +193,7 @@ const ask_gpt = async (message) => {
       // text += chunk;
 
       document.getElementById(`gpt_${window.token}`).innerHTML =
+        searchLabel +
         markdown.render(text);
       document.querySelectorAll(`code`).forEach((el) => {
         hljs.highlightElement(el);
@@ -197,7 +213,7 @@ const ask_gpt = async (message) => {
         "An error occurred, please reload / refresh cache and try again.";
     }
 
-    add_message(window.conversation_id, "user", message);
+    add_message(window.conversation_id, "user", message , searchPath);
 
     let contextData = "";
     if (searchPath != "none") {
@@ -215,9 +231,8 @@ const ask_gpt = async (message) => {
       }
     }
 
-    add_message(window.conversation_id, "assistant", text, contextData);   
+    add_message(window.conversation_id, "assistant", text, contextData);
     console.log(`Asisstant's message : ${text}`);
-
 
     history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
 
@@ -360,7 +375,7 @@ const load_conversation = async (conversation_id) => {
 
   for (item of conversation.items) {
     if (is_assistant(item.role)) {
-      message_box.innerHTML += load_gpt_message_box(item.content);
+      message_box.innerHTML += load_gpt_message_box(item);
     } else {
       message_box.innerHTML += load_user_message_box(item.content);
     }
@@ -393,14 +408,24 @@ const load_user_message_box = (content) => {
   return messageDiv.outerHTML;
 };
 
-const load_gpt_message_box = (content) => {
+const load_gpt_message_box = (item) => {
+  const searchType = item.searchType || '';
+  let itemSearchLabel = '';
+
+  if (searchType === "vector") {
+    itemSearchLabel = `<div class="search-label">[ 📚 Vector Search ]</div> `;
+  } else if (searchType === "web") {
+    itemSearchLabel = `<div class="search-label">[ 🌐 Web Search ]</div> `;
+  }
+
   return `
             <div class="message chat-bot">
                 <div class="avatar-container">
                     ${gpt_image}
                 </div>
                 <div class="content">
-                    ${markdown.render(content)}
+                    ${itemSearchLabel}
+                    ${markdown.render(item.content)}
                 </div>
             </div>
         `;
@@ -450,7 +475,7 @@ const add_conversation = async (conversation_id, message) => {
   }
 };
 
-const add_message = async (conversation_id, role, content, context) => {
+const add_message = async (conversation_id, role, content, context , searchType) => {
   before_adding = JSON.parse(
     localStorage.getItem(`conversation:${conversation_id}`)
   );
@@ -460,8 +485,9 @@ const add_message = async (conversation_id, role, content, context) => {
     content: content,
   };
 
-  if (role == "assistant" && context) {
+  if (role == "assistant" && context && searchType) {
     message.used_context = context;
+    message.searchType = searchType;
   }
 
   before_adding.items.push(message);

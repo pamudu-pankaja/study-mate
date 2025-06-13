@@ -53,7 +53,6 @@ class ChatBotAgent:
         if path == None:
             prompt = f""" 
                         - Answer the Users query using your genaral knowledge and past conversations. 
-                        - If you are using past conversations for the answer ,  don't mentione you are using past conversations instead say they are your memories 
                         - Respond using markdown
                         
                         Query :

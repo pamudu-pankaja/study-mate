@@ -61,6 +61,7 @@ class GeminiLLM:
                                 📚 CONTEXT-AWARENESS:
                                 - Use the current session history to maintain consistency.
                                 - Do not reference your lack of memory — act as if you remember earlier parts of the same session.
+                                - If you are using past conversations for the answer ,  don't mention you are using past conversations instead say they are your memories but only if necessary dont over-use it
 
                                 ⚠️ LIMITATIONS:
                                 - You don’t have access to persistent memory beyond the session.

@@ -166,7 +166,7 @@ const ask_gpt = async (message) => {
     const error = response.body.error;
     console.log(error);
 
-    let tect  = "";
+    let text  = "";
 
     while (true) {
       const { value, done } = await reader.read();
@@ -179,7 +179,6 @@ const ask_gpt = async (message) => {
         if (line.startsWith("data: ")) {
           const cleaned = line.slice(6).trim(); // Remove "data: "
           text += `${cleaned}` + "\n";
-          console.log(cleaned);
         }
       });
 
@@ -191,6 +190,12 @@ const ask_gpt = async (message) => {
       }
 
       // text += chunk;
+
+      // if (text.startsWith("```markdown") && text.endsWith("```")) {
+      //   text = text.replace(/^```markdown\s*\n?([\s\S]*?)\n?```$/, "$1");
+      //   console.log("Stripped markdown fences:", text);
+      // }
+      // }
 
       document.getElementById(`gpt_${window.token}`).innerHTML =
         searchLabel +

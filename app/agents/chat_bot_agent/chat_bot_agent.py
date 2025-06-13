@@ -53,7 +53,9 @@ class ChatBotAgent:
         if path == None:
             prompt = f""" 
                         - Answer the Users query using your genaral knowledge and past conversations. 
-                        - Respond using markdown
+                        - Output your answer as plain Markdown text only.
+                        - Do NOT wrap tables, lists, footnotes, math, or other Markdown elements inside code blocks.
+                        - Use fenced code blocks ONLY for programming code snippets.
                         
                         Query :
                         {query}"""

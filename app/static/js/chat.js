@@ -197,7 +197,7 @@ const ask_gpt = async (message) => {
       // }
       // }
 
-      add_message(window.conversation_id, "user", message);
+
 
       document.getElementById(`gpt_${window.token}`).innerHTML =
         searchLabel + markdown.render(text);
@@ -235,13 +235,8 @@ const ask_gpt = async (message) => {
       }
     }
 
-    add_message(
-      window.conversation_id,
-      "assistant",
-      text,
-      contextData,
-      searchPath
-    );
+    add_message(window.conversation_id, "user", message);
+    add_message(window.conversation_id,"assistant",text,contextData,searchPath);
     console.log(`Asisstant's message : ${text}`);
 
     history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
@@ -446,6 +441,7 @@ const is_assistant = (role) => {
 };
 
 const get_conversation = async (conversation_id) => {
+  console.log("addding conversation id:" ,conversation_id)
   let conversation = await JSON.parse(
     localStorage.getItem(`conversation:${conversation_id}`)
   );
@@ -453,7 +449,7 @@ const get_conversation = async (conversation_id) => {
 };
 
 const add_conversation = async (conversation_id, message) => {
-  if (localStorage.getItem(`conversation:${window.conversation_id}`) == null) {
+  if (localStorage.getItem(`conversation:${conversation_id}`) == null) {
     let endpoint = conversation_id
       ? `${url_prefix}/chat/${conversation_id}/generate-title`
       : `${url_prefix}/chat/generate-title`;
@@ -474,12 +470,13 @@ const add_conversation = async (conversation_id, message) => {
     } catch (err) {
       console.error("Failed to generate title", err);
     } finally {
+      console.log("conversation adding id :",conversation_id)
       localStorage.setItem(
-        `conversation:${window.conversation_id}`,
+        `conversation:${conversation_id}`,
         JSON.stringify({
-          id: window.conversation_id,
+          id: conversation_id,
           title: chatTitle,
-          items: [{role:"user",content:message}],
+          items: [],
         })
       );
     }
@@ -494,10 +491,10 @@ const add_message = async (
   searchType
 ) => {
   before_adding = JSON.parse(
-    localStorage.getItem(`conversation:${window.conversation_id}`)
+    localStorage.getItem(`conversation:${conversation_id}`)
   );
 
-  console.log("add message :  ", before_adding)
+  console.log("add message id :  ", conversation_id)
 
   const message = {
     role: role,

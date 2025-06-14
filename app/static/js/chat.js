@@ -495,6 +495,10 @@ const add_message = async (conversation_id, role, content, context , searchType)
     message.searchType = searchType;
   }
 
+  if (!before_adding.items) {
+    before_adding.items = [];
+  }
+
   before_adding.items.push(message);
 
   localStorage.setItem(

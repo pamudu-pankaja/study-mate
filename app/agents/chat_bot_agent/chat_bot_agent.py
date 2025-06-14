@@ -30,42 +30,39 @@ class ChatBotAgent:
             prompt = (
                 query
                 if not data
-                else f"""You are a helpful assistant extracting answers from context for a user's query.
+                else f"""
+You are a helpful assistant extracting answers from context for a user's query.
 
-                        Use the provided context (retrieved via a vector search or a web search) to answer the user query and Respond in the user's expected language and translate only if needed.
-                        If no context is given, use your own knowledge to answer the question clearly.
-                        
-                        Context: {data} 
+Use the provided context (retrieved via a vector search or a web search) to answer the user query and Respond in the user's expected language and translate only if needed.
+If no context is given, use your own knowledge to answer the question clearly.
 
-                        User Query: {query}
+Context: {data} 
 
-                        Follow this exact format for the response:
+User Query: {query}
 
-                        Answer:
-                        A short, direct answer to the question. Focus only on what's asked. And do not mention that you have extracted this answer from a context
-                        
-                        Pages and Sections: Format it exactly like this, using bullet points
-                        - Pages:  Only the page numbers that were used to get the answer,
-                        - Sections: No extra explanation Just the sections. Use Only 1-2 sections titles that were used to get the answer. Use the given sections . But if the sections are not given , What might be the section for the given context depending on the examples in the given context (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution"," Receiving of Independence to Sri Lanka"," Impact on the Society"). 
+Follow this exact format for the response:
+
+Answer:
+A short, direct answer to the question. Focus only on what's asked. And do not mention that you have extracted this answer from a context
+
+Pages and Sections: Format it exactly like this, using bullet points
+- Pages:  Only the page numbers that were used to get the answer,
+- Sections: No extra explanation Just the sections. Use Only 1-2 sections titles that were used to get the answer. Use the given sections . But if the sections are not given , What might be the section for the given context depending on the examples in the given context (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution"," Receiving of Independence to Sri Lanka"," Impact on the Society"). 
                         
                         """
             )
         if path == None:
-            prompt = f""" 
-                        - Answer the Users query using your genaral knowledge and past conversations. 
-                        - Output your answer as plain Markdown text only.
-                        - Do NOT wrap tables, lists, footnotes, math, or other Markdown elements inside code blocks.
-                        - Use fenced code blocks ONLY for programming code snippets.
-                        
-                        Query :
-                        {query}"""
+            prompt = f"""                       
+Query :
+{query}"""
         if path == "web":
-            prompt = f""" You are an assistant with access to the following search results. Your task is to answer the user's query by using **the information available below**. If the answer is incomplete or missing information, **use whatever is available** to provide the most relevant response. Please answer to the best of your ability based on what you know.
+            prompt = f""" 
+You are an assistant with access to the following search results. Your task is to answer the user's query by using **the information available below**. If the answer is incomplete or missing information, **use whatever is available** to provide the most relevant response. Please answer to the best of your ability based on what you know.
 
-                        Here are the search results:
-                        {data}
+Here are the search results:
+{data}
 
-                        Question: {query}"""
+Question: {query}"""
 
         result = GeminiLLM.get_response(prompt, query , chat_history)
         return {

@@ -6,9 +6,9 @@ const url_prefix = document
   .querySelector("body")
   .getAttribute("data-urlprefix");
 const markdown = window.markdownit({
-  html:true,
-  linkify:true,
-  typographer:true
+  html: true,
+  linkify: true,
+  typographer: true,
 });
 const message_box = document.getElementById(`messages`);
 const message_input = document.getElementById(`message-input`);
@@ -19,6 +19,7 @@ const send_button = document.querySelector(`#send-button`);
 const welcome_msg = document.getElementById("welcome-msg");
 const user_image = `<img src="${url_prefix}/static/img/user.png" alt="User Avatar">`;
 const gpt_image = `<img src="${url_prefix}/static/img/book.png" alt="Book Avatar">`;
+let currentChatTitle = null;
 let prompt_lock = false;
 
 hljs.addPlugin(new CopyButtonPlugin());
@@ -111,7 +112,7 @@ const ask_gpt = async (message) => {
     const vectorBtn = document.getElementById("switch_book");
     const webBtn = document.getElementById("switch_web");
     let searchPath = "none";
-    let searchLabel = ''
+    let searchLabel = "";
 
     if (vectorBtn.checked) {
       searchPath = "vector";
@@ -121,12 +122,11 @@ const ask_gpt = async (message) => {
       searchLabel = `<div class="search-label">[ 🌐 Web Search ]</div>`;
     } else if (!webBtn.checked && !vectorBtn.checked) {
       searchPath = "none";
-      searchLabel = '';
+      searchLabel = "";
     } else {
       searchPath = "none";
-      searchLabel = '';
+      searchLabel = "";
     }
-
 
     const response = await fetch(
       `${url_prefix}/chat/${window.conversation_id}`,
@@ -166,7 +166,7 @@ const ask_gpt = async (message) => {
     const error = response.body.error;
     console.log(error);
 
-    let text  = "";
+    let text = "";
 
     while (true) {
       const { value, done } = await reader.read();
@@ -197,9 +197,10 @@ const ask_gpt = async (message) => {
       // }
       // }
 
+      add_message(window.conversation_id, "user", message);
+
       document.getElementById(`gpt_${window.token}`).innerHTML =
-        searchLabel +
-        markdown.render(text);
+        searchLabel + markdown.render(text);
       document.querySelectorAll(`code`).forEach((el) => {
         hljs.highlightElement(el);
       });
@@ -218,8 +219,6 @@ const ask_gpt = async (message) => {
         "An error occurred, please reload / refresh cache and try again.";
     }
 
-    add_message(window.conversation_id, "user", message);
-
     let contextData = "";
     if (searchPath != "none") {
       let endpointContext = window.conversation_id
@@ -236,7 +235,13 @@ const ask_gpt = async (message) => {
       }
     }
 
-    add_message(window.conversation_id, "assistant", text, contextData , searchPath);
+    add_message(
+      window.conversation_id,
+      "assistant",
+      text,
+      contextData,
+      searchPath
+    );
     console.log(`Asisstant's message : ${text}`);
 
     history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
@@ -414,8 +419,8 @@ const load_user_message_box = (content) => {
 };
 
 const load_gpt_message_box = (item) => {
-  const searchType = item.searchType || '';
-  let itemSearchLabel = '';
+  const searchType = item.searchType || "";
+  let itemSearchLabel = "";
 
   if (searchType === "vector") {
     itemSearchLabel = `<div class="search-label">[ 📚 Vector Search ]</div> `;
@@ -449,8 +454,8 @@ const get_conversation = async (conversation_id) => {
 
 const add_conversation = async (conversation_id, message) => {
   if (localStorage.getItem(`conversation:${conversation_id}`) == null) {
-    let endpoint = window.conversation_id
-      ? `${url_prefix}/chat/${window.conversation_id}/generate-title`
+    let endpoint = conversation_id
+      ? `${url_prefix}/chat/${conversation_id}/generate-title`
       : `${url_prefix}/chat/generate-title`;
 
     let chatTitle = "";
@@ -465,6 +470,7 @@ const add_conversation = async (conversation_id, message) => {
       });
       const data = await res.json();
       chatTitle = data.title || message.substr(0, 16);
+      currentChatTitle = data.title || message.substr(0, 16);
     } catch (err) {
       console.error("Failed to generate title", err);
     } finally {
@@ -480,10 +486,18 @@ const add_conversation = async (conversation_id, message) => {
   }
 };
 
-const add_message = async (conversation_id, role, content, context , searchType) => {
+const add_message = async (
+  conversation_id,
+  role,
+  content,
+  context,
+  searchType
+) => {
   before_adding = JSON.parse(
-    localStorage.getItem(`conversation:${conversation_id}`)
+    localStorage.getItem(`conversation:${window.conversation_id}`)
   );
+
+  console.log("add message :  ", before_adding)
 
   const message = {
     role: role,
@@ -493,12 +507,6 @@ const add_message = async (conversation_id, role, content, context , searchType)
   if (role == "assistant" && context && searchType) {
     message.used_context = context;
     message.searchType = searchType;
-  }
-
-  if (!before_adding) {
-    before_adding = {
-      items: []
-    };
   }
 
   before_adding.items.push(message);

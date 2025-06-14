@@ -16,7 +16,7 @@ starting_page = 0
 
 context = None
 
-app.config["UPLOAD_FOLDER"] = os.path.join("app", "data", "uploads")
+app.config["UPLOAD_FOLDER"] = "/tmp/uploads"
 
 
 @app.route("/", methods=["GET"])
@@ -249,6 +249,12 @@ def import_file(conversation_id=None):
         file.save(file_path)
 
         from app.agents.rag_agent.rag_agent import RAGAgent
+        print(
+            f"""
+            file path = {file_path}    
+            index_name = {index_name}
+            start_page = {starting_page}"""
+        )
 
         try:
             result = RAGAgent.import_file(file_path , index_name , starting_page)

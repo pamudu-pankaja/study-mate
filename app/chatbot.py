@@ -301,8 +301,3 @@ def starting_page_get(conversation_id=None):
             {"start_page": "Start Page : Not set", "startPage": 0}
         )               
         
-def main():
-    app.run(debug=True)
-
-if __name__ == "__main__":
-    app.run(debug=True)

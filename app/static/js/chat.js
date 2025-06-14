@@ -506,6 +506,18 @@ const add_message = async (
     message.searchType = searchType;
   }
 
+  if (!before_adding){
+    before_adding={
+      id : conversation_id,
+      title : currentChatTitle,
+      items : []
+    }
+  }
+
+  if (!before_adding.items){
+    before_adding.items = [];
+  }
+
   before_adding.items.push(message);
 
   localStorage.setItem(

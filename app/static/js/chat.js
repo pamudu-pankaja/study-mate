@@ -453,7 +453,7 @@ const get_conversation = async (conversation_id) => {
 };
 
 const add_conversation = async (conversation_id, message) => {
-  if (localStorage.getItem(`conversation:${conversation_id}`) == null) {
+  if (localStorage.getItem(`conversation:${window.conversation_id}`) == null) {
     let endpoint = conversation_id
       ? `${url_prefix}/chat/${conversation_id}/generate-title`
       : `${url_prefix}/chat/generate-title`;
@@ -475,11 +475,11 @@ const add_conversation = async (conversation_id, message) => {
       console.error("Failed to generate title", err);
     } finally {
       localStorage.setItem(
-        `conversation:${conversation_id}`,
+        `conversation:${window.conversation_id}`,
         JSON.stringify({
-          id: conversation_id,
+          id: window.conversation_id,
           title: chatTitle,
-          items: [],
+          items: [{role:"user",content:message}],
         })
       );
     }

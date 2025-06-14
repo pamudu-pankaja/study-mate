@@ -250,8 +250,11 @@ def import_file(conversation_id=None):
 
         from app.agents.rag_agent.rag_agent import RAGAgent
 
-        result = RAGAgent.import_file(file_path , index_name , starting_page)
-
+        try:
+            result = RAGAgent.import_file(file_path , index_name , starting_page)
+        except Exception as e:
+            print(e)
+        
         if result == 'success':
             print(
             f"""

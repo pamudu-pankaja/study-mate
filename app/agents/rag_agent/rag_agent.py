@@ -2,13 +2,18 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
     # MAJOR FUNCs
     @staticmethod
     def import_file(file_path, index_name, start_page):
-        print("Getting Chunks...")
-        chunks = RAGAgent.get_chunks(file_path, index_name, start_page)
-        print("Embedding the Chunks...")
-        RAGAgent.chunk_embedder(chunks)
-        print("Upserting...")
-        RAGAgent.upsert_chunks(chunks, index_name)
-        return "success"
+        try:
+            print("Getting Chunks...")
+            chunks = RAGAgent.get_chunks(file_path, index_name, start_page)
+            print("Embedding the Chunks...")
+            RAGAgent.chunk_embedder(chunks)
+            print("Upserting...")
+            RAGAgent.upsert_chunks(chunks, index_name)
+            return "success"
+        
+        except Exception as e:
+            print(e)
+            
 
     @staticmethod
     def vector_search(query, index_name):

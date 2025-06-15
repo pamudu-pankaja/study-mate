@@ -74,7 +74,7 @@ const ask_gpt = async (message) => {
     }
     console.log(`Current conversation id : ${window.conversation_id}`);
 
-    add_conversation(window.conversation_id, message);
+    await add_conversation(window.conversation_id, message);
     window.scrollTo(0, 0);
     window.controller = new AbortController();
 
@@ -507,6 +507,7 @@ const add_message = async (
   }
 
   if (!before_adding){
+    console.warn("Conversation is missing, Creating a new one...")
     before_adding={
       id : conversation_id,
       title : currentChatTitle,

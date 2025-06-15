@@ -34,7 +34,7 @@ class ChatBotAgent:
 You are a helpful assistant extracting answers from context for a user's query.
 
 Use the provided context (retrieved via a vector search or a web search) to answer the user query and Respond in the user's expected language and translate only if needed.
-If no context is given, use your own knowledge to answer the question clearly.
+If no context is given, use your own knowledge and memory to answer the question clearly.
 
 Context: {data} 
 

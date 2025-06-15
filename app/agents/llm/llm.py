@@ -109,7 +109,7 @@ Emoji Usage:
 
     @staticmethod
     def generate_title(message):
-        prompt = f"Summarize the user's message into a short, relevant title. No punctuation, no quotes.:\n\nUser: {message}"
+        prompt = f"Summarize the user's message into a short, relevant title. Max word limit is four. No punctuation, no quotes. And try to keep it short as possible.:\n\nUser: {message}"
 
         response = client.models.generate_content(
             model="gemini-2.0-flash-lite",

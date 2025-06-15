@@ -197,8 +197,6 @@ const ask_gpt = async (message) => {
       // }
       // }
 
-
-
       document.getElementById(`gpt_${window.token}`).innerHTML =
         searchLabel + markdown.render(text);
       document.querySelectorAll(`code`).forEach((el) => {
@@ -236,7 +234,13 @@ const ask_gpt = async (message) => {
     }
 
     add_message(window.conversation_id, "user", message);
-    add_message(window.conversation_id,"assistant",text,contextData,searchPath);
+    add_message(
+      window.conversation_id,
+      "assistant",
+      text,
+      contextData,
+      searchPath
+    );
     console.log(`Asisstant's message : ${text}`);
 
     history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
@@ -346,6 +350,15 @@ const set_conversation = async (conversation_id) => {
   await clear_conversation();
   await load_conversation(conversation_id);
   await load_conversations(20, 0, true);
+
+  const allConvos = document.querySelectorAll(".conversation-sidebar");
+  allConvos.forEach((el) => el.classList.remove("active"));
+
+  const currentConvo = [...allConvos].find((el) =>
+    el.innerHTML.includes(conversation_id)
+  );
+
+  if (currentConvo) currentConvo.classList.add("active");
 };
 
 const new_conversation = async () => {
@@ -441,7 +454,7 @@ const is_assistant = (role) => {
 };
 
 const get_conversation = async (conversation_id) => {
-  console.log("addding conversation id:" ,conversation_id)
+  console.log("addding conversation id:", conversation_id);
   let conversation = await JSON.parse(
     localStorage.getItem(`conversation:${conversation_id}`)
   );
@@ -470,7 +483,7 @@ const add_conversation = async (conversation_id, message) => {
     } catch (err) {
       console.error("Failed to generate title", err);
     } finally {
-      console.log("conversation adding id :",conversation_id)
+      console.log("conversation adding id :", conversation_id);
       localStorage.setItem(
         `conversation:${conversation_id}`,
         JSON.stringify({
@@ -494,7 +507,7 @@ const add_message = async (
     localStorage.getItem(`conversation:${conversation_id}`)
   );
 
-  console.log("add message id :  ", conversation_id)
+  console.log("add message id :  ", conversation_id);
 
   const message = {
     role: role,
@@ -506,16 +519,16 @@ const add_message = async (
     message.searchType = searchType;
   }
 
-  if (!before_adding){
-    console.warn("Conversation is missing, Creating a new one...")
-    before_adding={
-      id : conversation_id,
-      title : currentChatTitle,
-      items : []
-    }
+  if (!before_adding) {
+    console.warn("Conversation is missing, Creating a new one...");
+    before_adding = {
+      id: conversation_id,
+      title: currentChatTitle,
+      items: [],
+    };
   }
 
-  if (!before_adding.items){
+  if (!before_adding.items) {
     before_adding.items = [];
   }
 
@@ -528,8 +541,8 @@ const add_message = async (
 };
 
 const load_conversations = async (limit, offset, loader) => {
-  //console.log(loader);
-  //if (loader === undefined) box_conversations.appendChild(spinner);
+  console.log(loader);
+  if (loader === undefined) box_conversations.appendChild(spinner);
   let conversations = [];
   for (let i = 0; i < localStorage.length; i++) {
     if (localStorage.key(i).startsWith("conversation:")) {
@@ -538,17 +551,25 @@ const load_conversations = async (limit, offset, loader) => {
     }
   }
 
-  //if (loader === undefined) spinner.parentNode.removeChild(spinner)
+  if (loader === undefined) spinner.parentNode.removeChild(spinner)
   await clear_conversations();
 
   for (conversation of conversations) {
     box_conversations.innerHTML += `
-            <div class="conversation-sidebar">
-                <div class="left" onclick="set_conversation('${conversation.id}')">
+            <div class="conversation-sidebar ${
+              window.conversation_id === conversation.id ? "active" : ""
+            }">
+                <div class="left" onclick="set_conversation('${
+                  conversation.id
+                }')">
                     <i class="fa-regular fa-comments"></i>
-                    <span class="conversation-title" style="text-overflow:ellipsis;">${conversation.title}</span>
+                    <span class="conversation-title" style="text-overflow:ellipsis;">${
+                      conversation.title
+                    }</span>
                 </div>
-                <i onclick="delete_conversation('${conversation.id}')" class="fa-solid fa-trash"></i>
+                <i onclick="delete_conversation('${
+                  conversation.id
+                }')" class="fa-solid fa-trash"></i>
             </div>
         `;
   }

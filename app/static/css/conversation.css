@@ -33,7 +33,7 @@
 
 .conversation-title {
 	color: var(--colour-3);
-	font-size: 14px;
+	font-size: 13px;
 	text-overflow: ellipsis;	
 }
 
@@ -41,6 +41,12 @@
 	border-radius: 8px;
 	background-color: var(--user-msg-bg);
 }
+
+.conversation-sidebar.active{
+	border-radius: 8px;
+	background-color: var(--user-msg-bg);
+}
+
 
 .conversation .user-input textarea {
 	font-size: 1rem;

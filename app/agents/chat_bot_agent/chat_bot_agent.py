@@ -46,8 +46,8 @@ Answer:
 A short, direct answer to the question. Focus only on what's asked. And do not mention that you have extracted this answer from a context
 
 Pages and Sections: Format it exactly like this, using bullet points
-- Pages:  Only the page numbers that were used to get the answer,
-- Sections: No extra explanation Just the sections. Use Only 1-2 sections titles that were used to get the answer. Use the given sections . But if the sections are not given , What might be the section for the given context depending on the examples in the given context (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution"," Receiving of Independence to Sri Lanka"," Impact on the Society"). 
+- 📄 Pages: Only the page numbers that were used to get the answer,
+- 📚 Sections: No extra explanation Just the sections. Use Only 1-2 sections titles that were used to get the answer. Use the given sections . But if the sections are not given , What might be the section for the given context depending on the examples in the given context (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution"," Receiving of Independence to Sri Lanka"," Impact on the Society"). 
                         
                         """
             )

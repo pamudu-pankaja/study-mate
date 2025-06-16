@@ -490,6 +490,7 @@ const add_conversation = async (conversation_id, message) => {
           id: conversation_id,
           title: chatTitle,
           items: [],
+          createdAt:Date.now()
         })
       );
     }
@@ -525,6 +526,7 @@ const add_message = async (
       id: conversation_id,
       title: currentChatTitle,
       items: [],
+      createdAt:Date.now()
     };
   }
 
@@ -551,14 +553,16 @@ const load_conversations = async (limit, offset, loader) => {
     }
   }
 
+  conversations.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
   if (loader === undefined) spinner.parentNode.removeChild(spinner)
   await clear_conversations();
 
-  for (conversation of conversations.reverse()) {
-    box_conversations.insertAdjacentHTML ( "beforeend",`
+  for (conversation of conversations) {
+    box_conversations.innerHTML+= `
             <div class="conversation-sidebar ${
               window.conversation_id === conversation.id ? "active" : ""
-            }">
+            }" data-created="${conversation.createdAt}" >
                 <div class="left" onclick="set_conversation('${
                   conversation.id
                 }')">
@@ -571,7 +575,7 @@ const load_conversations = async (limit, offset, loader) => {
                   conversation.id
                 }')" class="fa-solid fa-trash"></i>
             </div>
-        `);
+        `;
   }
 
   document.querySelectorAll(`code`).forEach((el) => {

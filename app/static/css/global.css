@@ -31,6 +31,7 @@
 	--box-shadow:#b9b8b871;
 	--input-border:#000;
 	--hover:#fafafac0;
+	--conversation-title-hover:#c7c7c7;
 }
 
 .theme-dark {
@@ -54,6 +55,7 @@
 	--box-shadow:#00000080;
 	--input-border:#000;
 	--hover:#ffffff0e;
+	--conversation-title-hover:#404040;
 }
 
 body,

@@ -1,5 +1,5 @@
 .conversation {
-	width: 60%;
+	width: 70%;
 	margin: 0px 16px;
 	display: flex;
 	flex-direction: column;
@@ -34,12 +34,26 @@
 .conversation-title {
 	color: var(--colour-3);
 	font-size: 13px;
-	text-overflow: ellipsis;	
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: middle;	
+}
+
+.conversation-sidebar .left {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.conversation-sidebar{
+	margin-bottom: 1px;
+	max-width: 300px;
 }
 
 .conversation-sidebar:hover{
 	border-radius: 8px;
-	background-color: var(--user-msg-bg);
+	background-color: var(--conversation-title-hover);
 }
 
 .conversation-sidebar.active{

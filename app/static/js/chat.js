@@ -12,8 +12,8 @@ const markdown = window.markdownit({
 });
 const message_box = document.getElementById(`messages`);
 const message_input = document.getElementById(`message-input`);
-const box_conversations = document.querySelector(`.top`);
-const spinner = box_conversations.querySelector(".spinner");
+const box_conversations = document.querySelector(`.conversation-list`);
+const spinner = document.querySelector(".spinner");
 const stop_generating = document.querySelector(`.stop-generating`);
 const send_button = document.querySelector(`#send-button`);
 const welcome_msg = document.getElementById("welcome-msg");
@@ -542,7 +542,7 @@ const add_message = async (
 
 const load_conversations = async (limit, offset, loader) => {
   console.log(loader);
-  if (loader === undefined) box_conversations.appendChild(spinner);
+  if (loader === undefined) document.querySelector(".top").appendChild(spinner);
   let conversations = [];
   for (let i = 0; i < localStorage.length; i++) {
     if (localStorage.key(i).startsWith("conversation:")) {
@@ -554,8 +554,8 @@ const load_conversations = async (limit, offset, loader) => {
   if (loader === undefined) spinner.parentNode.removeChild(spinner)
   await clear_conversations();
 
-  for (conversation of conversations) {
-    box_conversations.innerHTML += `
+  for (conversation of conversations.reverse()) {
+    box_conversations.insertAdjacentHTML ( "beforeend",`
             <div class="conversation-sidebar ${
               window.conversation_id === conversation.id ? "active" : ""
             }">
@@ -563,7 +563,7 @@ const load_conversations = async (limit, offset, loader) => {
                   conversation.id
                 }')">
                     <i class="fa-regular fa-comments"></i>
-                    <span class="conversation-title" style="text-overflow:ellipsis;">${
+                    <span class="conversation-title" title="${conversation.title}">${
                       conversation.title
                     }</span>
                 </div>
@@ -571,7 +571,7 @@ const load_conversations = async (limit, offset, loader) => {
                   conversation.id
                 }')" class="fa-solid fa-trash"></i>
             </div>
-        `;
+        `);
   }
 
   document.querySelectorAll(`code`).forEach((el) => {

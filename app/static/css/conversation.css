@@ -48,7 +48,7 @@
 
 .conversation-sidebar{
 	margin-bottom: 1px;
-	max-width: 300px;
+	max-width: 100%;
 }
 
 .conversation-sidebar:hover{

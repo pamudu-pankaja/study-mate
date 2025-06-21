@@ -4,15 +4,17 @@ import os
 import re
 import json
 
+
 def int_to_roman(n):
     val = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
     syms = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
-    roman_num = ''
+    roman_num = ""
     for i in range(len(val)):
         while n >= val[i]:
             roman_num += syms[i]
             n -= val[i]
     return roman_num.lower()
+
 
 def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page=0):
     file_name = os.path.basename(file_path)
@@ -44,8 +46,10 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
 
         offset = get_page_offset(index_name)
 
-        bullet_section = re.compile(r'^\s*[]+\s*(.*)', re.UNICODE)
-        numbered_section = re.compile(r'^\s*(?:Chapter\s*)?(\d+)\s*[\.\s]\s*(\d+)\s+([A-Za-z].+)$', re.IGNORECASE)
+        bullet_section = re.compile(r"^\s*[]+\s*(.*)", re.UNICODE)
+        numbered_section = re.compile(
+            r"^\s*(?:Chapter\s*)?(\d+)\s*[\.\s]\s*(\d+)\s+([A-Za-z].+)$", re.IGNORECASE
+        )
 
         page_sections = {}
 
@@ -60,7 +64,9 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
 
                 match = numbered_section.match(line)
                 if match:
-                    section = f"{match.group(1)}.{match.group(2)} {match.group(3).strip()}"
+                    section = (
+                        f"{match.group(1)}.{match.group(2)} {match.group(3).strip()}"
+                    )
                     page_sections[page] = section
                     break
 
@@ -79,8 +85,7 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
                     break
 
         splitter = RecursiveCharacterTextSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap
+            chunk_size=chunk_size, chunk_overlap=chunk_overlap
         )
         chunks = splitter.split_documents(docs)
 
@@ -103,12 +108,14 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
                     break
 
             if len(text.split()):
-                formatted_chunks.append({
-                    "id": f"{base_name}-vec{i+1}",
-                    "text": text,
-                    "page": logical_page,
-                    "section": current_section
-                })
+                formatted_chunks.append(
+                    {
+                        "id": f"{base_name}-vec{i+1}",
+                        "text": text,
+                        "page": logical_page,
+                        "section": current_section,
+                    }
+                )
 
         last_page_used = max(chunk.metadata.get("page", 0) for chunk in chunks)
         update_page_offset(index_name, last_page_used + 1)
@@ -118,13 +125,3 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
     except Exception as e:
         print(f"Error while loading file: {e}")
         return None
-
-    
-# file_path = "D:/Programming/Code Jam 2025/Hisory Chat Bot/history-chat-bot/app/data/3_grade-11-history-text-book.pdf"
-# start_page=11
-# index_name="history_text_5"
-
-# result = load_pdf(file_path,index_name=index_name)
-
-# for d in result:
-#     print(d.get("section"))

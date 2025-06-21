@@ -1,7 +1,4 @@
-from app import chatbot
-
-def main():
-    chatbot.main()
+from app.chatbot import app
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)

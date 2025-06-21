@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <meta
+      name="description"
+      content="A conversational AI system that listens, learns, and challenges"
+    />
+
+    <meta property="og:title" content="StudyMate" />
+    <meta
+      property="og:image"
+      content="{{ url_for('static', filename='img/book.png') }}"
+    />
+    <meta
+      property="og:description"
+      content="A conversational AI system that help users with school works"
+    />
+    <meta property="og:url" content="{{request.url}}" />
+
+    <title>StudyMate</title>
+
+    <!-- Styles -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{{ url_for('static', filename='img/apple-touch-icon.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{{ url_for('static', filename='img/favicon-32x32.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{{ url_for('static', filename='img/favicon-16x16.png') }}"
+    />
+    <link
+      rel="manifest"
+      href="{{ url_for('static', filename='img/site.webmanifest') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
+    />
+    <!-- <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css" > -->
+  </head>
+
+  <body data-urlprefix="{{ url_prefix }}">
+    <div class="main-container">
+      <div class="box sidebar">
+        <div class="top">
+          <button class="button" onclick="new_conversation()">
+            <i class="fa-solid fa-plus"></i>
+            <span>New Conversation</span>
+          </button>
+          <div class="spinner"></div>
+          <div class="conversation-list"></div>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="button" onclick="delete_conversations()">
+            <i class="fa-solid fa-trash"></i>
+            <span>Clear Conversations</span>
+          </button>
+          <div class="settings-container">
+            <div class="checkbox field">
+              <span>Dark Mode</span>
+              <input type="checkbox" id="theme-toggler" />
+              <label for="theme-toggler"></label>
+            </div>
+            <!-- <div class="field">
+						<span>Language</span>
+						<select class="dropdown" id="language" onchange="changeLanguage(this.value)"></select>
+					</div> -->
+          </div>
+          <a
+            class="info"
+            href="https://github.com/pamudu-pankaja/text-book-chat-bot"
+            target="_blank"
+          >
+            <i class="fa-brands fa-github"></i>
+            <span class="conversation-title"> Version: 0.1.0 </span>
+          </a>
+        </div>
+      </div>
+
+      <div class="conversation">
+        <div class="stop-generating stop-generating-hidden">
+          <button class="button" id="cancelButton">
+            <span>Stop Generating</span>
+          </button>
+        </div>
+
+        <div class="box" id="messages">
+          <div id="welcome-msg" style="display: none">
+            What do you want to know ?
+          </div>
+        </div>
+
+        <div class="user-input">
+          <div class="box input-box">
+            <textarea
+              id="message-input"
+              placeholder="Ask a question"
+              cols="30"
+              rows="10"
+              style="white-space: pre-wrap"
+            ></textarea>
+            <div id="send-button">
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="options-container">
+          <!-- <div class="buttons">
+					<div class="field">
+						<select class="dropdown" name="model" id="model">
+							<option value="gpt-3.5-turbo">GPT-3.5</option>
+							<option value="gpt-3.5-turbo-16k">GPT-3.5-turbo-16k</option>
+							<option value="gpt-4" selected>GPT-4</option>
+						</select>
+					</div> -->
+          <!-- <div class="field">
+						<select class="dropdown" name="jailbreak" id="jailbreak">
+							<option value="default" selected>Default</option>
+							<option value="gpt-dan-11.0">DAN</option>
+							<option value="gpt-evil">Evil</option>
+						</select>
+					</div>
+				</div> -->
+
+          <div class="field checkbox toogle-group" id="resourceToggleGroup">
+            <input type="checkbox" id="switch_web" onchange="toggleOff(this)" />
+            <label for="switch_web"></label>
+            <span>Using Web</span>
+
+            <input
+              type="checkbox"
+              id="switch_book"
+              onchange="toggleOff(this)"
+            />
+            <label for="switch_book" class="switch_book"></label>
+            <span>Using PDF</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden box right-sidebar" id="rightSidebar">
+      <div class="top">
+        <span id="data_base_span">Data Base Information</span>
+      </div>
+      <div class="sidebar-content">
+        <div class="index" style="margin-top: 13px">
+          <span>
+            <i class="fa-solid fa-server" style="margin-right: 7px"></i> Vector
+            Index</span
+          >
+          <input
+            autocomplete="on"
+            spellcheck="false"
+            type="text"
+            placeholder="Your index name"
+            id="index"
+            style="margin-top: 4px"
+          />
+          <button id="index-name-btn" onclick="setIndex()">
+            <i
+              class="fa-regular fa-layer-plus"
+              style="margin-right: 6px; font-size: 14px; opacity: 0.6"
+            ></i>
+            Set Index
+          </button>
+          <span id="index-fallback-message" class="error"></span>
+          <br />
+        </div>
+
+        <div class="file_input">
+          <span style="margin-top: 60px"
+            ><i
+              class="fa-solid fa-file-circle-plus"
+              style="margin-right: 8px"
+            ></i
+            >Import PDF File
+          </span>
+          <span id="file_name">No file chosen</span>
+          <input type="file" id="file_input" accept=".pdf" />
+
+          <div class="starting-page">
+            <div class="tooltip-wrapper">
+              <a href="index.html" target="_blank">
+                <i class="fa fa-info-circle info-icon"></i>
+              </a>
+              <span class="tooltip-text">
+                If the book you are choosing has any credits in the front pages
+                please set the page you would like to start counting, else keep
+                it as zero. CLICK for more DETAILS
+              </span>
+            </div>
+            <input
+              value="0"
+              autocomplete="on"
+              spellcheck="false"
+              type="number"
+              placeholder="Which page to start counting"
+              id="starting-page"
+              name="startPage"
+            />
+          </div>
+          <br />
+          <button onclick="uploadFile()" id="file-upload-btn">
+            <i
+              class="fa-solid fa-up-from-line"
+              style="margin-right: 6px; font-size: 15px; opacity: 0.5"
+            ></i>
+            Import File
+          </button>
+          <div id="file-fallback-message" class="error"></div>
+        </div>
+
+        <div class="current-info-container">
+          <div
+            id="current-status-div"
+            style="margin-bottom: 10px; font-size: 15px"
+          >
+            -Current Status-
+          </div>
+          <div id="current-index" style="margin-top: -2px; margin-bottom: 4px">
+            Index Name : Not set
+          </div>
+          <div id="start-page">Start Page : Not set</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-button menu-button-2">
+      <i class="fa-solid fa-database"></i>
+    </div>
+
+    <div class="menu-button menu-button-1">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      window.conversation_id = "{{ chat_id or '' }}";
+    </script>
+    <script
+      src="{{ url_for('static', filename='js/icons.js') }}"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"
+      defer
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/12c4d6a4a9.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/highlight.min.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/theme-toggler.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/sidebar-toggler.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/toggle-button.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/index-name.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/import-file.js') }}"
+      defer
+    ></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
+  </body>
+</html>

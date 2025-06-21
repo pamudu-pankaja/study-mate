@@ -9,8 +9,8 @@ async function fetchLanguages() {
 
     // const languages = await languagesResponse.json();
     // const currentLanguage = await currentLanguageResponse.text();
-    const languages = ["en", "es", "fr"];
-    const currentLanguage = "fr";
+    const languages = ["en", "es", "fr"]; 
+    const currentLanguage = "fr"
 
     const languageSelect = document.getElementById("language");
     languages.forEach((lang) => {

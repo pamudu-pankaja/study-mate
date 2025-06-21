@@ -1,6 +1,6 @@
 from google import genai
 from google.genai import types
-import time 
+import time
 import random
 
 from app.config.config import GOOGLE_API_KEY
@@ -29,11 +29,11 @@ class GeminiLLM:
             contents.append(content_item)
 
         contents.append({"role": "user", "parts": [{"text": prompt}]})
-        
-        print(contents)
-        
+
+        # print(contents)
+
         retries = 3
-        
+
         for attempt in range(retries):
             try:
                 response = client.models.generate_content(
@@ -60,9 +60,11 @@ Your name is StudyMate , And you are a large language model with a defualt name 
 - Avoid robotic phrases or unnecessary repetition.
 - Use Markdown elements like headings, lists, tables, footnotes, math, blockquotes, images, and inline code normally.
 - Use fenced code blocks ONLY for actual programming code snippets (like python, javascript), with language tags.
-- NEVER wrap non-code Markdown elements (tables, lists, footnotes, math, definitions) inside triple backtick code blocks.
+- NEVER wrap non-code Markdown elements (tables, lists, footnotes, math, definitions etc.) inside triple backtick code blocks.
 - Do NOT show Markdown as code examples inside fenced blocks; instead, output the actual rendered Markdown.
 - Your response should be valid Markdown that renders properly without extra code fences.
+- Use horizontal rules (`---`) to separate different sections or topics clearly.
+- Include `---` as markdown horizontal lines between major parts of your response when appropriate.
 
 📚 CONTEXT-AWARENESS:
 - Use the current session history to maintain consistency.
@@ -98,14 +100,14 @@ Emoji Usage:
                 return full_response
             except Exception as e:
                 if "503" in str(e):
-                    wait_time = 2 ** attempt + random.random()
+                    wait_time = 2**attempt + random.random()
                     print(f"503 received. Retrying in {wait_time:.2f}s...")
                     time.sleep(wait_time)
                 elif "429" in str(e):
-                    return "Quota exhausted or rate-limited. Try later." 
+                    return "Quota exhausted or rate-limited. Try later."
                 else:
-                    return f"LLM Error : {e}"    
-        return "⚠️ Gemini is overloaded. Please try again soon" 
+                    return f"LLM Error : {e}"
+        return "⚠️ Gemini is overloaded. Please try again soon"
 
     @staticmethod
     def generate_title(message):
@@ -132,7 +134,7 @@ def manage_chat_history(chat_history):
     context_tokens = 0
     context_buffer = []
 
-    max_total_tokens = 50000
+    max_total_tokens = 100000
     max_context_tokens = 5000
 
     for msg in reversed(chat_history):
@@ -183,5 +185,3 @@ def manage_chat_history(chat_history):
         )
 
     return updated_history
-
-

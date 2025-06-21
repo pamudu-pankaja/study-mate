@@ -10,10 +10,9 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
             print("Upserting...")
             RAGAgent.upsert_chunks(chunks, index_name)
             return "success"
-        
+
         except Exception as e:
             print(e)
-            
 
     @staticmethod
     def vector_search(query, index_name):

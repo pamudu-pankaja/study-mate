@@ -490,7 +490,7 @@ const add_conversation = async (conversation_id, message) => {
           id: conversation_id,
           title: chatTitle,
           items: [],
-          createdAt:Date.now()
+          createdAt: Date.now(),
         })
       );
     }
@@ -526,7 +526,7 @@ const add_message = async (
       id: conversation_id,
       title: currentChatTitle,
       items: [],
-      createdAt:Date.now()
+      createdAt: Date.now(),
     };
   }
 
@@ -555,11 +555,11 @@ const load_conversations = async (limit, offset, loader) => {
 
   conversations.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
-  if (loader === undefined) spinner.parentNode.removeChild(spinner)
+  if (loader === undefined) spinner.parentNode.removeChild(spinner);
   await clear_conversations();
 
   for (conversation of conversations) {
-    box_conversations.innerHTML+= `
+    box_conversations.innerHTML += `
             <div class="conversation-sidebar ${
               window.conversation_id === conversation.id ? "active" : ""
             }" data-created="${conversation.createdAt}" >
@@ -567,9 +567,9 @@ const load_conversations = async (limit, offset, loader) => {
                   conversation.id
                 }')">
                     <i class="fa-regular fa-comments"></i>
-                    <span class="conversation-title" title="${conversation.title}">${
+                    <span class="conversation-title" title="${
                       conversation.title
-                    }</span>
+                    }">${conversation.title}</span>
                 </div>
                 <i onclick="delete_conversation('${
                   conversation.id

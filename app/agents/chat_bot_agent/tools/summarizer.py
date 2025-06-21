@@ -37,7 +37,7 @@ class Summarizer:
         return context
 
     @staticmethod
-    def get_summerize_text(text,amount=3):
+    def get_summerize_text(text, amount=3):
         try:  # PUNKT_TAB NOT FOUND ERROR
             nltk.data.find("tokenizers/punkt")
         except LookupError:
@@ -51,4 +51,3 @@ class Summarizer:
         summary_sentences = summarizer(parser.document, sentences_count=amount)
 
         return " ".join(str(sentence) for sentence in summary_sentences)
-

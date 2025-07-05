@@ -37,12 +37,17 @@ class pinecone_db:
             print("Embedding the Chunks...")
             embeddings = Embedding.get_embedding_chunks(data_texts)
 
+            # print(f"Embeddings length: {len(embeddings)}")
+
+            # print(f"First embedding sample (first 5 values): {embeddings[0][:5]}") if embeddings else print("No embeddings found.")
+
             if len(embeddings) != len(data):
                 return f"Error: Mismatch between data ({len(data)}) and embeddings ({len(embeddings)})"
 
             vectors = []
             for d, e in zip(data, embeddings):
                 if e is not None and isinstance(e, list):
+                    # print(f"Embedding for id {d['id']} has length {len(e)}")
                     if len(e) == 768:
                         vectors.append(
                             {
@@ -62,28 +67,28 @@ class pinecone_db:
                 pass
                 print(f"Skipping invalid embedding for id {d['id']} (embedding is None or not a list)")
 
+            # print(f"Vectors prepared for upsert: {len(vectors)} vectors")
             if vectors:
                 pass
-            
-            if not vectors:
-                print(
-                    "No valid vectors to upsert (all embeddings may have failed or were invalid)."
-                )
-                return None
+                # print(f"Sample vector: {vectors[0]}")
 
             while not pc.describe_index(index_name).status["ready"]:
                 time.sleep(1)
 
             index = pc.Index(index_name)
 
-
-            batch_size = 100
-            for i in range(0, len(vectors), batch_size):
-                batch = vectors[i : i + batch_size]
-                res = index.upsert(vectors=batch, namespace=namespace)
-                print(f"Upserted batch {i // batch_size + 1}: {len(batch)} vectors")
-
-            print(f"SUCCESS: {len(vectors)} vectors were added in batches.")
+            if not vectors:
+                print(
+                    "No valid vectors to upsert (all embeddings may have failed or were invalid)."
+                )
+                return None
+            res = index.upsert(
+                vectors=vectors,
+                namespace=namespace
+                )
+            print(
+                f"SUCCESS: {len(vectors)} vectors were added. Pinecone response: {res}"
+            )
             return "success"
 
         except Exception as e:

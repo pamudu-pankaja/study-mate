@@ -25,7 +25,7 @@ class pinecone_db:
                 return f"Error while requasting : {e}"
 
     @staticmethod
-    def upsert(data, index_name):
+    def upsert(data, index_name,namespace):
         from app.agents.rag_agent.vector_store.embedder import Embedding
 
         try:
@@ -61,10 +61,10 @@ class pinecone_db:
                         )
                 else:
                     pass
-                    # print(f"Invalid embedding for id {d['id']}. Skipping ..")
+                    print(f"Invalid embedding for id {d['id']}. Skipping ..")
             else:
                 pass
-                # print(f"Skipping invalid embedding for id {d['id']} (embedding is None or not a list)")
+                print(f"Skipping invalid embedding for id {d['id']} (embedding is None or not a list)")
 
             # print(f"Vectors prepared for upsert: {len(vectors)} vectors")
             if vectors:
@@ -81,11 +81,15 @@ class pinecone_db:
                     "No valid vectors to upsert (all embeddings may have failed or were invalid)."
                 )
                 return None
-            res = index.upsert(vectors=vectors)
+            res = index.upsert(
+                vectors=vectors,
+                namespace=namespace
+                )
             print(
                 f"SUCCESS: {len(vectors)} vectors were added. Pinecone response: {res}"
             )
+            return "success"
 
         except Exception as e:
             print(f"Erro while storing : {e}")
-            return None
+            return "error"

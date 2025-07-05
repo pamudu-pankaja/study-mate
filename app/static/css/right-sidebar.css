@@ -117,6 +117,57 @@
   outline: none;
 }
 
+.sidebar-content .dropdown-container {
+  position: relative;
+  width: fit-content;
+}
+
+.sidebar-content .dropdown-container .dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid var(--blur-border);
+  background-color: var(--blur-bg);
+  color: var(--colour-3);
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10;
+  margin-top: 60px;
+  background: var(--accent);
+  border-radius: 8px;
+  max-height: calc(5 * 40px);
+}
+
+.sidebar-content .dropdown-container .dropdown-item {
+  height: 40px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  border: 0.5px solid var(--colour-6)
+}
+
+.sidebar-content .dropdown-container .dropdown-item:hover {
+  background-color: var(--blur-border); /* or any soft hover bg */
+}
+
+.sidebar-content .dropdown-container .dropdown-list::-webkit-scrollbar {
+	width: 4px;
+	padding: 8px 0px;
+}
+
+.sidebar-content .dropdown-container .dropdown-list::-webkit-scrollbar-track {
+	background-color: #ffffff00;
+}
+
+.sidebar-content .dropdown-container .dropdown-list::-webkit-scrollbar-thumb {
+	background-color: var(--conversations); 
+	border-radius: 10px;
+}
+
 #index-name-btn {
   display: flow;
   padding: 8px 12px;

@@ -23,30 +23,32 @@ class Embedding:
             return f"Error during embedding : {e}"
 
     @staticmethod
-    def get_embedding_chunks(data_list):
-
-        embeddings = []
-
-        for text in data_list:
-            # print(f"Text passed to embedding: {text}")
+    def get_embedding_chunks(chunks,max_workers=20):
+        def embed_single(text):
             try:
                 result = client.models.embed_content(
                     model="text-embedding-005",
-                    contents=f"{text}",
+                    contents=text,
                     config=types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY"),
                 )
-
-                # print(f"Embedding result for text (first 60 characters): {text[:60]}")
-                # print(f"Embedding response: {result}")
-
-                if result and result.embeddings and result.embeddings[0].values:
-                    embeddings.append(result.embeddings[0].values)
-
-                else:
-                    # print(f"Embedding failed for : {text[:60]}")
-                    embeddings.append(None)
-
+                return result.embeddings[0].values if result and result.embeddings else None
             except Exception as e:
-                print(f"Error during embedding: {e}")
-                embeddings.append(None)
-        return embeddings
+                print(f"Embedding error: {e}")
+                return None
+
+        def get_embedding_chunks_parallel(texts):
+            embeddings = [None] * len(texts)
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = {executor.submit(embed_single, text): idx for idx, text in enumerate(texts)}
+                for future in as_completed(futures):
+                    idx = futures[future]
+                    try:
+                        embeddings[idx] = future.result()
+                    except Exception as e:
+                        print(f"Embedding error at index {idx}: {e}")
+                        embeddings[idx] = None
+            return embeddings
+
+        texts = [chunk["text"] for chunk in chunks]
+        return get_embedding_chunks_parallel(texts)
+

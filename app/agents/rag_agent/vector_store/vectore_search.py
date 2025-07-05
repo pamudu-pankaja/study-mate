@@ -6,8 +6,8 @@ pc = Pinecone(api_key=PINECORN_API_KEY)
 
 
 def search(query, index_name):
-    index = pc.Index("text-books")
-
+    index = pc.Index(index_name)
+    
     print("Getting the embeddings of the query...")
 
     query_vector = Embedding.get_embedding_query(
@@ -15,7 +15,7 @@ def search(query, index_name):
     )  # + "include page numbers and sections")
 
     results = index.query(
-        vector=query_vector, top_k=5, include_metadata=True, include_values=False,namespace=index_name
+        vector=query_vector, top_k=5, include_metadata=True, include_values=False
     )
 
     data = []
@@ -28,4 +28,8 @@ def search(query, index_name):
                 "section": match["metadata"].get("section", "unknown"),
             }
         )
+    
+    print()
+    print(data)
+    print()
     return data

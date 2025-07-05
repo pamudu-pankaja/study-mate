@@ -25,7 +25,7 @@ class pinecone_db:
                 return f"Error while requasting : {e}"
 
     @staticmethod
-    def upsert(data, index_name,namespace):
+    def upsert(data, namespace , index_name="text-books"):
         from app.agents.rag_agent.vector_store.embedder import Embedding
 
         try:

@@ -1,6 +1,8 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from google import genai
 from google.genai import types
 from app.config.config import GOOGLE_API_KEY
+
 
 client = genai.Client(api_key=GOOGLE_API_KEY)
 
@@ -29,7 +31,7 @@ class Embedding:
             # print(f"Text passed to embedding: {text}")
             try:
                 result = client.models.embed_content(
-                    model="text-embedding-004",
+                    model="text-embedding-005",
                     contents=f"{text}",
                     config=types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY"),
                 )

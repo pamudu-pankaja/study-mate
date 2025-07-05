@@ -139,6 +139,8 @@
   background: var(--accent);
   border-radius: 8px;
   max-height: calc(5 * 40px);
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar-content .dropdown-container .dropdown-item {
@@ -147,7 +149,9 @@
   cursor: pointer;
   font-size: 14px;
   text-align: center;
-  border: 0.5px solid var(--colour-6)
+  border: 0.5px solid var(--colour-6);
+  background-color: var(--colour-1);
+  text-overflow: ellipsis;
 }
 
 .sidebar-content .dropdown-container .dropdown-item:hover {
@@ -167,6 +171,26 @@
 	background-color: var(--conversations); 
 	border-radius: 10px;
 }
+
+.sidebar-content .dropdown-container .dropdown-list .dropdown-item.add-new {
+  display: inline-flex !important;      
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;             
+  font-weight: bold;
+  color: #4caf50;
+  justify-content: center;
+  width: 100%;          
+}
+
+.sidebar-content .dropdown-container .dropdown-list .dropdown-item.add-new span {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-block;
+  top: 0px;
+}
+
 
 #index-name-btn {
   display: flow;

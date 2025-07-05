@@ -25,7 +25,7 @@ class pinecone_db:
                 return f"Error while requasting : {e}"
 
     @staticmethod
-    def upsert(data, index_name,namespace):
+    def upsert(data, namespace,index_name="text-books"):
         from app.agents.rag_agent.vector_store.embedder import Embedding
 
         try:
@@ -33,7 +33,8 @@ class pinecone_db:
                 d for d in data if isinstance(d, dict) and "text" in d and "id" in d
             ]
             data_texts = [d["text"] for d in data]
-
+            
+            print("Embedding the Chunks...")
             embeddings = Embedding.get_embedding_chunks(data_texts)
 
             if len(embeddings) != len(data):

@@ -13,16 +13,16 @@ class pinecone_db:
             if index_name not in pc.list_indexes():
                 pc.create_index(
                     name=index_name,
-                    dimension=768, 
+                    dimension=768,
                     metric="cosine",
                     spec=ServerlessSpec(cloud="aws", region="us-east-1"),
                 )
-                print("CREATE INDEX SUCCESSFUL")
-            else:
-                print("INDEX ALREADY EXISTS")
+            return "CREAT INDEX SUCCESSFUL"
         except Exception as e:
-            print(f"Error while creating index: {e}")
-
+            if "ALREADY_EXISTS" in str(e):
+                return "WORKING ON A ALREADY EXISTS INDEX"
+            else:
+                return f"Error while requasting : {e}"
 
     @staticmethod
     def upsert(data, index_name):

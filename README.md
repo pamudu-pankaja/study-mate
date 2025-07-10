@@ -47,7 +47,7 @@ Study Mate is a simple and friendly web app that helps you study smarter. Hereâ€
 
     ```bash
     git clone https://github.com/pamudu-pankaja/study-mate.git
-    cd StudyMate
+    cd study-mate
     ```
 
 2. **Install requirements**

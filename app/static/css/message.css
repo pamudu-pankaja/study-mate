@@ -157,6 +157,10 @@ hr{
 .message.chat-bot .content li {
   margin-bottom: 0.4em;
 }
+.message.chat-bot .content ol li strong {
+  font-size: 18px;
+}
+  
 
 
 .search-label {

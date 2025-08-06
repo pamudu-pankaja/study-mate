@@ -73,22 +73,6 @@ Study Mate is a simple and friendly web app that helps you study smarter. Here�
 
 ---
 
-## 💡 Future Plans
-
-- More faster file uploading with larger file sizes.
-- Defualt data vector data base to select any text book you like.
-- Improve web search further for better results.  
-- Possibly launch a public hosted version for easier access.  
-- Add more user-friendly features for study workflows.
-
----
-
-## 🙏 Thanks & Credits
-
-Big thanks to **Code Jam: Future Minds** for the inspiration behind this project. The idea keeps growing with your support!
-
----
-
 ## 🤝 Contributing
 
 Found bugs or have ideas? Open an issue or submit a pull request — I’m still learning and appreciate all feedback.

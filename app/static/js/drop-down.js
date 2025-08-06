@@ -1,13 +1,5 @@
 const yourBooksArray = [
-  "Physics_Grade10",
-  "Biology_Grade11",
-  "Chemistry_Grade9",
   "History Grade10",
-  "Buddhism_Grade8",
-  "Buddhism Grade9",
-  "Buddhism Grade7",
-  "Buddhism Grade10",
-  "Buddhism Grade 12",
 ];
 
 const STORAGE_KEY = "user_added_books";

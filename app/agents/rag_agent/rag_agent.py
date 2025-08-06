@@ -43,5 +43,5 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
         from app.agents.rag_agent.vector_store import pinecorn_client
 
         db = pinecorn_client.pinecone_db()
-        db.create_index(index_name)
-        db.upsert(chunks, index_name)
+        # db.create_index(index_name)
+        return db.upsert(chunks, index_name)

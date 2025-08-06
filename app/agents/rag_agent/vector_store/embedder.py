@@ -31,7 +31,7 @@ class Embedding:
             # print(f"Text passed to embedding: {text}")
             try:
                 result = client.models.embed_content(
-                    model="text-embedding-005",
+                    model="text-embedding-004",
                     contents=f"{text}",
                     config=types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY"),
                 )

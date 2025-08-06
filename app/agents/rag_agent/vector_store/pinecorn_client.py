@@ -64,7 +64,7 @@ class pinecone_db:
                     print(f"Invalid embedding for id {d['id']}. Skipping ..")
             else:
                 pass
-                print(f"Skipping invalid embedding for id {d['id']} (embedding is None or not a list)")
+                # print(f"Skipping invalid embedding for id {d['id']} (embedding is None or not a list)")
 
             # print(f"Vectors prepared for upsert: {len(vectors)} vectors")
             if vectors:

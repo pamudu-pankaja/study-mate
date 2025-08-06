@@ -25,7 +25,9 @@ class pinecone_db:
                 return f"Error while requasting : {e}"
 
     @staticmethod
+
     def upsert(data, namespace , index_name="text-books"):
+
         from app.agents.rag_agent.vector_store.embedder import Embedding
 
         try:
@@ -81,6 +83,7 @@ class pinecone_db:
                     "No valid vectors to upsert (all embeddings may have failed or were invalid)."
                 )
                 return None
+
             res = index.upsert(
                 vectors=vectors,
                 namespace=namespace
@@ -93,3 +96,4 @@ class pinecone_db:
         except Exception as e:
             print(f"Erro while storing : {e}")
             return "error"
+

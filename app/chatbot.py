@@ -1,4 +1,6 @@
+
 from flask import Flask, render_template, Response, jsonify, request, url_for, redirect , stream_with_context
+
 from flask_cors import CORS
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -16,7 +18,9 @@ starting_page = 0
 
 context = None
 
+
 app.config["UPLOAD_FOLDER"] = "/tmp/uploads"
+
 
 
 @app.route("/", methods=["GET"])
@@ -40,29 +44,37 @@ def chat_page_with_id(conversation_id):
         return redirect(url_for("chat_page"))
     return render_template("index.html", chat_id=conversation_id)
 
+
 @app.route("/chat/generate-title", methods=["POST"])
 @app.route("/chat/<conversation_id>/generate-title", methods=["POST"])
 def get_title(conversation_id = None):
     data = request.json
     user_msg = data.get('message', '')
     
+
     if not user_msg:
         return jsonify({"error": "No message provided"}), 400
 
     from app.agents.llm.llm import GeminiLLM
+
     
+
     title = GeminiLLM.generate_title(user_msg)
     print(f"Sending Title : {title}")
     return jsonify({"title": title})
+
+
 
 @app.route("/chat/context-data", methods=["GET"])
 @app.route("/chat/<conversation_id>/context-data", methods=["GET"])
 def get_context(conversation_id=None):
     global context
     print("Sending Context Data...")
+
     return jsonify({
         "context": context if context is not None else "None"
     })
+
 
 @app.route("/chat", methods=["POST"])
 @app.route("/chat/<conversation_id>", methods=["POST"])
@@ -70,6 +82,7 @@ def chat_req(conversation_id=None):
     global index_name, context
     try:
         data = request.get_json()
+
         # print("Received:", data["meta"]["content"]["parts"][0]["content"])
         print(data)        
 
@@ -83,11 +96,12 @@ def chat_req(conversation_id=None):
         
         if path == 'vector' and index_name =="":
             reply = "Please set a valid index name , using the side bar "
+
             def event_stream():
                 for word in reply.split():
                     time.sleep(0.1)
                     yield f"data: {word} \n\n"
-            
+
             print("Sending:", reply)
             
             return Response(event_stream(), mimetype="text/event-stream"),500           
@@ -99,22 +113,6 @@ def chat_req(conversation_id=None):
         reply = response['reply']
         context = response['context']
 
-#         reply = """
-# ```markdown
-# | ID  | Name        | Age | Occupation        | Location      |
-# | --- | ----------- | --- | ----------------- | ------------- |
-# | 1   | John Smith  | 30  | Software Engineer | New York      |
-# | 2   | Alice Jones | 25  | Graphic Designer  | San Francisco |
-# | 3   | Bob Williams| 35  | Project Manager   | Los Angeles   |
-# | 4   | Eva Brown   | 28  | Data Scientist    | Chicago       |
-# | 5   | Mike Davis  | 40  | Architect         | Houston       |          
-# ```        
-#         """ 
-
-        # if "```markdown" in reply.strip():
-        #     reply = re.sub(r"```markdown\s*\n", "", reply)
-        #     reply = re.sub(r"\n```", "", reply)
-
 
         if reply.startswith("Answer:"):
             reply = reply[len("Answer:"):].strip()
@@ -124,29 +122,18 @@ def chat_req(conversation_id=None):
         reply = reply.replace("- Sections:", "- 📚 Sections:")
         
         if path == None:
-            # def event_stream():
-            #     for chunk in  re.split(r'''(?<!\d)(?<=[.?!])\s+(?=[A-Z0-9*•\-])|\n{2,}''', reply, flags=re.VERBOSE):
-            #         yield f"data: {chunk.strip()} \n\n"
-            #         time.sleep(0.1)
+
             def event_stream():
                 for chunk in reply.splitlines():
                     yield f"data: {chunk}\n\n"
                     time.sleep(0.1)
-            # def event_stream():
-            #     for i in range(0, len(reply), 50):  # 50-character chunks
-            #         chunk = reply[i:i+50]
-            #         yield f'data: {chunk}\n\n'
-            #         time.sleep(0.05)
 
             
         else:
             def event_stream():
                 for word in reply.splitlines():
                     yield f"data: {word} \n\n"
-                    time.sleep(0.1)               
-        
-        
-
+                    time.sleep(0.1)                              
                 
         print("\nSending:", "\n"+ reply)
 
@@ -199,10 +186,12 @@ def index_name_post(conversation_id=None):
                     "status": "error",
                     "message": "Something went wrong",
                     "error_msg": str(e),
+
                 }
             ),
             500,
         )
+
 
 
 @app.route("/chat/index-name", methods=["GET"])
@@ -310,3 +299,4 @@ def starting_page_get(conversation_id=None):
             {"start_page": "Start Page : Not set", "startPage": 0}
         )               
         
+

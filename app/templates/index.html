@@ -55,6 +55,8 @@
       rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
     />
+
+
   </head>
 
   <body data-urlprefix="{{ url_prefix }}">
@@ -181,12 +183,14 @@
             <div id="dropdown" class="dropdown-list"></div>
           </div>
 
+
           <button id="index-name-btn" onclick="setIndex()">
             <i
               class="fa-regular fa-layer-plus"
               style="margin-right: 6px; font-size: 14px; opacity: 0.6"
             ></i>
             Set Book
+
           </button>
           <span id="index-fallback-message" class="error"></span>
           <br />
@@ -302,6 +306,8 @@
       defer
     ></script>
     <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
+
     <script src="{{ url_for('static', filename='js/drop-down.js') }}" defer></script>
+
   </body>
 </html>

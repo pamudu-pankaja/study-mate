@@ -138,6 +138,10 @@ venv.bak/
 app/data/
 
 
+app/data/
+page_offsets.json
+
+
 # Spyder project settings
 .spyderproject
 .spyproject

@@ -8,12 +8,14 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
             print("Embedding the Chunks...")
             RAGAgent.chunk_embedder(chunks)
             print("Upserting...")
+
             result = RAGAgent.upsert_chunks(chunks, index_name)
             return result
         
         except Exception as e:
             print(e)
             
+
 
     @staticmethod
     def vector_search(query, index_name):
@@ -45,3 +47,4 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
         db = pinecorn_client.pinecone_db()
         # db.create_index(index_name)
         return db.upsert(chunks, index_name)
+

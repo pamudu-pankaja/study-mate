@@ -425,6 +425,11 @@
     top: 5px;
   }
 
+  .menu-button-3 {
+    right: 0px;
+    top: 30px;
+  }
+
   .menu-button-2.rotated {
     padding: 10px;
     right: 10px;

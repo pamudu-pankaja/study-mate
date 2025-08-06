@@ -1,5 +1,5 @@
 .conversation {
-	width: 60%;
+	width: 70%;
 	margin: 0px 16px;
 	display: flex;
 	flex-direction: column;
@@ -34,7 +34,33 @@
 .conversation-title {
 	color: var(--colour-3);
 	font-size: 14px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: middle;	
 }
+
+.conversation-sidebar .left {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.conversation-sidebar{
+	margin-bottom: 1px;
+	max-width: 100%;
+}
+
+.conversation-sidebar:hover{
+	border-radius: 8px;
+	background-color: var(--conversation-title-hover);
+}
+
+.conversation-sidebar.active{
+	border-radius: 8px;
+	background-color: var(--user-msg-bg);
+}
+
 
 .conversation .user-input textarea {
 	font-size: 1rem;
@@ -119,6 +145,18 @@
 	cursor: default;
 	transition: all 0.3s ease;
 }
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	border: 1px solid black; 
+	padding: 8px;
+	text-align: center;
+}
+
 
 @keyframes blink {
 	0% {

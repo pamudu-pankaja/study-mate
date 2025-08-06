@@ -55,7 +55,8 @@
       rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
     />
-    <!-- <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css" > -->
+
+
   </head>
 
   <body data-urlprefix="{{ url_prefix }}">
@@ -167,23 +168,29 @@
       <div class="sidebar-content">
         <div class="index" style="margin-top: 13px">
           <span>
-            <i class="fa-solid fa-server" style="margin-right: 7px"></i> Vector
-            Index</span
+            <i class="fa-solid fa-book" style="margin-right: 5px"></i> Text Book
+            </span
           >
-          <input
-            autocomplete="on"
-            spellcheck="false"
-            type="text"
-            placeholder="Your index name"
-            id="index"
-            style="margin-top: 4px"
-          />
+          <div class="dropdown-container">
+            <input
+              autocomplete="on"
+              spellcheck="false"
+              type="text"
+              placeholder="Namespace of the text book"
+              id="index"
+              style="margin-top: 4px"
+            />
+            <div id="dropdown" class="dropdown-list"></div>
+          </div>
+
+
           <button id="index-name-btn" onclick="setIndex()">
             <i
               class="fa-regular fa-layer-plus"
               style="margin-right: 6px; font-size: 14px; opacity: 0.6"
             ></i>
-            Set Index
+            Set Book
+
           </button>
           <span id="index-fallback-message" class="error"></span>
           <br />
@@ -299,5 +306,8 @@
       defer
     ></script>
     <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
+
+    <script src="{{ url_for('static', filename='js/drop-down.js') }}" defer></script>
+
   </body>
 </html>

@@ -25,18 +25,10 @@
 	--conversations: #666666;
 	--right-sidebar:#ffffff;
 
-
-
-	--link-color:#1a0dab;
-	--link-hover-color:#551a8b;
 	--user-msg-bg:#dadada;
 	--box-shadow:#b9b8b871;
 	--input-border:#000;
-	--hover:#fafafac0;
-	--conversation-title-hover:#c7c7c7;
-
-
-
+	--hover:hsla(0, 0%, 98%, 0.751);
 }
 
 .theme-dark {
@@ -54,16 +46,10 @@
 	--conversations: #555555;
 	--right-sidebar:#1f1f1f;
 
-	--hr-line:#ffffff0d;
-
-
-	--link-color:#4fc3f7;
-	--link-hover-color:#81d4fa;
 	--user-msg-bg:#333333;
 	--box-shadow:#00000080;
 	--input-border:#000;
-	--hover:#ffffff0e;
-	--conversation-title-hover:#404040;
+	--hover:hsla(0, 0%, 100%, 0.055);
 }
 
 body,

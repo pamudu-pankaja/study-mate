@@ -135,6 +135,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+app/data/
+
 
 app/data/
 page_offsets.json
@@ -176,3 +178,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+file_transfer.py
+docs/

@@ -5,7 +5,8 @@ import re
 
 class ChatBotAgent:
     @staticmethod
-    def get_response(query, path, chat_history, index_name=None):
+    def get_response(query, path, chat_history ,index_name=None ):
+
 
         # if (
         # (query.startswith('"') and query.endswith('"')) or
@@ -22,11 +23,11 @@ class ChatBotAgent:
 
         prompt = ""
         if path == "vector":
-
+            
             from app.agents.chat_bot_agent.tools.summarizer import Summarizer
-
+            
             # data  = Summarizer.get_summerize_text(data,amount=3)
-
+            
             prompt = (
                 query
                 if not data
@@ -44,6 +45,7 @@ Follow this exact format for the response:
 
 Answer:
 A short, direct answer to the question. Focus only on what's asked. And do not mention that you have extracted this answer from a context
+
 
 Pages and Sections: Format it exactly like this, using bullet points
 - 📄 Pages: Only the page numbers that were used to get the answer,
@@ -64,9 +66,9 @@ Here are the search results:
 
 Question: {query}"""
 
-        result = GeminiLLM.get_response(prompt, query, chat_history)
-        return {"reply": result, "context": data if path != None else None}
+        result = GeminiLLM.get_response(prompt, query , chat_history)
+        return {
+            "reply" : result,
+            "context": data if path != None else None
+        }
 
-        # Context:
-        # - If context is provided: Copy **directly relevant** sentence(s) from the context and summarize. No extra explanation.
-        # - If no context is provided: Write “No external context was provided, so this answer is based on general knowledge.”

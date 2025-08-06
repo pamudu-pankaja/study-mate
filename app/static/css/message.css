@@ -119,6 +119,51 @@
   margin-bottom: 50px;
 }
 
+.message.chat-bot .content pre {
+  padding: 1em;
+}
+
+.message.chat-bot .content h1,h2,h3 {
+  margin-top: 1.2rem;
+  margin-bottom: 0.75rem;
+  font-weight: bold;
+}
+
+hr{
+    border-top-width: 1px;
+    color: inherit;
+    height: 0;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    border-color: var(--hr-line);
+}
+
+.message.chat-bot .content h1 { font-size: 1.6rem; }
+.message.chat-bot .content h2 { font-size: 1.4rem; }
+.message.chat-bot .content h3 { font-size: 1.2rem; }
+
+.message.chat-bot .content blockquote {
+  border-left: 4px solid #ccc;
+  margin: 1em 0;
+  padding-left: 1em;
+  color: #838383;
+  font-style: italic;
+}
+
+.message.chat-bot .content ul, ol {
+  margin-left: 1.2em;
+  padding-left: 1em;
+}
+.message.chat-bot .content li {
+  margin-bottom: 0.4em;
+}
+.message.chat-bot .content ol li strong {
+  font-size: 18px;
+}
+  
+
+
+
 .search-label {
   font-size: 0.9rem;
   color: var(--conversations);

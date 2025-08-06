@@ -5,8 +5,10 @@ from pinecone import Pinecone
 pc = Pinecone(api_key=PINECORN_API_KEY)
 
 
+
 def search(query, index_name):
-    index = pc.Index(index_name)
+    index = pc.Index("text-books")
+    
 
     print("Getting the embeddings of the query...")
 
@@ -15,7 +17,9 @@ def search(query, index_name):
     )  # + "include page numbers and sections")
 
     results = index.query(
-        vector=query_vector, top_k=5, include_metadata=True, include_values=False
+
+        vector=query_vector, top_k=5, include_metadata=True, include_values=False,namespace=index_name
+
     )
 
     data = []
@@ -28,6 +32,7 @@ def search(query, index_name):
                 "section": match["metadata"].get("section", "unknown"),
             }
         )
+    
 
     # print()
     # print(data)

@@ -79,6 +79,12 @@ Found bugs or have ideas? Open an issue or submit a pull request — I’m still
 
 ---
 
+## Credits 🙏 
+
+This project uses frontend code originally developed by [Ramon Victor](https://github.com/ramon-victor)
+Licensed under the GNU General Public License v3.0
+---
+
 ## 📜 License
 
 This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).

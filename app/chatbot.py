@@ -42,6 +42,10 @@ def chat_page():
 def chat_page_slash():
     return redirect(url_for("chat_page"))
 
+@app.route("/disabled-feature")
+def disabled_feature():
+    return render_template("disabled-feature.html")
+
 
 @app.route("/chat/<conversation_id>", methods=["GET"])
 def chat_page_with_id(conversation_id):

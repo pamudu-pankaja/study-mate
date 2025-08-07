@@ -17,6 +17,10 @@
 	visibility: hidden;
 }
 
+.hide{
+	display: none;
+}
+
 
 .red-dot {
 	width: 10px;
@@ -34,6 +38,10 @@
 	.menu-button-3 {
 		right: 0px;
 		top: 30px;
+	}
+
+	.menu-button-3.hide{
+		visibility: hidden;
 	}
 }
 

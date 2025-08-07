@@ -56,7 +56,6 @@ function hideRightSidebar() {
   sidebar_right.classList.add("hidden");
   icon_gear.classList.remove("rotated");
   menuButton_gear.classList.remove("rotated");
-  mail_btn.style.visibility = "visible"
   mail_btn.classList.remove("hide");
 }
 
@@ -100,13 +99,11 @@ mail_btn.addEventListener("click" , toggleMailBox)
 // Extra Logic: hide left sidebar if clicking on conversation
 document.body.addEventListener("click", function (event) {
   if (event.target.matches(".conversation-title")) {
-    const menuButtonStyle = window.getComputedStyle(menuButton_burger);
-    if (menuButtonStyle.display !== "none") {
-      hideLeftSidebar();
+    if (!sidebar_right.classList.contains("hidden")) {
+      hideRightSidebar();
     }
-  const menuButtonStyleMail = window.getComputedStyle(mail_btn);
-    if (menuButtonStyle.display !== "none") {
-      hideLeftSidebar();
+    if (!mail_box.classList.contains("hidden")) {
+      hideMailBox();
     }
   }
 });

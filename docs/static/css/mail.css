@@ -1,0 +1,33 @@
+/* button styles */
+
+.menu-button-3 {
+	position: absolute;
+	top: 55px;
+	right: 20px;
+	padding: 10px;
+	z-index: 1000;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	margin-top: 0px;
+	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-button-3.hide{
+	visibility: hidden;
+}
+
+
+@media screen and (min-width: 300px) and (min-height: 720px) {
+	.menu-button-3 {
+		right: 0px;
+		top: 30px;
+	}
+}
+
+/* box styles */
+
+#rightSidebar.mail{
+	height: 686px;
+	margin-top: 50px;
+}

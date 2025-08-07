@@ -51,6 +51,8 @@ function showRightSidebar() {
 }
 
 function hideRightSidebar() {
+  mail_icon.classList.add("fa-envelope")
+  mail_btn.classList.remove("hide");
   sidebar_right.classList.add("hidden");
   icon_gear.classList.remove("rotated");
   menuButton_gear.classList.remove("rotated");

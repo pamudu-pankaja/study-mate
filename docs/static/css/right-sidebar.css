@@ -48,7 +48,10 @@
   height: 32px;
   background: flex;
   top: 12px;
+  font-weight: bold;
+  font-size: 17px;
 }
+
 
 /* Other things which I have no idea why i did  */
 
@@ -80,6 +83,11 @@
 
 .sidebar-content .index i {
   font-size: 18px;
+}
+
+.sidebar-content .index{
+  margin-top: 20px;
+  border-top: 1px solid var(--colour-3);
 }
 
 .sidebar-content #index {

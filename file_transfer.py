@@ -57,5 +57,6 @@ if __name__ == "__main__":
         copy_static(flask_static, static_static)
     elif args.to_flask:
         static_to_flask(static_input_html, flask_output_html)
+        copy_static(static_static, flask_static)
     else:
         print("⚠️ Please use either --to-static or --to-flask")

@@ -258,25 +258,7 @@
       <div class="top">
         <span>Inbox</span>
       </div>
-      <div  id="index-messsages">
-          <div class="message-item">
-            <div class="top-row">
-              <span class="sender">John Doe</span>
-              <span class="timestamp">2:45 PM</span>
-            </div>
-            <div class="preview">Hey, are you free to meet later today?</div>
-            <div class="delete-btn"><i class="fa-solid fa-trash"></i></div>
-          </div>
-
-          <div class="message-item">
-            <div class="top-row">
-              <span class="sender">John Doe</span>
-              <span class="timestamp">2:45 PM</span>
-            </div>
-            <div class="preview">Hey, are you free to meet later today?</div>
-            <div class="delete-btn"><i class="fa-solid fa-trash"></i></div>
-          </div>
-      </div>
+      <div  id="index-messages"></div>
     </div>
     <div class="menu-button menu-button-2">
       <i class="fa-solid fa-database"></i>
@@ -338,6 +320,9 @@
     <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
 
     <script src="{{ url_for('static', filename='js/drop-down.js') }}" defer></script>
+
+    <script src="{{ url_for('static', filename='js/mail.js') }}" defer></script>
+
 
   </body>
 </html>

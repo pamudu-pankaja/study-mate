@@ -3,6 +3,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
 import re
 import json
+from flask import current_app
 
 
 def int_to_roman(n):
@@ -15,21 +16,22 @@ def int_to_roman(n):
             n -= val[i]
     return roman_num.lower()
 
+OFFSET_FILE = current_app.config["OFFSET_FILE"]
 
 def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page=0):
     file_name = os.path.basename(file_path)
     base_name = os.path.splitext(file_name)[0]
 
     def get_page_offset(index_name):
-        if not os.path.exists("page_offsets.json"):
+        if not os.path.exists(OFFSET_FILE):
             return 0
-        with open("page_offsets.json", "r") as f:
+        with open(OFFSET_FILE, "r") as f:
             offsets = json.load(f)
         return offsets.get(index_name, 0)
 
     def update_page_offset(index_name, last_page):
-        if os.path.exists("page_offsets.json"):
-            with open("page_offsets.json", "r") as f:
+        if os.path.exists(OFFSET_FILE):
+            with open(OFFSET_FILE, "r") as f:
                 offsets = json.load(f)
         else:
             offsets = {}
@@ -37,7 +39,7 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
         current_offset = offsets.get(index_name, 0)
         offsets[index_name] = current_offset + last_page
 
-        with open("page_offsets.json", "w") as f:
+        with open(OFFSET_FILE, "w") as f:
             json.dump(offsets, f)
 
     try:

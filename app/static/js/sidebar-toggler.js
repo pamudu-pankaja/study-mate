@@ -76,9 +76,30 @@ function hideLeftSidebar() {
 
 // Show / Hide Mail Box
 function showMailBox() {
+  mail_box.classList.remove("hidden");
+  let chatID = window.conversation_id;
+  let endpointIndex = chatID
+    ? `${url_prefix}/chat/${chatID}/mail/mark-seen`
+    : `${url_prefix}/chat/mail/mark-seen`;
+
+  fetch(endpointIndex, { method: "POST" })
+    .then(res => res.json())
+    .then(() => {
+      let messages = JSON.parse(localStorage.getItem('inboxMessages') || '[]');
+      messages = messages.map(msg => ({ ...msg, seen: true }));
+      localStorage.setItem('inboxMessages', JSON.stringify(messages));
+
+      if (typeof renderMessages === "function") {
+        renderMessages(messages);
+      }
+      const dot = document.getElementById("red-dot");
+      if (dot) dot.style.display = "none";
+    });
+  dot.style.display = "none"
   mail_icon.classList.remove("fa-envelope")
   mail_icon.classList.add("fa-envelope-open");
-  mail_box.classList.remove("hidden");
+
+
 
 
 

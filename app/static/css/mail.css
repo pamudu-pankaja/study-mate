@@ -50,9 +50,31 @@
 #rightSidebar.mail{
 	/* height: 686px; */
 	margin-top: 50px;
+	overflow: scroll;
+	padding-bottom: 90px;
+}
+
+#rightSidebar.mail::-webkit-scrollbar {
+	width: 5px;
+	
+}
+
+#rightSidebar.mail::-webkit-scrollbar-track {
+	background: var(--blur-bg);
+}
+
+#rightSidebar.mail::-webkit-scrollbar-thumb {
+	background: #585858;
+	border-radius: 5px;
 }
 
 /* Messages styles */
+
+.timestamp{
+	font-size: 11px;
+    opacity: 0.8;
+    width: 40%;
+}
 
 .mail .top{
 	font-size: 20px;

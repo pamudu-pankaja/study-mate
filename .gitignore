@@ -140,7 +140,9 @@ app/data/
 
 app/data/
 page_offsets.json
-
+file_transfer.json
+tmp/uploads
+mails.json
 
 # Spyder project settings
 .spyderproject

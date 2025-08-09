@@ -29,7 +29,7 @@
 }
 
 .menu-button-3.hide{
-	visibility: hidden;
+	display: none;
 }
 
 .hide{
@@ -53,17 +53,6 @@
 	z-index: 300000;
 }
 
-@media screen and (min-width: 300px) and (min-height: 720px) {
-	/* .menu-button-3 {
-		right: 0px;
-		top: 30px;
-	} */
-
-	.menu-button-3.hide{
-		visibility: hidden;
-	}
-
-}
 
 /* box styles */
 

@@ -62,6 +62,8 @@ function hideRightSidebar() {
 
 // Show / Hide Left Sidebar
 function showLeftSidebar() {
+  menuButton_gear.classList.add("hidden");
+  mail_btn.classList.add("hide")
   sidebar_left.classList.add("shown");
   menuButton_burger.classList.add("rotated");
   icon_burger.classList.add("rotated");
@@ -69,6 +71,8 @@ function showLeftSidebar() {
 }
 
 function hideLeftSidebar() {
+  menuButton_gear.classList.remove("hidden");
+  mail_btn.classList.remove("hide")
   sidebar_left.classList.remove("shown");
   icon_burger.classList.remove("rotated");
   menuButton_burger.classList.remove("rotated");

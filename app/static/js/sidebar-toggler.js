@@ -4,6 +4,7 @@ const icon_burger = menuButton_burger.querySelector("i");
 const icon_gear = menuButton_gear.querySelector("i");
 const mail_btn = document.querySelector(".menu-button-3");
 const mail_icon = document.querySelector(".fa-envelope")
+const mail_btn_inside = document.querySelector(".menu-button-3-inside")
 
 const sidebar_right = document.getElementById("rightSidebar");
 const sidebar_left = document.querySelector(".sidebar");
@@ -29,8 +30,8 @@ function toggleLeftSidebar() {
   window.scrollTo(0, 0);
 }
 
-function toggleMailBox(){
-  if (!mail_box.classList.contains("hidden")){
+function toggleMailBox() {
+  if (!mail_box.classList.contains("hidden")) {
     hideMailBox();
   } else {
     showMailBox();
@@ -76,6 +77,8 @@ function hideLeftSidebar() {
 
 // Show / Hide Mail Box
 function showMailBox() {
+  mail_btn.classList.add("hide");
+  mail_btn_inside.classList.remove("hide")
   mail_box.classList.remove("hidden");
   let chatID = window.conversation_id;
   let endpointIndex = chatID
@@ -99,13 +102,11 @@ function showMailBox() {
   mail_icon.classList.remove("fa-envelope")
   mail_icon.classList.add("fa-envelope-open");
 
-
-
-
-
 }
 
-function hideMailBox(){
+function hideMailBox() {
+  mail_btn.classList.remove("hide");
+  mail_btn_inside.classList.add("hide")
   mail_icon.classList.add("fa-envelope")
   mail_icon.classList.remove("fa-envelope-open");
   mail_box.classList.add("hidden");
@@ -115,7 +116,8 @@ function hideMailBox(){
 // Button Click Events
 menuButton_gear.addEventListener("click", toggleRightSidebar);
 menuButton_burger.addEventListener("click", toggleLeftSidebar);
-mail_btn.addEventListener("click" , toggleMailBox)
+mail_btn.addEventListener("click", toggleMailBox);
+mail_btn_inside.addEventListener("click", toggleMailBox)
 
 // Extra Logic: hide left sidebar if clicking on conversation
 document.body.addEventListener("click", function (event) {

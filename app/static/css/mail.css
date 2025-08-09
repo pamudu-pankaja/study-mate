@@ -1,16 +1,31 @@
 /* button styles */
 
 .menu-button-3 {
-	position: absolute;
+	/* position: absolute;
 	top: 55px;
-	right: 20px;
-	padding: 10px;
+	right: 20px; */
+	padding: 10px; 
 	z-index: 1000;
 	border: none;
 	cursor: pointer;
 	border-radius: 5px;
-	margin-top: 0px;
+	/* margin-top: 0px; */
 	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-button-3-inside {
+	font-size: 16px;
+	z-index: 1000;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	padding: 10px;
+	/* margin-top: 0px; */
+	transition: transform 0.3s ease, opacity 0.3s ease;
+	display: inline-block;
+    width: auto;
+    flex: 0 0 auto;
+    position: absolute;
 }
 
 .menu-button-3.hide{
@@ -21,6 +36,9 @@
 	display: none;
 }
 
+.dot-container{
+	display: flex;
+}
 
 .red-dot {
 	width: 10px;
@@ -28,28 +46,30 @@
 	background-color: red;
 	border-radius: 50%;
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 12px;
+	left: 5px;
 	display: none;
 	pointer-events: none;
+	z-index: 300000;
 }
 
 @media screen and (min-width: 300px) and (min-height: 720px) {
-	.menu-button-3 {
+	/* .menu-button-3 {
 		right: 0px;
 		top: 30px;
-	}
+	} */
 
 	.menu-button-3.hide{
 		visibility: hidden;
 	}
+
 }
 
 /* box styles */
 
 #rightSidebar.mail{
 	/* height: 686px; */
-	margin-top: 50px;
+	margin-top: 60px;
 	overflow: scroll;
 	padding-bottom: 90px;
 }
@@ -81,15 +101,32 @@
 	text-align: center;
 	font-weight: bold;
 	transition: color 0.2s;
+	display: flex;
+	flex-direction: column-reverse;
 
 }
 
 .message-item {
-	position: relative;
-	padding: 10px;
-	border-bottom: 1px solid #ccc;
-	cursor: pointer;
-	margin-top: 20px;
+	position: relative !important;
+	padding: 10px !important;
+	margin-top: 20px !important;
+	border-bottom: 1px solid #ccc !important;
+	cursor: pointer !important;
+	transition: padding 0.3s ease, margin 0.3s ease, transform 0.3s ease !important;
+}
+
+.delete-btn {
+  position: absolute !important;
+  right: 10px !important;
+  top: 10px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: var(--conversations) !important;
+  font-size: 14px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease !important;
 }
 
 .message-item:hover .mail .top{
@@ -107,21 +144,10 @@
 	color: var(--conversations);
 	font-size: 14px;
 	margin-top: 5px;
-	transition: color 0.2s;
+	transition: all 0.2s ease;
 	transition: font-size 0.2s;
 }
 
-.delete-btn {
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	color: var(--conversations);
-	font-size: 14px;
-	display: none;
-}
 
 .message-item:hover .delete-btn {
 	display: block;
@@ -142,4 +168,15 @@
 	color: var(--colour-3);
 }
 
+
+.message-item:hover {
+  padding: 14px 10px !important;
+  margin-top: 18px !important;
+  transform: translateY(-1px) !important;
+}
+
+.message-item:hover .delete-btn {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
 

@@ -38,6 +38,9 @@
 }
 
 /* Main Span */
+.right-sidebar .top{
+  margin-top: 0.2em;
+}
 
 #data_base_span {
   color: var(--colour-3);
@@ -428,7 +431,7 @@
 }
 
 @media screen and (min-width: 300px) and (min-height: 720px) {
-  .menu-button-2 {
+  /* .menu-button-2 {
     right: 0px;
     top: 5px;
   }
@@ -442,7 +445,7 @@
     padding: 10px;
     right: 10px;
     top: 19px;
-  }
+  } */
 
   .menu-button i {
     transition: 0.55s;

@@ -140,6 +140,8 @@ app/data/
 
 app/data/
 page_offsets.json
+mails.json
+.VSCodeCounter
 
 
 # Spyder project settings

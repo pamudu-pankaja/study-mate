@@ -36,6 +36,7 @@ function showRightSidebar() {
 }
 
 function hideRightSidebar() {
+  menuButton_gear.classList.remove("hidden")
   sidebar_right.classList.add("hidden");
   icon_gear.classList.remove("rotated");
   menuButton_gear.classList.remove("rotated");
@@ -44,6 +45,7 @@ function hideRightSidebar() {
 
 // Show / Hide Left Sidebar
 function showLeftSidebar() {
+  menuButton_gear.classList.add("hidden")
   sidebar_left.classList.add("shown");
   menuButton_burger.classList.add("rotated");
   icon_burger.classList.add("rotated");

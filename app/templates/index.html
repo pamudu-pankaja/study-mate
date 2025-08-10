@@ -55,8 +55,6 @@
       rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
     />
-
-
   </head>
 
   <body data-urlprefix="{{ url_prefix }}">
@@ -169,8 +167,7 @@
         <div class="index" style="margin-top: 13px">
           <span>
             <i class="fa-solid fa-book" style="margin-right: 5px"></i> Text Book
-            </span
-          >
+          </span>
           <div class="dropdown-container">
             <input
               autocomplete="on"
@@ -183,14 +180,12 @@
             <div id="dropdown" class="dropdown-list"></div>
           </div>
 
-
           <button id="index-name-btn" onclick="setIndex()">
             <i
               class="fa-regular fa-layer-plus"
               style="margin-right: 6px; font-size: 14px; opacity: 0.6"
             ></i>
             Set Book
-
           </button>
           <span id="index-fallback-message" class="error"></span>
           <br />
@@ -213,9 +208,9 @@
                   <i class="fa fa-info-circle info-icon"></i>
                 </a>
                 <span class="tooltip-text">
-                  If the book you are choosing has any credits in the front pages
-                  please set the page you would like to start counting, else keep
-                  it as zero. CLICK for more DETAILS
+                  If the book you are choosing has any credits in the front
+                  pages please set the page you would like to start counting,
+                  else keep it as zero. CLICK for more DETAILS
                 </span>
               </div>
               <input
@@ -238,11 +233,11 @@
             </button>
             <div id="file-fallback-message" class="error"></div>
           </div>
-            <div class="file-overlay">
-              <a href="{{ url_for('disabled_feature') }}" target="_blank">
-                <button  >Click For Details</button>
-              </a>
-            </div>
+          <div class="file-overlay">
+            <a href="./disabled-feature.html" target="_blank">
+              <button>Click For Details</button>
+            </a>
+          </div>
         </div>
 
         <div class="current-info-container">
@@ -271,11 +266,57 @@
     <script>
       window.conversation_id = "{{ chat_id or '' }}";
     </script>
-    <script src="{{ url_for('static', filename='js/main.js') }}" type="module" defer></script>
-        <script
+    <script
       src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"
       defer
     ></script>
+    <script
+      src="{{ url_for('static', filename='js/icons.js') }}"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"
+      defer
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/12c4d6a4a9.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/highlight.min.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/theme-toggler.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/sidebar-toggler.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/toggle-button.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/index-name.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/import-file.js') }}"
+      defer
+    ></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
+
+    <script
+      src="{{ url_for('static', filename='js/drop-down.js') }}"
+      defer
+    ></script>
+
     <script
       src="https://kit.fontawesome.com/12c4d6a4a9.js"
       crossorigin="anonymous"

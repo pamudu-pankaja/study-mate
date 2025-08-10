@@ -53,6 +53,7 @@ function showLeftSidebar() {
 }
 
 function hideLeftSidebar() {
+  menuButton_gear.classList.remove("hidden")
   sidebar_left.classList.remove("shown");
   icon_burger.classList.remove("rotated");
   menuButton_burger.classList.remove("rotated");

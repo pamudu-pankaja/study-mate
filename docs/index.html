@@ -28,7 +28,7 @@
     <!-- Styles -->
     <link
       rel="stylesheet"
-      href="static/css/style.css"
+      href="static/css/v2style.css"
     />
     <link
       rel="apple-touch-icon"
@@ -239,7 +239,7 @@
             <div id="file-fallback-message" class="error"></div>
           </div>
             <div class="file-overlay">
-              <a href="disabled-feature.html" target="_blank">
+              <a href="{{ url_for('disabled_feature') }}" target="_blank">
                 <button  >Click For Details</button>
               </a>
             </div>
@@ -271,11 +271,8 @@
     <script>
       window.conversation_id = "{{ chat_id or '' }}";
     </script>
-    <script
-      src="static/js/icons.js"
-      defer
-    ></script>
-    <script
+    <script src="static/js/main.js" type="module" defer></script>
+        <script
       src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"
       defer
     ></script>
@@ -283,37 +280,5 @@
       src="https://kit.fontawesome.com/12c4d6a4a9.js"
       crossorigin="anonymous"
     ></script>
-    <script
-      src="static/js/highlight.min.js"
-      defer
-    ></script>
-    <script
-      src="static/js/highlightjs-copy.min.js"
-      defer
-    ></script>
-    <script
-      src="static/js/theme-toggler.js"
-      defer
-    ></script>
-    <script
-      src="static/js/sidebar-toggler.js"
-      defer
-    ></script>
-    <script
-      src="static/js/toggle-button.js"
-      defer
-    ></script>
-    <script
-      src="static/js/index-name.js"
-      defer
-    ></script>
-    <script
-      src="static/js/import-file.js"
-      defer
-    ></script>
-    <script src="static/js/chat.js" defer></script>
-
-    <script src="static/js/drop-down.js" defer></script>
-
   </body>
 </html>

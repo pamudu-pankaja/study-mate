@@ -28,7 +28,7 @@
     <!-- Styles -->
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
+      href="{{ url_for('static', filename='css/v2style.css') }}"
     />
     <link
       rel="apple-touch-icon"
@@ -271,11 +271,8 @@
     <script>
       window.conversation_id = "{{ chat_id or '' }}";
     </script>
-    <script
-      src="{{ url_for('static', filename='js/icons.js') }}"
-      defer
-    ></script>
-    <script
+    <script src="{{ url_for('static', filename='js/main.js') }}" type="module" defer></script>
+        <script
       src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"
       defer
     ></script>
@@ -283,37 +280,5 @@
       src="https://kit.fontawesome.com/12c4d6a4a9.js"
       crossorigin="anonymous"
     ></script>
-    <script
-      src="{{ url_for('static', filename='js/highlight.min.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/theme-toggler.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/sidebar-toggler.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/toggle-button.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/index-name.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/import-file.js') }}"
-      defer
-    ></script>
-    <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
-
-    <script src="{{ url_for('static', filename='js/drop-down.js') }}" defer></script>
-
   </body>
 </html>

@@ -205,6 +205,10 @@
 	.menu-button {
 		display: flex !important ;
 	}
+
+	.menu-button-2.hidden{
+		display: none !important;
+	}
 }
 
 @media screen and (max-width: 990px) {

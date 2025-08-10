@@ -1,0 +1,10 @@
+import './icons.js';
+import './highlight.min.js';
+import './highlightjs-copy.min.js';
+import './theme-toggler.js';
+import './sidebar-toggler.js';
+import './toggle-button.js';
+import './index-name.js';
+import './import-file.js';
+import './chat.js';
+import './drop-down.js';

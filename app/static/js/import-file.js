@@ -10,7 +10,7 @@ const showStartPage = document.getElementById("start-page");
 
 input.addEventListener("change", () => {
   const file = input.files[0];
-  const max_size = 1 * 1024 * 1024;
+  const max_size = 20 * 1024 * 1024;
 
   if (!file) {
     return;
@@ -29,7 +29,7 @@ input.addEventListener("change", () => {
   if (file.size >= max_size) {
     fallBackDisplay_index.classList.remove("visble");
     fallBackDisplay_index.classList.remove("success");
-    fallBackDisplay.textContent = "File must be under 1 MB";
+    fallBackDisplay.textContent = "File must be under 20 MB";
     fallBackDisplay.classList.add("visible");
     input.value = "";
     display.textContent = "No file chosen";
@@ -104,13 +104,13 @@ async function uploadFile() {
     const data = await res.json();
 
     // If you are not me just dont get your head fucked up with these class names check the css file right side bar
-    if (data.status == "success") {
+    if (data.status == "processing") {
       fallBackDisplay_index.classList.remove("visble");
       fallBackDisplay_index.classList.remove("success");      
       fallBackDisplay.classList.add("success");
       fallBackDisplay.classList.remove("visible");
       fallBackDisplay.textContent = data.message;
-      console.log(`file added`);
+      console.log(`file is processing in the background`);
     }
 
     if (data.status == "error" || !data) {

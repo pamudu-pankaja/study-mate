@@ -159,6 +159,19 @@
           </div>
         </div>
       </div>
+      <div class="menu-button-container">
+        <div class="menu-button menu-button-2">
+          <i class="fa-solid fa-database"></i>
+        </div>
+          <div class="dot-container">
+            <div id="red-dot" class="red-dot"></div>
+          </div>
+        <div class="menu-button menu-button-3">
+          <i class="fa-solid fa-envelope"></i>
+
+
+        </div>
+      </div>
     </div>
 
     <div class="hidden box right-sidebar" id="rightSidebar">
@@ -166,7 +179,7 @@
         <span id="data_base_span">Data Base Information</span>
       </div>
       <div class="sidebar-content">
-        <div class="index" style="margin-top: 13px">
+        <div class="index">
           <span>
             <i class="fa-solid fa-book" style="margin-right: 5px"></i> Text Book
             </span
@@ -253,8 +266,16 @@
         </div>
       </div>
     </div>
-    <div class="menu-button menu-button-2">
-      <i class="fa-solid fa-database"></i>
+
+    <div class="hidden box right-sidebar mail" id="rightSidebar">
+      <div class="top">
+        <span>Inbox</span>
+        <div class="menu-button menu-button-3-inside hide ">
+          <i class="fa-regular fa-circle-xmark"></i>
+          <div id="red-dot" class="red-dot"></div>
+        </div>
+      </div>
+      <div  id="index-messages"></div>
     </div>
 
     <div class="menu-button menu-button-1">
@@ -308,6 +329,9 @@
     <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
 
     <script src="{{ url_for('static', filename='js/drop-down.js') }}" defer></script>
+
+    <script src="{{ url_for('static', filename='js/mail.js') }}" defer></script>
+
 
   </body>
 </html>

@@ -20,8 +20,7 @@
 }
 
 .button:hover{
-	background-color: color-mix(in srgb, var(--right-sidebar) 95%, black);
-	overflow: hidden;
+	background-color: color-mix(in srgb, var(--right-sidebar) 95%, black)
 }
 
 @media screen and (max-width: 990px) {

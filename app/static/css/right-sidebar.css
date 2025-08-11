@@ -38,6 +38,9 @@
 }
 
 /* Main Span */
+.right-sidebar .top{
+  margin-top: 0.2em;
+}
 
 #data_base_span {
   color: var(--colour-3);
@@ -48,7 +51,10 @@
   height: 32px;
   background: flex;
   top: 12px;
+  font-weight: bold;
+  font-size: 17px;
 }
+
 
 /* Other things which I have no idea why i did  */
 
@@ -80,6 +86,11 @@
 
 .sidebar-content .index i {
   font-size: 18px;
+}
+
+.sidebar-content .index{
+  margin-top: 20px;
+  border-top: 1px solid var(--colour-3);
 }
 
 .sidebar-content #index {
@@ -420,16 +431,21 @@
 }
 
 @media screen and (min-width: 300px) and (min-height: 720px) {
-  .menu-button-2 {
+  /* .menu-button-2 {
     right: 0px;
     top: 5px;
+  }
+
+  .menu-button-3 {
+    right: 0px;
+    top: 30px;
   }
 
   .menu-button-2.rotated {
     padding: 10px;
     right: 10px;
     top: 19px;
-  }
+  } */
 
   .menu-button i {
     transition: 0.55s;

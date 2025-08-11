@@ -4,6 +4,7 @@
 	height: 100vh;
 	justify-content: center;
 	box-sizing: border-box;
+	padding-right: 4px;
 }
 
 @media screen and (max-width: 360px) {

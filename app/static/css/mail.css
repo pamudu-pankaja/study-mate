@@ -1,0 +1,175 @@
+/* button styles */
+
+.menu-button-3 {
+	/* position: absolute;
+	top: 55px;
+	right: 20px; */
+	padding: 10px; 
+	z-index: 1000;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	/* margin-top: 0px; */
+	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-button-3-inside {
+	font-size: 16px;
+	z-index: 1000;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	padding: 10px;
+	/* margin-top: 0px; */
+	transition: transform 0.3s ease, opacity 0.3s ease;
+	display: inline-block;
+    width: auto;
+    flex: 0 0 auto;
+    position: absolute;
+}
+
+.menu-button-3.hide{
+	display: none;
+}
+
+.hide{
+	display: none;
+}
+
+.dot-container{
+	display: flex;
+}
+
+.red-dot-hide{
+	z-index: 0;
+}
+
+.red-dot {
+	width: 10px;
+	height: 10px;
+	background-color: red;
+	border-radius: 50%;
+	position: absolute;
+	top: 12px;
+	left: 5px;
+	display: none;
+	pointer-events: none;
+	z-index: 300000;
+}
+
+
+/* box styles */
+
+#rightSidebar.mail{
+	/* height: 686px; */
+	margin-top: 60px;
+	overflow: scroll;
+	padding-bottom: 90px;
+}
+
+#rightSidebar.mail::-webkit-scrollbar {
+	width: 5px;
+	
+}
+
+#rightSidebar.mail::-webkit-scrollbar-track {
+	background: var(--blur-bg);
+}
+
+#rightSidebar.mail::-webkit-scrollbar-thumb {
+	background: #585858;
+	border-radius: 5px;
+}
+
+/* Messages styles */
+
+.timestamp{
+	font-size: 11px;
+    opacity: 0.8;
+    width: 40%;
+}
+
+.mail .top{
+	font-size: 20px;
+	text-align: center;
+	font-weight: bold;
+	transition: color 0.2s;
+	display: flex;
+	flex-direction: column-reverse;
+
+}
+
+.message-item {
+	position: relative !important;
+	padding: 10px !important;
+	margin-top: 20px !important;
+	border-bottom: 1px solid #ccc !important;
+	cursor: pointer !important;
+	transition: padding 0.3s ease, margin 0.3s ease, transform 0.3s ease !important;
+}
+
+.delete-btn {
+  position: absolute !important;
+  right: 10px !important;
+  top: 10px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: var(--conversations) !important;
+  font-size: 14px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.message-item:hover .mail .top{
+	color: #919191;
+}
+
+.top-row {
+	display: flex;
+	justify-content: space-between;
+	font-weight: bold;
+	pointer-events: none;
+}
+
+.preview {
+	color: var(--conversations);
+	font-size: 14px;
+	margin-top: 5px;
+	transition: all 0.2s ease;
+	transition: font-size 0.2s;
+}
+
+
+.message-item:hover .delete-btn {
+	display: block;
+}
+
+.delete-btn:hover{
+	color: var(--colour-7) !important;
+}
+
+
+.message-item:hover .top-row {
+	color: transparent;
+	transition: color 0.2s ;
+}
+
+.message-item:hover .preview {
+	font-size: 15px;
+	color: var(--colour-3);
+}
+
+
+.message-item:hover {
+  padding: 14px 10px !important;
+  margin-top: 18px !important;
+  transform: translateY(-1px) !important;
+}
+
+.message-item:hover .delete-btn {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+

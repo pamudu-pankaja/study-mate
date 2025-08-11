@@ -1,0 +1,115 @@
+/* button styles */
+
+.menu-button-3 {
+	position: absolute;
+	top: 55px;
+	right: 20px;
+	padding: 10px;
+	z-index: 1000;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	margin-top: 0px;
+	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-button-3.hide{
+	visibility: hidden;
+}
+
+
+.red-dot {
+	width: 10px;
+	height: 10px;
+	background-color: red;
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: none;
+	pointer-events: none;
+}
+
+@media screen and (min-width: 300px) and (min-height: 720px) {
+	.menu-button-3 {
+		right: 0px;
+		top: 30px;
+	}
+}
+
+/* box styles */
+
+#rightSidebar.mail{
+	/* height: 686px; */
+	margin-top: 50px;
+}
+
+/* Messages styles */
+
+.mail .top{
+	font-size: 20px;
+	text-align: center;
+	font-weight: bold;
+	transition: color 0.2s;
+
+}
+
+.message-item {
+	position: relative;
+	padding: 10px;
+	border-bottom: 1px solid #ccc;
+	cursor: pointer;
+	margin-top: 20px;
+}
+
+.message-item:hover .mail .top{
+	color: #919191;
+}
+
+.top-row {
+	display: flex;
+	justify-content: space-between;
+	font-weight: bold;
+	pointer-events: none;
+}
+
+.preview {
+	color: var(--conversations);
+	font-size: 14px;
+	margin-top: 5px;
+	transition: color 0.2s;
+	transition: font-size 0.2s;
+}
+
+.delete-btn {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	color: var(--conversations);
+	font-size: 14px;
+	display: none;
+}
+
+.message-item:hover .delete-btn {
+	display: block;
+}
+
+.delete-btn:hover{
+	color: var(--colour-7);
+}
+
+
+.message-item:hover .top-row {
+	color: transparent;
+	transition: color 0.2s ;
+}
+
+.message-item:hover .preview {
+	font-size: 15px;
+	color: var(--colour-3);
+}
+
+

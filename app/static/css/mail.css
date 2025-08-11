@@ -40,6 +40,10 @@
 	display: flex;
 }
 
+.red-dot-hide{
+	z-index: 0;
+}
+
 .red-dot {
 	width: 10px;
 	height: 10px;
@@ -143,7 +147,7 @@
 }
 
 .delete-btn:hover{
-	color: var(--colour-7);
+	color: var(--colour-7) !important;
 }
 
 

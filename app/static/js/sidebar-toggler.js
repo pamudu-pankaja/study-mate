@@ -5,6 +5,7 @@ const icon_gear = menuButton_gear.querySelector("i");
 const mail_btn = document.querySelector(".menu-button-3");
 const mail_icon = document.querySelector(".fa-envelope")
 const mail_btn_inside = document.querySelector(".menu-button-3-inside")
+const red_dot = document.getElementById("red-dot");
 
 const sidebar_right = document.getElementById("rightSidebar");
 const sidebar_left = document.querySelector(".sidebar");
@@ -42,6 +43,7 @@ function toggleMailBox() {
 // Show / Hide Right Sidebar
 function showRightSidebar() {
   hideMailBox();
+  red_dot.classList.add("red-dot-hide");
   mail_btn.classList.add("hide");
   document.querySelector(".error").classList.remove("visible");
   document.querySelector(".error").classList.remove("success");
@@ -52,6 +54,7 @@ function showRightSidebar() {
 }
 
 function hideRightSidebar() {
+  red_dot.classList.remove("red-dot-hide");
   mail_icon.classList.add("fa-envelope")
   mail_btn.classList.remove("hide");
   sidebar_right.classList.add("hidden");

@@ -1,5 +1,7 @@
 const yourBooksArray = [
-  "History Grade10",
+  "History Grade11",
+  "History Grade10"
+  "History Grade9"
 ];
 
 const STORAGE_KEY = "user_added_books";

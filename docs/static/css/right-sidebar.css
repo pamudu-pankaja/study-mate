@@ -22,7 +22,7 @@
 }
 
 .right-sidebar .top {
-    padding: 24px 20px 16px;
+    padding: 24px 20px 20px;
     border-bottom: 1px solid var(--blur-bg);
     flex-shrink: 0;
 }
@@ -32,7 +32,6 @@
     font-weight: 600;
     font-size: 18px;
     display: block;
-    top: 10px;
 
 }
 
@@ -352,8 +351,7 @@
 
 /* Scrollbar styling */
 .sidebar-content::-webkit-scrollbar {
-    width: 6px;
-    right: 20px;
+    width: 5px;
 }
 
 .sidebar-content::-webkit-scrollbar-track {
@@ -361,7 +359,7 @@
 }
 
 .sidebar-content::-webkit-scrollbar-thumb {
-    background: var(--user-msg-bg);
+    background: var(--conversations);
     border-radius: 3px;
 }
 
@@ -375,6 +373,6 @@
 }
 
 .dropdown-list::-webkit-scrollbar-thumb {
-    background: var(--conversations);
+    background: var(--blur-bg);
     border-radius: 2px;
 }

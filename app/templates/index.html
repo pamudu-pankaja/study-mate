@@ -55,6 +55,8 @@
       rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
     />
+
+
   </head>
 
   <body data-urlprefix="{{ url_prefix }}">
@@ -91,7 +93,7 @@
             target="_blank"
           >
             <i class="fa-brands fa-github"></i>
-            <span class="conversation-title"> Version: 0.2.0 </span>
+            <span class="conversation-title"> Version: 0.3.0 </span>
           </a>
         </div>
       </div>
@@ -157,6 +159,19 @@
           </div>
         </div>
       </div>
+      <div class="menu-button-container">
+        <div class="menu-button menu-button-2">
+          <i class="fa-solid fa-database"></i>
+        </div>
+          <div class="dot-container">
+            <div id="red-dot" class="red-dot"></div>
+          </div>
+        <div class="menu-button menu-button-3">
+          <i class="fa-solid fa-envelope"></i>
+
+
+        </div>
+      </div>
     </div>
 
     <div class="hidden box right-sidebar" id="rightSidebar">
@@ -181,12 +196,14 @@
             <div id="dropdown" class="dropdown-list"></div>
           </div>
 
+
           <button id="index-name-btn" onclick="setIndex()">
             <i
               class="fa-regular fa-layer-plus"
               style="margin-right: 6px; font-size: 14px; opacity: 0.6"
             ></i>
             Set Book
+
           </button>
           <span id="index-fallback-message" class="error"></span>
           <br />
@@ -253,34 +270,12 @@
     <div class="hidden box right-sidebar mail" id="rightSidebar">
       <div class="top">
         <span>Inbox</span>
+        <div class="menu-button menu-button-3-inside hide ">
+          <i class="fa-regular fa-circle-xmark"></i>
+          <div id="red-dot" class="red-dot"></div>
+        </div>
       </div>
-      <div  id="index-messsages">
-          <div class="message-item">
-            <div class="top-row">
-              <span class="sender">John Doe</span>
-              <span class="timestamp">2:45 PM</span>
-            </div>
-            <div class="preview">Hey, are you free to meet later today?</div>
-            <div class="delete-btn"><i class="fa-solid fa-trash"></i></div>
-          </div>
-
-          <div class="message-item">
-            <div class="top-row">
-              <span class="sender">John Doe</span>
-              <span class="timestamp">2:45 PM</span>
-            </div>
-            <div class="preview">Hey, are you free to meet later today?</div>
-            <div class="delete-btn"><i class="fa-solid fa-trash"></i></div>
-          </div>
-      </div>
-    </div>
-    <div class="menu-button menu-button-2">
-      <i class="fa-solid fa-database"></i>
-    </div>
-
-    <div class="menu-button menu-button-3">
-      <i class="fa-solid fa-envelope"></i>
-      <div id="red-dot" class="red-dot"></div>
+      <div  id="index-messages"></div>
     </div>
 
     <div class="menu-button menu-button-1">
@@ -332,6 +327,11 @@
       defer
     ></script>
     <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
+
     <script src="{{ url_for('static', filename='js/drop-down.js') }}" defer></script>
+
+    <script src="{{ url_for('static', filename='js/mail.js') }}" defer></script>
+
+
   </body>
 </html>

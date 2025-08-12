@@ -7,6 +7,7 @@ class ChatBotAgent:
     @staticmethod
     def get_response(query, path, chat_history ,index_name=None ):
 
+
         # if (
         # (query.startswith('"') and query.endswith('"')) or
         # (query.startswith('“') and query.endswith('”')) or
@@ -45,6 +46,7 @@ Follow this exact format for the response:
 Answer:
 A short, direct answer to the question. Focus only on what's asked. And do not mention that you have extracted this answer from a context
 
+
 Pages and Sections: Format it exactly like this, using bullet points
 - 📄 Pages: Only the page numbers that were used to get the answer,
 - 📚 Sections: No extra explanation Just the sections. Use Only 1-2 sections titles that were used to get the answer. Use the given sections . But if the sections are not given , What might be the section for the given context depending on the examples in the given context (e.g."3.2 Engagement in Public Debates","Coal Industry","Industrial Revolution"," Receiving of Independence to Sri Lanka"," Impact on the Society"). 
@@ -70,8 +72,3 @@ Question: {query}"""
             "context": data if path != None else None
         }
 
-
-
-                        # Context:
-                        # - If context is provided: Copy **directly relevant** sentence(s) from the context and summarize. No extra explanation.  
-                        # - If no context is provided: Write “No external context was provided, so this answer is based on general knowledge.”                       

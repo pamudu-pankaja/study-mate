@@ -39,18 +39,16 @@
 
 /* Main Span */
 .right-sidebar .top{
-  margin-top: 0.2em;
+  display: flex !important;
 }
 
 #data_base_span {
   color: var(--colour-3);
-  margin-top: 5px;
   padding: 5px;
   border-radius: 8px;
   padding-right: 5px;
   height: 32px;
   background: flex;
-  top: 12px;
   font-weight: bold;
   font-size: 17px;
 }
@@ -90,7 +88,7 @@
 
 .sidebar-content .index{
   margin-top: 20px;
-  border-top: 1px solid var(--colour-3);
+  /* border-top: 1px solid var(--colour-3); */
 }
 
 .sidebar-content #index {
@@ -99,7 +97,7 @@
   /* background-color: #2a2c2d; */
   background-color: var(--blur-bg);
   color: var(--colour-3);
-  border: 1px solid var(--blur-border);
+  /* border: 1px solid var(--blur-border); */
   border-radius: 5px;
   height: 40px;
   width: 230px;

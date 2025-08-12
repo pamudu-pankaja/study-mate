@@ -3,14 +3,10 @@ const display = document.getElementById("file_name");
 const fallBackDisplay = document.getElementById("file-fallback-message");
 const fallBackDisplay_index = document.getElementById("index-fallback-message");
 const button = document.getElementById("file-upload-btn");
-const showStartPage = document.getElementById("start-page");
-
-
-
 
 input.addEventListener("change", () => {
   const file = input.files[0];
-  const max_size = 1 * 1024 * 1024;
+  const max_size = 20 * 1024 * 1024; //Maximum file size 20MB
 
   if (!file) {
     return;
@@ -29,7 +25,7 @@ input.addEventListener("change", () => {
   if (file.size >= max_size) {
     fallBackDisplay_index.classList.remove("visble");
     fallBackDisplay_index.classList.remove("success");
-    fallBackDisplay.textContent = "File must be under 1 MB";
+    fallBackDisplay.textContent = "File must be under 20 MB";
     fallBackDisplay.classList.add("visible");
     input.value = "";
     display.textContent = "No file chosen";
@@ -104,13 +100,13 @@ async function uploadFile() {
     const data = await res.json();
 
     // If you are not me just dont get your head fucked up with these class names check the css file right side bar
-    if (data.status == "success") {
+    if (data.status == "processing") {
       fallBackDisplay_index.classList.remove("visble");
       fallBackDisplay_index.classList.remove("success");      
       fallBackDisplay.classList.add("success");
       fallBackDisplay.classList.remove("visible");
       fallBackDisplay.textContent = data.message;
-      console.log(`file added`);
+      console.log(`file is processing in the background`);
     }
 
     if (data.status == "error" || !data) {
@@ -132,19 +128,19 @@ async function uploadFile() {
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  let chatID = window.conversation_id;
+// window.addEventListener("DOMContentLoaded", () => {
+//   let chatID = window.conversation_id;
 
-  let endpointStartPage = chatID
-    ? `${url_prefix}/chat/${chatID}/start-page`
-    : `${url_prefix}/chat/start-page`;
+//   let endpointStartPage = chatID
+//     ? `${url_prefix}/chat/${chatID}/start-page`
+//     : `${url_prefix}/chat/start-page`;
 
-  fetch(endpointStartPage)
-    .then((res) => res.json())
-    .then((data) => {
-      const currentPage = data.start_page;
-      console.log(data.startPage || 0);
-      showStartPage.textContent = currentPage;
-    });
-});
+//   fetch(endpointStartPage)
+//     .then((res) => res.json())
+//     .then((data) => {
+//       const currentPage = data.start_page;
+//       console.log(data.startPage || 0);
+//       showStartPage.textContent = currentPage;
+//     });
+// });
 

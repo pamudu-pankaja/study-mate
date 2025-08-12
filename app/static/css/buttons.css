@@ -13,5 +13,5 @@
 }
 
 .menu-button-2 , .menu-button-3{
-	position: static;
+	position: static !important;
 }

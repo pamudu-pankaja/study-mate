@@ -27,10 +27,12 @@ starting_page = 0
 
 context = None
 
+
 def ensure_mail_file(mail_file):
     if not os.path.exists(mail_file):
         with open(mail_file, "w", encoding="utf-8") as f:
             json.dump([], f)
+
 
 @app.route("/", methods=["GET"])
 def home():
@@ -212,60 +214,62 @@ def index_name_get(conversation_id=None):
         print(f"Sending... Empty index name")
         return jsonify({"index_name": "Index Name : Not set", "indexName": index_name})
 
-def save_mail(sender, content, mail_file_path ,seen=False ):
+
+def save_mail(sender, content, mail_file_path, seen=False):
     mail_file = mail_file_path
-    
+
     if os.path.exists(mail_file):
-        with open(mail_file, 'r') as f:
+        with open(mail_file, "r") as f:
             mails = json.load(f)
     else:
         mails = []
 
     next_id = max([mail.get("id", 0) for mail in mails], default=0) + 1
-    
+
     new_mail = {
         "id": next_id,
         "sender": sender,
         "content": content,
         "seen": seen,
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M")
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M"),
     }
-    
+
     mails.append(new_mail)
-    
-    with open(mail_file, 'w') as f:
+
+    with open(mail_file, "w") as f:
         json.dump(mails, f, indent=2)
-    
+
     print(f"Mail saved: {content}")
 
-def process_file(file_path, index_name, starting_page:int, file_name , mail_file):
+
+def process_file(file_path, index_name, starting_page: int, file_name, mail_file):
     try:
         from app.agents.rag_agent.rag_agent import RAGAgent
-        
+
         print(f"Background processing started for {file_name}")
-        
+
         result = RAGAgent.import_file(file_path, index_name, starting_page)
-        
+
         if result == "success":
             save_mail(
                 "System",
                 f"File '{file_name}' has been successfully processed and ready to use",
-                mail_file_path=mail_file
+                mail_file_path=mail_file,
             )
             print(f"Background processing completed successfully for {file_name}")
         else:
             save_mail(
                 "System",
                 f"Failed to process file '{file_name}'. Please try again",
-                mail_file_path=mail_file
+                mail_file_path=mail_file,
             )
             print(f"Background processing failed for {file_name}")
-            
+
     except Exception as e:
         save_mail(
             "System",
             f"Error processing file '{file_name}': {str(e)}",
-            mail_file_path=mail_file
+            mail_file_path=mail_file,
         )
         print(f"Background processing error for {file_name}: {e}")
 
@@ -309,40 +313,46 @@ index_name = {index_name}
 start_page = {starting_page}
 Starting Background processing..."""
         )
-        
+
         thread = threading.Thread(
             target=process_file,
-            args=(file_path,index_name,starting_page,file_name,mail_file),
-            daemon=True
+            args=(file_path, index_name, starting_page, file_name, mail_file),
+            daemon=True,
         )
         thread.start()
-        
+
         save_mail(
             "System",
             f"File '{file_name}' ,  received and queued for processing. You'll be notified when it's ready!",
-            mail_file_path=mail_file
+            mail_file_path=mail_file,
         )
-        
-        return jsonify({
-            "message": f"File '{file_name}' is being processed in the background. Check your notifications for updates.",
-            "status": "processing",
-            "file_name": file_name
-        }), 202
-        
+
+        return (
+            jsonify(
+                {
+                    "message": f"File '{file_name}' is being processed in the background. Check your notifications for updates.",
+                    "status": "processing",
+                    "file_name": file_name,
+                }
+            ),
+            202,
+        )
+
     except Exception as e:
-            print(f"Error during file importing: {e}")
-            save_mail(
-                "System",
-                f"❌ Error uploading file: {str(e)}",
-                mail_file_path=mail_file
-            )
-            return jsonify({
-                "message": "Error during file upload",
-                "status": "error",
-                "error_msg": f"Something went wrong: {e}"
-            }), 500
-
-
+        print(f"Error during file importing: {e}")
+        save_mail(
+            "System", f"❌ Error uploading file: {str(e)}", mail_file_path=mail_file
+        )
+        return (
+            jsonify(
+                {
+                    "message": "Error during file upload",
+                    "status": "error",
+                    "error_msg": f"Something went wrong: {e}",
+                }
+            ),
+            500,
+        )
 
 
 @app.route("/chat/start-page", methods=["GET"])
@@ -385,6 +395,7 @@ def delete_message(msg_id, conversation_id=None):
     with open(mail_file, "w", encoding="utf-8") as f:
         json.dump(messages, f, indent=2)
     return jsonify({"status": "success"}), 200
+
 
 @app.route("/chat/mail/mark-seen", methods=["POST"])
 @app.route("/chat/<conversation_id>/mail/mark-seen", methods=["POST"])

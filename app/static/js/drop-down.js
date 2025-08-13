@@ -1,6 +1,6 @@
 const yourBooksArray = [
   "History Grade11",
-  "History Grade10"
+  "History Grade10",
   "History Grade9"
 ];
 

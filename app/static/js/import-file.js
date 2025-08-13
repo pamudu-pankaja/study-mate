@@ -3,14 +3,10 @@ const display = document.getElementById("file_name");
 const fallBackDisplay = document.getElementById("file-fallback-message");
 const fallBackDisplay_index = document.getElementById("index-fallback-message");
 const button = document.getElementById("file-upload-btn");
-const showStartPage = document.getElementById("start-page");
-
-
-
 
 input.addEventListener("change", () => {
   const file = input.files[0];
-  const max_size = 20 * 1024 * 1024;
+  const max_size = 20 * 1024 * 1024; //Maximum file size 20MB
 
   if (!file) {
     return;
@@ -132,19 +128,19 @@ async function uploadFile() {
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  let chatID = window.conversation_id;
+// window.addEventListener("DOMContentLoaded", () => {
+//   let chatID = window.conversation_id;
 
-  let endpointStartPage = chatID
-    ? `${url_prefix}/chat/${chatID}/start-page`
-    : `${url_prefix}/chat/start-page`;
+//   let endpointStartPage = chatID
+//     ? `${url_prefix}/chat/${chatID}/start-page`
+//     : `${url_prefix}/chat/start-page`;
 
-  fetch(endpointStartPage)
-    .then((res) => res.json())
-    .then((data) => {
-      const currentPage = data.start_page;
-      console.log(data.startPage || 0);
-      showStartPage.textContent = currentPage;
-    });
-});
+//   fetch(endpointStartPage)
+//     .then((res) => res.json())
+//     .then((data) => {
+//       const currentPage = data.start_page;
+//       console.log(data.startPage || 0);
+//       showStartPage.textContent = currentPage;
+//     });
+// });
 

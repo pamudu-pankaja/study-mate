@@ -15,3 +15,7 @@
 .menu-button-2 , .menu-button-3{
 	position: static !important;
 }
+
+.clicked{
+	background-color: var(--hover);
+}

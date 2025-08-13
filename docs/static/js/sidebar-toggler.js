@@ -39,6 +39,8 @@ function toggleMailBox() {
   window.scrollTo(0, 0);
 }
 
+//Yeah dont ever think about changing any lines your next nightmare wil be buttons 
+
 // Show / Hide Right Sidebar
 function showRightSidebar() {
   hideMailBox();

@@ -35,7 +35,7 @@ function setIndex() {
       })
         .then((res) => res.json())
         .then((data) => {
-          // If you are not me just dont get your head fucked up with these class names check the css file right side bar
+          // If you are not me just dont get your head messed up with these class names check the css file right side bar
 
           if (data.status == "success") {
             fallBackDisplay.classList.add("success");

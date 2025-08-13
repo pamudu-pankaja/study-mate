@@ -49,6 +49,7 @@
   </head>
 
   <body data-urlprefix="{{ url_prefix }}">
+    <div id="alert-container"></div>
     <div class="main-container">
       <div class="box sidebar">
         <div class="top">
@@ -161,7 +162,7 @@
       </div>
     </div>
 
-    <div class="right-sidebar" id="rightSidebar">
+    <div class="hidden right-sidebar" id="rightSidebar">
       <div class="top">
         <span id="data_base_span">Data Base Information</span>
       </div>
@@ -241,7 +242,7 @@
           </div>
         </div>
 
-                <!-- Delete Text Book Section -->
+        <!-- Delete Text Book Section -->
         <div class="section">
           <div class="section-title">
             <i class="fa-solid fa-trash"></i>
@@ -257,8 +258,7 @@
                 placeholder="Name of the text book"
                 id="namespace-delete"
               />
-              <div id="dropdown-2" class="dropdown-list">
-              </div>
+              <div id="dropdown-2" class="dropdown-list"></div>
             </div>
 
             <button class="btn" id="index-name-btn" onclick="deleteBook()">
@@ -307,9 +307,8 @@
     <script src="static/js/index-name.js" defer></script>
     <script src="static/js/import-file.js" defer></script>
     <script src="static/js/chat.js" defer></script>
-
     <script src="static/js/drop-down.js" defer></script>
-
     <script src="static/js/mail.js" defer></script>
+    <script src="static/js/alert.js" defer></script>
   </body>
 </html>

@@ -35,11 +35,7 @@ def ensure_books_file(BOOKS_FILE):
     if not os.path.exists(BOOKS_FILE):
         os.makedirs(os.path.dirname(BOOKS_FILE), exist_ok=True)
         default_books = {
-            "systemBooks": [
-                    "History Grade9",
-                    "History Grade10",
-                    "History Grade11"
-            ],
+            "systemBooks": [],
             "userBooks": []
         }
         
@@ -51,11 +47,7 @@ def ensure_pinecone_data_file(PINECONE_DATA_FILE):
     if not os.path.exists(PINECONE_DATA_FILE):
         os.makedirs(os.path.dirname(PINECONE_DATA_FILE), exist_ok=True)
         default_data = {
-            "booksWithData": [
-                "History Grade9",
-                "History Grade10", 
-                "History Grade11"
-            ]
+            "booksWithData": []
         }
         
         with open(PINECONE_DATA_FILE, "w", encoding="utf-8") as f:

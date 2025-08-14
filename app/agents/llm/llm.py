@@ -33,7 +33,6 @@ class GeminiLLM:
 
         contents.append({"role": "user", "parts": [{"text": prompt}]})
         
-        print(contents)
         
         retries = 3
         

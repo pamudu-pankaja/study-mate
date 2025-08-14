@@ -1,7 +1,5 @@
 const input = document.getElementById("file_input");
 const display = document.getElementById("file_name");
-const fallBackDisplay = document.getElementById("file-fallback-message");
-const fallBackDisplay_index = document.getElementById("index-fallback-message");
 const button = document.getElementById("file-upload-btn");
 
 input.addEventListener("change", () => {
@@ -13,34 +11,29 @@ input.addEventListener("change", () => {
   }
 
   if (file.type !== "application/pdf") {
-    fallBackDisplay_index.classList.remove("visble");
-    fallBackDisplay_index.classList.remove("success");
-    fallBackDisplay.textContent = "Only PDF file are allowed";
-    fallBackDisplay.classList.add("visible");
+    showWarning("Invalid File Type","Only PDF files are allowed")
     input.value = "";
     display.textContent = "No file chosen";
     return;
   }
 
   if (file.size >= max_size) {
-    fallBackDisplay_index.classList.remove("visble");
-    fallBackDisplay_index.classList.remove("success");
-    fallBackDisplay.textContent = "File must be under 20 MB";
-    fallBackDisplay.classList.add("visible");
+    showWarning("Invalid File Size", "File size must be under 20MB")
     input.value = "";
     display.textContent = "No file chosen";
     return;
   }
 
-  // fallBackDisplay.textContent = "File added successfully";
-  fallBackDisplay.classList.remove("visible");
-  // fallBackDisplay.classList.add("success");
   display.textContent = ` ${file.name} `;
   display.title = file.name;
 });
 
 async function uploadFile() {
-  const startPage = document.getElementById("starting-page").value;
+  let startPage = document.getElementById("starting-page").value;
+
+  if (startPage == null && startPage < 0 ){
+    startPage = 0
+  }
 
   const file = input.files[0];
   const url_prefix = document
@@ -58,26 +51,19 @@ async function uploadFile() {
   const index_name = data.indexName;
 
   if (!index_name || index_name == '') {
-    fallBackDisplay_index.classList.add("visible");
-    fallBackDisplay_index.classList.remove("success");
-    fallBackDisplay_index.textContent = "Please set a index name";
+    showError("Book Name Empty" , "Please set a valid Book Name to import file")
     console.log("Index name is missing , file uploading is aborting");
     return;
   }
 
+  if(index_name == allBooks)
+
   if (!file) {
-    fallBackDisplay.textContent = "Please upload a file";
-    fallBackDisplay.classList.add("visible");
-    fallBackDisplay_index.classList.remove("success");
+    showWarning("No File","Please upload a file to be imported")
     input.value = "";
     display.textContent = "No file chosen";
     return;
   }
-
-  fallBackDisplay.textContent = "Sending...";
-  fallBackDisplay.classList.add("visible");
-  fallBackDisplay.classList.remove("success");
-  fallBackDisplay.style.color = "#DADADA";
 
   button.disabled = true;
 
@@ -99,29 +85,17 @@ async function uploadFile() {
 
     const data = await res.json();
 
-    // If you are not me just dont get your head fucked up with these class names check the css file right side bar
     if (data.status == "processing") {
-      fallBackDisplay_index.classList.remove("visble");
-      fallBackDisplay_index.classList.remove("success");      
-      fallBackDisplay.classList.add("success");
-      fallBackDisplay.classList.remove("visible");
-      fallBackDisplay.textContent = data.message;
+      showSuccess("File is Processing",data.message)
       console.log(`file is processing in the background`);
     }
 
     if (data.status == "error" || !data) {
-      fallBackDisplay_index.classList.remove("visble");
-      fallBackDisplay_index.classList.remove("success");
-      fallBackDisplay.classList.add("visible");
-      fallBackDisplay.classList.remove("success");
-      fallBackDisplay.textContent = data.message;
+      showError("Faild to Import",data.message)
       console.log(data.error_msg || "Check the local server terminal");
     }
   } catch (error) {
-    fallBackDisplay.classList.add("visible");
-    fallBackDisplay.classList.remove("success");
-    fallBackDisplay.style.fontSize = "12px";
-    fallBackDisplay.textContent = "[check console] Something went wrong";
+    showError("Faild to Import", error)
     console.error("fetch error :", error);
   } finally {
     button.disabled = false;

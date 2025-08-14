@@ -25,17 +25,6 @@ class pinecone_db:
                 return f"Error while requasting : {e}"
 
     @staticmethod
-    def delete_book(index_name, namespace):
-        index = pc.Index(index_name)
-        try:
-            index.delete(delete_all=True, namespace=namespace)
-            print(f"All vectors deleted in namespace '{namespace}'.")
-            return "success"
-        except Exception as e:
-            print(f"Error deleting vectors in namespace '{namespace}': {e}")
-            return f"error"
-
-    @staticmethod
     def create_embedding_text(chunk_data):
         text = chunk_data["text"]
         section = chunk_data.get("section", "")

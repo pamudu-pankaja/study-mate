@@ -88,8 +88,8 @@ def chat_req(conversation_id=None):
     try:
         data = request.get_json()
 
-        # print("Received:", data["meta"]["content"]["parts"][0]["content"])
-        print(data)
+        print("Received:", data["meta"]["content"]["parts"][0]["content"])
+        # print(data)
 
         user_message = data["meta"]["content"]["parts"][0]["content"]
         path = data["searchPath"]
@@ -296,7 +296,6 @@ def import_file(conversation_id=None):
             int(start_page) if start_page and start_page.strip() != "" else 0
         )
 
-        today_str = datetime.now().strftime("%Y-%m-%d")
         folder_path = upload_folder
         os.makedirs(folder_path, exist_ok=True)
 

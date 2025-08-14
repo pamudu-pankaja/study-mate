@@ -209,6 +209,10 @@
 	.menu-button-3.hide{
 		display: none !important;
 	}
+
+	.menu-button-2.hide{
+		display: none !important;
+	}
 }
 
 @media screen and (max-width: 990px) {

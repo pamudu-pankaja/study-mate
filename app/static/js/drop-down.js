@@ -16,7 +16,6 @@ const savedBooks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
 const books = [...yourBooksArray, ...savedBooks];
 
-// Assuming you have your own books array somewhere else:
 const nameSpaceInput = document.getElementById("index");
 const dropdown = document.getElementById("dropdown");
 

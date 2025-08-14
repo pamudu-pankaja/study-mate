@@ -131,7 +131,7 @@ def read_books(BOOKS_FILE):
         print(f"Error reading books file: {e}")
         return {"systemBooks": [], "userBooks": []}
 
-def write_books(books_data,BOOKS_FILE):
+def write_books(books_data, BOOKS_FILE):
     try:
         with open(BOOKS_FILE, "w", encoding="utf-8") as f:
             json.dump(books_data, f, indent=2, ensure_ascii=False)
@@ -434,7 +434,7 @@ Starting Background processing..."""
     except Exception as e:
         print(f"Error during file importing: {e}")
         save_mail(
-            "System", f"❌ Error uploading file: {str(e)}", mail_file_path=mail_file
+            "System", f"Error uploading file: {str(e)}", mail_file_path=mail_file
         )
         return (
             jsonify(
@@ -527,7 +527,7 @@ def add_book(conversation_id=None):
         if not book_name:
             return jsonify({
                 "success": False,
-                "message": "Book name is required and must be a non-empty string"
+                "message": "Book name is required"
             }), 400
         
         books = read_books(book_file)
@@ -545,7 +545,7 @@ def add_book(conversation_id=None):
             books["userBooks"] = []
         books["userBooks"].append(book_name)
         
-        if write_books(books,book_file):
+        if write_books(books, book_file):
             print(f"Book added: {book_name}")
             return jsonify({
                 "success": True,
@@ -555,7 +555,7 @@ def add_book(conversation_id=None):
         else:
             return jsonify({
                 "success": False,
-                "message": "Failed to save book to file"
+                "message": "Failed to save book"
             }), 500
             
     except Exception as e:

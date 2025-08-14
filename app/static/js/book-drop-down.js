@@ -13,7 +13,7 @@ const API_BASE = chatID
 async function fetchBooks() {
   try {
     const response = await fetch(`${API_BASE}/list`);
-    if (!response.ok) showError("Faild to Fetch Books","We faild to fetch the books from the server . Please consider reloading the site")
+    if (!response.ok) showError("Faild to Fetch Books","We faild to fetch the books from the server. Please consider reloading the site")
     
     const data = await response.json();
     allBooks = [...data.systemBooks, ...data.userBooks];

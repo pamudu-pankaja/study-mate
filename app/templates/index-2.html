@@ -13,7 +13,10 @@
     />
 
     <meta property="og:title" content="StudyMate" />
-    <meta property="og:image" content="{{ url_for('static', filename='img/book.png') }}" />
+    <meta
+      property="og:image"
+      content="{{ url_for('static', filename='img/book.png') }}"
+    />
     <meta
       property="og:description"
       content="A conversational AI system that help users with school works"
@@ -23,7 +26,10 @@
     <title>StudyMate</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -41,15 +47,19 @@
       sizes="16x16"
       href="{{ url_for('static', filename='img/favicon-16x16.png') }}"
     />
-    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}" />
+    <link
+      rel="manifest"
+      href="{{ url_for('static', filename='img/site.webmanifest') }}"
+    />
     <link
       rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
     />
+
+
   </head>
 
   <body data-urlprefix="{{ url_prefix }}">
-    <div id="alert-container"></div>
     <div class="main-container">
       <div class="box sidebar">
         <div class="top">
@@ -153,124 +163,106 @@
         <div class="menu-button menu-button-2">
           <i class="fa-solid fa-database"></i>
         </div>
-        <div class="dot-container">
-          <div id="red-dot" class="red-dot"></div>
-        </div>
+          <div class="dot-container">
+            <div id="red-dot" class="red-dot"></div>
+          </div>
         <div class="menu-button menu-button-3">
           <i class="fa-solid fa-envelope"></i>
+
+
         </div>
       </div>
     </div>
 
-    <div class="hidden right-sidebar" id="rightSidebar">
+    <div class="hidden box right-sidebar" id="rightSidebar">
       <div class="top">
         <span id="data_base_span">Data Base Information</span>
       </div>
-
       <div class="sidebar-content">
-        <!-- Text Book Section -->
-        <div class="section">
-          <div class="section-title">
-            <i class="fa-solid fa-book"></i>
-            <span>Text Book</span>
+        <div class="index">
+          <span>
+            <i class="fa-solid fa-book" style="margin-right: 5px"></i> Text Book
+            </span
+          >
+          <div class="dropdown-container">
+            <input
+              autocomplete="on"
+              spellcheck="false"
+              type="text"
+              placeholder="Namespace of the text book"
+              id="index"
+              style="margin-top: 4px"
+            />
+            <div id="dropdown" class="dropdown-list"></div>
           </div>
 
-          <div class="input-group">
-            <div class="dropdown-container">
-              <input
-                autocomplete="off"
-                spellcheck="false"
-                type="text"
-                placeholder="Name of the text book"
-                id="index"
-              />
-              <div id="dropdown" class="dropdown-list">
-                <div class="dropdown-item add-new">
-                  <span>+</span>
-                  <span>Add New Book</span>
-                </div>
-              </div>
-            </div>
 
-            <button class="btn" id="index-name-btn" onclick="setIndex()">
-              <i class="fa-regular fa-layer-plus"></i>
-              <span>Set Book</span>
-            </button>
-          </div>
+          <button id="index-name-btn" onclick="setIndex()">
+            <i
+              class="fa-regular fa-layer-plus"
+              style="margin-right: 6px; font-size: 14px; opacity: 0.6"
+            ></i>
+            Set Book
+
+          </button>
+          <span id="index-fallback-message" class="error"></span>
+          <br />
         </div>
 
-        <!-- Import PDF Section -->
-        <div class="section">
-          <div class="section-title">
-            <i class="fa-solid fa-file-circle-plus"></i>
-            <span>Import PDF File</span>
-          </div>
+        <div class="file_input">
+          <span style="margin-top: 60px"
+            ><i
+              class="fa-solid fa-file-circle-plus"
+              style="margin-right: 8px"
+            ></i
+            >Import PDF File
+          </span>
+          <span id="file_name">No file chosen</span>
+          <input type="file" id="file_input" accept=".pdf" />
 
-          <div class="input-group">
-            <div class="file-input-wrapper">
-              <div class="file-display">
-                <span>+ Select a file</span>
-              </div>
-              <input type="file" id="file_input" accept=".pdf" />
-            </div>
-
-            <div id="file_name">No file chosen</div>
-
-            <div class="starting-page-group">
-              <div class="tooltip-wrapper">
+          <div class="starting-page">
+            <div class="tooltip-wrapper">
+              <a href="index.html" target="_blank">
                 <i class="fa fa-info-circle info-icon"></i>
-                <span class="tooltip-text">
-                  If the book you are choosing has any credits in the front
-                  pages, please set the page you would like to start counting,
-                  else keep it as zero. Click for more details.
-                </span>
-              </div>
-              <input
-                type="number"
-                placeholder="Starting page"
-                id="starting-page"
-                value="0"
-              />
+              </a>
+              <span class="tooltip-text">
+                If the book you are choosing has any credits in the front pages
+                please set the page you would like to start counting, else keep
+                it as zero. CLICK for more DETAILS
+              </span>
             </div>
-
-            <button class="btn" onclick="uploadFile()" id="file-upload-btn">
-              <i class="fa-solid fa-upload"></i>
-              <span>Import File</span>
-            </button>
-
-            <div id="file-fallback-message" class="error"></div>
+            <input
+              value="0"
+              autocomplete="on"
+              spellcheck="false"
+              type="number"
+              placeholder="Which page to start counting"
+              id="starting-page"
+              name="startPage"
+            />
           </div>
+          <br />
+          <button onclick="uploadFile()" id="file-upload-btn">
+            <i
+              class="fa-solid fa-up-from-line"
+              style="margin-right: 6px; font-size: 15px; opacity: 0.5"
+            ></i>
+            Import File
+          </button>
+          <div id="file-fallback-message" class="error"></div>
         </div>
 
-        <!-- Delete Text Book Section -->
-        <div class="section">
-          <div class="section-title">
-            <i class="fa-solid fa-trash"></i>
-            <span>Delete Text Book</span>
-          </div>
-
-          <div class="input-group">
-            <div class="dropdown-container">
-              <input
-                autocomplete="off"
-                spellcheck="false"
-                type="text"
-                placeholder="Name of the text book"
-                id="namespace-delete"
-              />
-              <div id="dropdown-2" class="dropdown-list"></div>
-            </div>
-
-            <button class="btn" id="index-name-btn" onclick="deleteBook()">
-              <i class="fa-regular fa-layer-plus"></i>
-              <span>Delete</span>
-            </button>
-          </div>
-        </div>
-        <!-- Current Status -->
         <div class="current-info-container">
-          <div class="current-status-title">Current Status</div>
-          <div class="current-index" id="current-index">Text Book: Not set</div>
+          <div
+            id="current-status-div"
+            style="margin-bottom: 10px; font-size: 15px"
+          >
+            -Current Status-
+          </div>
+          <div id="current-index" style="margin-top: -2px; margin-bottom: 4px">
+            Index Name : Not set
+          </div>
+          <div id="start-page">Start Page : Not set</div>
         </div>
       </div>
     </div>
@@ -278,8 +270,12 @@
     <div class="hidden box right-sidebar mail" id="rightSidebar">
       <div class="top">
         <span>Inbox</span>
+        <div class="menu-button menu-button-3-inside hide ">
+          <i class="fa-regular fa-circle-xmark"></i>
+          <div id="red-dot" class="red-dot"></div>
+        </div>
       </div>
-      <div id="index-messages"></div>
+      <div  id="index-messages"></div>
     </div>
 
     <div class="menu-button menu-button-1">
@@ -290,7 +286,10 @@
     <script>
       window.conversation_id = "{{ chat_id or '' }}";
     </script>
-    <!-- <script src="{{ url_for('static', filename='js/icons.js') }}" defer></script> -->
+    <script
+      src="{{ url_for('static', filename='js/icons.js') }}"
+      defer
+    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"
       defer
@@ -299,16 +298,40 @@
       src="https://kit.fontawesome.com/12c4d6a4a9.js"
       crossorigin="anonymous"
     ></script>
-    <script src="{{ url_for('static', filename='js/highlight.min.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/theme-toggler.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/sidebar-toggler.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/toggle-button.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/index-name.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/import-file.js') }}" defer></script>
+    <script
+      src="{{ url_for('static', filename='js/highlight.min.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/theme-toggler.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/sidebar-toggler.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/toggle-button.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/index-name.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/import-file.js') }}"
+      defer
+    ></script>
     <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
+
     <script src="{{ url_for('static', filename='js/drop-down.js') }}" defer></script>
+
     <script src="{{ url_for('static', filename='js/mail.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/alert.js') }}" defer></script>
+
+
   </body>
 </html>

@@ -183,4 +183,4 @@ cython_debug/
 .pypirc
 
 file_transfer.py
-docs/
+chat/

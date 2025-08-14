@@ -3,8 +3,7 @@ const menuButton_burger = document.querySelector(".menu-button-1"); // controls 
 const icon_burger = menuButton_burger.querySelector("i");
 const icon_gear = menuButton_gear.querySelector("i");
 const mail_btn = document.querySelector(".menu-button-3");
-const mail_icon = document.querySelector(".fa-envelope")
-const mail_btn_inside = document.querySelector(".menu-button-3-inside")
+const mail_icon = document.querySelector(".fa-envelope");
 const red_dot = document.getElementById("red-dot");
 
 const sidebar_right = document.getElementById("rightSidebar");
@@ -40,9 +39,12 @@ function toggleMailBox() {
   window.scrollTo(0, 0);
 }
 
+//Yeah dont ever think about changing any lines your next nightmare wil be buttons 
+
 // Show / Hide Right Sidebar
 function showRightSidebar() {
   hideMailBox();
+  menuButton_gear.classList.add("clicked")
   red_dot.classList.add("red-dot-hide");
   mail_btn.classList.add("hide");
   document.querySelector(".error").classList.remove("visible");
@@ -54,6 +56,7 @@ function showRightSidebar() {
 }
 
 function hideRightSidebar() {
+  menuButton_gear.classList.remove("clicked")
   red_dot.classList.remove("red-dot-hide");
   mail_icon.classList.add("fa-envelope")
   mail_btn.classList.remove("hide");
@@ -65,7 +68,9 @@ function hideRightSidebar() {
 
 // Show / Hide Left Sidebar
 function showLeftSidebar() {
-  menuButton_gear.classList.add("hidden");
+  hideRightSidebar();
+  hideMailBox()
+  menuButton_gear.classList.add("hide");
   mail_btn.classList.add("hide")
   sidebar_left.classList.add("shown");
   menuButton_burger.classList.add("rotated");
@@ -73,9 +78,11 @@ function showLeftSidebar() {
   document.body.style.overflow = "hidden";
 }
 
-function hideLeftSidebar() {
-  menuButton_gear.classList.remove("hidden");
-  mail_btn.classList.remove("hide")
+function hideLeftSidebar() {  
+  if(menuButton_gear.classList.contains("hide")){
+    mail_btn.classList.remove("hide")    
+  }
+  menuButton_gear.classList.remove("hide");
   sidebar_left.classList.remove("shown");
   icon_burger.classList.remove("rotated");
   menuButton_burger.classList.remove("rotated");
@@ -84,9 +91,10 @@ function hideLeftSidebar() {
 
 // Show / Hide Mail Box
 function showMailBox() {
-  mail_btn.classList.add("hide");
-  mail_btn_inside.classList.remove("hide")
   mail_box.classList.remove("hidden");
+  mail_icon.classList.remove("fa-envelope")
+  mail_icon.classList.add("fa-envelope-open"); 
+  mail_btn.classList.add("clicked")
   let chatID = window.conversation_id;
   let endpointIndex = chatID
     ? `${url_prefix}/chat/${chatID}/mail/mark-seen`
@@ -102,18 +110,15 @@ function showMailBox() {
       if (typeof renderMessages === "function") {
         renderMessages(messages);
       }
-      const dot = document.getElementById("red-dot");
-      if (dot) dot.style.display = "none";
+      if (red_dot) red_dot.style.display = "none";
     });
-  dot.style.display = "none"
-  mail_icon.classList.remove("fa-envelope")
-  mail_icon.classList.add("fa-envelope-open");
+  red_dot.style.display = "none"
+
 
 }
 
 function hideMailBox() {
-  mail_btn.classList.remove("hide");
-  mail_btn_inside.classList.add("hide")
+  mail_btn.classList.remove("clicked")
   mail_icon.classList.add("fa-envelope")
   mail_icon.classList.remove("fa-envelope-open");
   mail_box.classList.add("hidden");
@@ -124,7 +129,6 @@ function hideMailBox() {
 menuButton_gear.addEventListener("click", toggleRightSidebar);
 menuButton_burger.addEventListener("click", toggleLeftSidebar);
 mail_btn.addEventListener("click", toggleMailBox);
-mail_btn_inside.addEventListener("click", toggleMailBox)
 
 // Extra Logic: hide left sidebar if clicking on conversation
 document.body.addEventListener("click", function (event) {

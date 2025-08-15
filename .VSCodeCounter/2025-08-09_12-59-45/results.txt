@@ -1,0 +1,155 @@
+Date : 2025-08-09 12:59:45
+Directory : d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot
+Total : 99 files,  7055 codes, 315 comments, 1482 blanks, all 8852 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| PostCSS          |         42 |      3,072 |         82 |        597 |      3,751 |
+| JavaScript       |         24 |      2,188 |         79 |        445 |      2,712 |
+| Python           |         26 |        937 |         87 |        319 |      1,343 |
+| HTML             |          3 |        720 |         67 |         76 |        863 |
+| Markdown         |          1 |         71 |          0 |         45 |        116 |
+| JSON             |          2 |         38 |          0 |          0 |         38 |
+| pip requirements |          1 |         29 |          0 |          0 |         29 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                               | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                  |         99 |      7,055 |        315 |      1,482 |      8,852 |
+| . (Files)                                                                                                          |          4 |        153 |          2 |         65 |        220 |
+| app                                                                                                                |         60 |      4,006 |        221 |        884 |      5,111 |
+| app (Files)                                                                                                        |          2 |        282 |          1 |         64 |        347 |
+| app\agents                                                                                                         |         19 |        580 |         81 |        220 |        881 |
+| app\agents (Files)                                                                                                 |          1 |          3 |          0 |          1 |          4 |
+| app\agents\chat_bot_agent                                                                                          |          8 |        185 |         13 |         68 |        266 |
+| app\agents\chat_bot_agent (Files)                                                                                  |          3 |         71 |         13 |         29 |        113 |
+| app\agents\chat_bot_agent\tools                                                                                    |          5 |        114 |          0 |         39 |        153 |
+| app\agents\llm                                                                                                     |          2 |        108 |         52 |         53 |        213 |
+| app\agents\rag_agent                                                                                               |          6 |        268 |         16 |         92 |        376 |
+| app\agents\rag_agent (Files)                                                                                       |          1 |         34 |          3 |         14 |         51 |
+| app\agents\rag_agent\vector_store                                                                                  |          5 |        234 |         13 |         78 |        325 |
+| app\agents\web_search                                                                                              |          2 |         16 |          0 |          6 |         22 |
+| app\backup                                                                                                         |          2 |        154 |         26 |         34 |        214 |
+| app\config                                                                                                         |          2 |          8 |          0 |          5 |         13 |
+| app\static                                                                                                         |         34 |      2,696 |         91 |        531 |      3,318 |
+| app\static\css                                                                                                     |         21 |      1,560 |         51 |        308 |      1,919 |
+| app\static\img                                                                                                     |          1 |         19 |          0 |          0 |         19 |
+| app\static\js                                                                                                      |         12 |      1,117 |         40 |        223 |      1,380 |
+| app\templates                                                                                                      |          1 |        286 |         22 |         30 |        338 |
+| docs                                                                                                               |         35 |      2,896 |         92 |        533 |      3,521 |
+| docs (Files)                                                                                                       |          1 |        294 |         22 |         22 |        338 |
+| docs\static                                                                                                        |         34 |      2,602 |         70 |        511 |      3,183 |
+| docs\static\css                                                                                                    |         21 |      1,512 |         31 |        289 |      1,832 |
+| docs\static\img                                                                                                    |          1 |         19 |          0 |          0 |         19 |
+| docs\static\js                                                                                                     |         12 |      1,071 |         39 |        222 |      1,332 |
++--------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                                                                           | language         | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\README.md                                            | Markdown         |         71 |          0 |         45 |        116 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\__init__.py                                      | Python           |          2 |          0 |          1 |          3 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\__init__.py                               | Python           |          3 |          0 |          1 |          4 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\chat_bot_agent\__init__.py                | Python           |          0 |          0 |          1 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\chat_bot_agent\chat_bot_agent.py          | Python           |         44 |         11 |         20 |         75 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\chat_bot_agent\tool_handler.py            | Python           |         27 |          2 |          8 |         37 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\chat_bot_agent\tools\__init__.py          | Python           |          0 |          0 |          1 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\chat_bot_agent\tools\is_english.py        | Python           |          9 |          0 |          3 |         12 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\chat_bot_agent\tools\summarizer.py        | Python           |         42 |          0 |         18 |         60 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\chat_bot_agent\tools\summarizer_NEW.py    | Python           |         41 |          0 |         13 |         54 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\chat_bot_agent\tools\translator.py        | Python           |         22 |          0 |          4 |         26 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\llm\__init__.py                           | Python           |          0 |          0 |          1 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\llm\llm.py                                | Python           |        108 |         52 |         52 |        212 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\rag_agent\rag_agent.py                    | Python           |         34 |          3 |         14 |         51 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\rag_agent\vector_store\__init__.py        | Python           |          0 |          0 |          1 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\rag_agent\vector_store\embedder.py        | Python           |         36 |          4 |         13 |         53 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\rag_agent\vector_store\file_load.py       | Python           |        102 |          0 |         28 |        130 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\rag_agent\vector_store\pinecorn_client.py | Python           |         73 |          6 |         21 |        100 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\rag_agent\vector_store\vectore_search.py  | Python           |         23 |          3 |         15 |         41 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\web_search\__init__.py                    | Python           |          0 |          0 |          1 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\agents\web_search\web_agent.py                   | Python           |         16 |          0 |          5 |         21 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\backup\main.py                                   | Python           |         14 |          3 |         10 |         27 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\backup\static_index.html                         | HTML             |        140 |         23 |         24 |        187 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\chatbot.py                                       | Python           |        280 |          1 |         63 |        344 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\config\__init__.py                               | Python           |          1 |          0 |          1 |          2 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\config\config.py                                 | Python           |          7 |          0 |          4 |         11 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\button.css                            | PostCSS          |         26 |          0 |          5 |         31 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\buttons.css                           | PostCSS          |         15 |          0 |          3 |         18 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\checkbox.css                          | PostCSS          |         47 |          0 |          9 |         56 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\conversation.css                      | PostCSS          |        194 |          5 |         41 |        240 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\dropdown.css                          | PostCSS          |          9 |          0 |          2 |         11 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\field.css                             | PostCSS          |         10 |          0 |          2 |         12 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\global.css                            | PostCSS          |         92 |          0 |         23 |        115 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\hljs.css                              | PostCSS          |         59 |          1 |          9 |         69 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\label.css                             | PostCSS          |         19 |          0 |          1 |         20 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\mail.css                              | PostCSS          |        130 |          9 |         33 |        172 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\main.css                              | PostCSS          |         14 |          0 |          1 |         15 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\message-input.css                     | PostCSS          |         30 |          0 |         12 |         42 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\message.css                           | PostCSS          |        213 |          2 |         39 |        254 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\options.css                           | PostCSS          |          9 |          0 |          2 |         11 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\right-sidebar.css                     | PostCSS          |        366 |         29 |         59 |        454 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\select.css                            | PostCSS          |         28 |          1 |          7 |         36 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\settings.css                          | PostCSS          |         36 |          0 |          9 |         45 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\sidebar.css                           | PostCSS          |        197 |          4 |         42 |        243 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\stop-generating.css                   | PostCSS          |         33 |          0 |          6 |         39 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\style.css                             | PostCSS          |         20 |          0 |          0 |         20 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\css\typing.css                            | PostCSS          |         13 |          0 |          3 |         16 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\img\site.webmanifest                      | JSON             |         19 |          0 |          0 |         19 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\change-language.js                     | JavaScript       |         39 |          4 |          7 |         50 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\chat.js                                | JavaScript       |        605 |         19 |        118 |        742 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\drop-down.js                           | JavaScript       |         73 |          3 |         18 |         94 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\highlight.min.js                       | JavaScript       |          1 |          0 |          0 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\highlightjs-copy.min.js                | JavaScript       |          1 |          0 |          0 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\icons.js                               | JavaScript       |          1 |          0 |          0 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\import-file.js                         | JavaScript       |        120 |          3 |         28 |        151 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\index-name.js                          | JavaScript       |         74 |          1 |         12 |         87 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\mail.js                                | JavaScript       |         66 |          3 |         15 |         84 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\sidebar-toggler.js                     | JavaScript       |        113 |          7 |         17 |        137 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\theme-toggler.js                       | JavaScript       |         17 |          0 |          6 |         23 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\static\js\toggle-button.js                       | JavaScript       |          7 |          0 |          2 |          9 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\app\templates\index.html                             | HTML             |        286 |         22 |         30 |        338 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\index.html                                      | HTML             |        294 |         22 |         22 |        338 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\button.css                           | PostCSS          |         26 |          0 |          5 |         31 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\buttons.css                          | PostCSS          |          4 |          0 |          1 |          5 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\checkbox.css                         | PostCSS          |         47 |          0 |          9 |         56 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\conversation.css                     | PostCSS          |        194 |          5 |         41 |        240 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\dropdown.css                         | PostCSS          |          9 |          0 |          2 |         11 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\field.css                            | PostCSS          |         10 |          0 |          2 |         12 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\global.css                           | PostCSS          |         93 |          0 |         17 |        110 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\hljs.css                             | PostCSS          |         59 |          1 |          9 |         69 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\label.css                            | PostCSS          |         19 |          0 |          1 |         20 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\mail.css                             | PostCSS          |         89 |          4 |         23 |        116 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\main.css                             | PostCSS          |         13 |          0 |          1 |         14 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\message-input.css                    | PostCSS          |         30 |          0 |         12 |         42 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\message.css                          | PostCSS          |        210 |          2 |         37 |        249 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\options.css                          | PostCSS          |          9 |          0 |          2 |         11 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\right-sidebar.css                    | PostCSS          |        376 |         14 |         61 |        451 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\select.css                           | PostCSS          |         28 |          1 |          7 |         36 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\settings.css                         | PostCSS          |         36 |          0 |          9 |         45 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\sidebar.css                          | PostCSS          |        194 |          4 |         41 |        239 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\stop-generating.css                  | PostCSS          |         33 |          0 |          6 |         39 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\style.css                            | PostCSS          |         20 |          0 |          0 |         20 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\css\typing.css                           | PostCSS          |         13 |          0 |          3 |         16 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\img\site.webmanifest                     | JSON             |         19 |          0 |          0 |         19 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\change-language.js                    | JavaScript       |         39 |          4 |          7 |         50 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\chat.js                               | JavaScript       |        605 |         19 |        118 |        742 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\drop-down.js                          | JavaScript       |         73 |          3 |         18 |         94 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\highlight.min.js                      | JavaScript       |          1 |          0 |          0 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\highlightjs-copy.min.js               | JavaScript       |          1 |          0 |          0 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\icons.js                              | JavaScript       |          1 |          0 |          0 |          1 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\import-file.js                        | JavaScript       |        120 |          3 |         28 |        151 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\index-name.js                         | JavaScript       |         74 |          1 |         12 |         87 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\mail.js                               | JavaScript       |         44 |          2 |         14 |         60 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\sidebar-toggler.js                    | JavaScript       |         89 |          7 |         17 |        113 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\theme-toggler.js                      | JavaScript       |         17 |          0 |          6 |         23 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\docs\static\js\toggle-button.js                      | JavaScript       |          7 |          0 |          2 |          9 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\file_transfer.py                                     | Python           |         44 |          2 |         17 |         63 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\main.py                                              | Python           |          9 |          0 |          3 |         12 |
+| d:\Programming\Code Jam 2025\Hisory Chat Bot\history-chat-bot\requirements.txt                                     | pip requirements |         29 |          0 |          0 |         29 |
+| Total                                                                                                              |                  |      7,055 |        315 |      1,482 |      8,852 |
++--------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+

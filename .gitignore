@@ -128,6 +128,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+.VSCodeCounter
 .env
 .venv
 env/
@@ -142,8 +143,8 @@ app/data/
 page_offsets.json
 mails.json
 .VSCodeCounter
-
-
+file_transfer.py
+tmp/uploads/
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -182,4 +183,5 @@ cython_debug/
 .pypirc
 
 file_transfer.py
-
+chat/mails.json
+.VSCodeCounter/

@@ -206,7 +206,11 @@
 		display: flex !important ;
 	}
 
-	.menu-button-2.hidden{
+	.menu-button-3.hide{
+		display: none !important;
+	}
+
+	.menu-button-2.hide{
 		display: none !important;
 	}
 }

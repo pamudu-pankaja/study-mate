@@ -543,7 +543,6 @@ const add_message = async (
 };
 
 const load_conversations = async (limit, offset, loader) => {
-  console.log(loader);
   if (loader === undefined) document.querySelector(".top").appendChild(spinner);
   let conversations = [];
   for (let i = 0; i < localStorage.length; i++) {

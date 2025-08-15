@@ -3,6 +3,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
 import re
 import json
+from flask import current_app
 
 
 def int_to_roman(n):
@@ -15,36 +16,13 @@ def int_to_roman(n):
             n -= val[i]
     return roman_num.lower()
 
-
-def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page=0):
+def load_pdf(file_path, index_name, chunk_size=450, chunk_overlap=60, start_page=0):
     file_name = os.path.basename(file_path)
     base_name = os.path.splitext(file_name)[0]
-
-    def get_page_offset(index_name):
-        if not os.path.exists("page_offsets.json"):
-            return 0
-        with open("page_offsets.json", "r") as f:
-            offsets = json.load(f)
-        return offsets.get(index_name, 0)
-
-    def update_page_offset(index_name, last_page):
-        if os.path.exists("page_offsets.json"):
-            with open("page_offsets.json", "r") as f:
-                offsets = json.load(f)
-        else:
-            offsets = {}
-
-        current_offset = offsets.get(index_name, 0)
-        offsets[index_name] = current_offset + last_page
-
-        with open("page_offsets.json", "w") as f:
-            json.dump(offsets, f)
 
     try:
         loader = PyPDFLoader(file_path=file_path)
         docs = loader.load()
-
-        offset = get_page_offset(index_name)
 
         bullet_section = re.compile(r"^\s*[]+\s*(.*)", re.UNICODE)
         numbered_section = re.compile(
@@ -94,7 +72,7 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
         for i, chunk in enumerate(chunks):
             text = chunk.page_content.strip()
             pdf_page = chunk.metadata.get("page", 0)
-            physical_page_number = pdf_page + offset + 1
+            physical_page_number = pdf_page  + 1
 
             if physical_page_number < start_page:
                 logical_page = int_to_roman(physical_page_number)
@@ -118,7 +96,6 @@ def load_pdf(file_path, index_name, chunk_size=600, chunk_overlap=20, start_page
                 )
 
         last_page_used = max(chunk.metadata.get("page", 0) for chunk in chunks)
-        update_page_offset(index_name, last_page_used + 1)
 
         return formatted_chunks
 

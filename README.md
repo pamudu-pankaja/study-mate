@@ -21,9 +21,9 @@ Study Mate is a simple and friendly web app that helps you study smarter. Here�
 
 ## ✨ Features
 
-- Upload **PDF files** and have them automatically split and indexed (File size must be under 1mb).
+- Upload **PDF files** and have them automatically split and indexed .
 - Tracks real and logical page numbers (including Roman numerals for preface pages,You can set the start logical page as the page you want to start counting)
-- Recognizes sections even across multiple PDF files
+- Recognizes sections
 - Choose between:
   - **General Gemini LLM response**
   - **Vector similarity search**
@@ -73,25 +73,17 @@ Study Mate is a simple and friendly web app that helps you study smarter. Here�
 
 ---
 
-## 💡 Future Plans
-
-- More faster file uploading with larger file sizes.
-- Defualt data vector data base to select any text book you like.
-- Improve web search further for better results.  
-- Possibly launch a public hosted version for easier access.  
-- Add more user-friendly features for study workflows.
-
----
-
-## 🙏 Thanks & Credits
-
-Big thanks to **Code Jam: Future Minds** for the inspiration behind this project. The idea keeps growing with your support!
-
----
-
 ## 🤝 Contributing
 
 Found bugs or have ideas? Open an issue or submit a pull request — I’m still learning and appreciate all feedback.
+
+---
+
+## Credits 🙏 
+
+ - This project uses frontend code originally developed by [Ramon Victor](https://github.com/ramon-victor)
+ - [FreeGPT-WebUi](https://github.com/ramon-victor/freegpt-webui/tree/main#)  repository where the original base frontend was published
+ - Licensed under the [GNU General Public License v3.0](https://github.com/pamudu-pankaja/study-mate/blob/main/THIRD_PARTY_LICENSE)
 
 ---
 

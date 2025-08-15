@@ -19,9 +19,21 @@ function toggleRightSidebar() {
     showRightSidebar();
   }
   window.scrollTo(0, 0);
+  if (!sidebar_right.classList.contains("hidden")) {
+    hideRightSidebar();
+  } else {
+    showRightSidebar();
+  }
+  window.scrollTo(0, 0);
 }
 
 function toggleLeftSidebar() {
+  if (sidebar_left.classList.contains("shown")) {
+    hideLeftSidebar();
+  } else {
+    showLeftSidebar();
+  }
+  window.scrollTo(0, 0);
   if (sidebar_left.classList.contains("shown")) {
     hideLeftSidebar();
   } else {

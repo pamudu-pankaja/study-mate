@@ -141,9 +141,10 @@ app/data/
 
 app/data/
 page_offsets.json
-file_transfer.json
+mails.json
+.VSCodeCounter
+file_transfer.py
 tmp/uploads/
-
 # Spyder project settings
 .spyderproject
 .spyproject

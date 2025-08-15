@@ -2,3 +2,20 @@
 	display: flex;
 	justify-content: left;
 }
+
+.menu-button-container{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	gap: 5px;
+}
+
+.menu-button-2 , .menu-button-3{
+	position: static !important;
+}
+
+.clicked{
+	background-color: var(--hover);
+}

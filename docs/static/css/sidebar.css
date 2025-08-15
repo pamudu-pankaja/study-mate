@@ -1,5 +1,5 @@
 .sidebar {
-	max-width: 260px;
+	max-width: 300px;
 	padding: var(--section-gap);
 	flex-shrink: 0;
 	display: flex;
@@ -204,6 +204,14 @@
 
 	.menu-button {
 		display: flex !important ;
+	}
+
+	.menu-button-3.hide{
+		display: none !important;
+	}
+
+	.menu-button-2.hide{
+		display: none !important;
 	}
 }
 

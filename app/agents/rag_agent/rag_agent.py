@@ -5,10 +5,8 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
         try:
             print("Getting Chunks...")
             chunks = RAGAgent.get_chunks(file_path, index_name, start_page)
-            print("Embedding the Chunks...")
-            RAGAgent.chunk_embedder(chunks)
-            print("Upserting...")
 
+            # RAGAgent.chunk_embedder(chunks)
             result = RAGAgent.upsert_chunks(chunks, index_name)
             return result
         
@@ -32,13 +30,13 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
         chunks = file_load.load_pdf(file_path, index_name, start_page=start_page)
         return chunks
 
-    @staticmethod
-    def chunk_embedder(chunks):
-        from app.agents.rag_agent.vector_store import embedder
+    # @staticmethod
+    # def chunk_embedder(chunks):
+    #     from app.agents.rag_agent.vector_store import embedder
 
-        embed = embedder.Embedding()
-        embeddings = embed.get_embedding_chunks(chunks)
-        return embeddings
+    #     embed = embedder.Embedding()
+    #     embeddings = embed.get_embedding_chunks(chunks)
+    #     return embeddings
 
     @staticmethod
     def upsert_chunks(chunks, index_name):

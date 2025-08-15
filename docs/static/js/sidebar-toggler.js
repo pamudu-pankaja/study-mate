@@ -110,10 +110,9 @@ function showMailBox() {
       if (typeof renderMessages === "function") {
         renderMessages(messages);
       }
-      const dot = document.getElementById("red-dot");
-      if (dot) dot.style.display = "none";
+      if (red_dot) red_dot.style.display = "none";
     });
-  dot.style.display = "none"
+  red_dot.style.display = "none"
 
 
 }

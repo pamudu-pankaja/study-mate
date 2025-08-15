@@ -44,6 +44,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 100%;
+    padding-bottom: 40px;
 }
 
 .sidebar-content input:focus {
@@ -101,7 +102,7 @@
     box-sizing: border-box;
 }
 
-.sidebar-content #index:-webkit-autofill {
+.sidebar-content #index,:-webkit-auto#namespace-deletefill {
   background-color: var(--blur-bg) !important;
   -webkit-box-shadow: 0 0 0 1000px var(--blur-bg) inset !important;
   -webkit-text-fill-color: var(--colour-3) !important;
@@ -326,7 +327,6 @@
 }
 
 .current-info-container {
-    margin-top: auto;
     padding: 16px;
     background-color: var(--blur-bg);
     border: 1px solid var(--blur-border);
@@ -375,4 +375,10 @@
 .dropdown-list::-webkit-scrollbar-thumb {
     background: var(--blur-bg);
     border-radius: 2px;
+}
+
+
+/* EXTRA */
+.section.select{
+    margin-bottom: -30px;
 }

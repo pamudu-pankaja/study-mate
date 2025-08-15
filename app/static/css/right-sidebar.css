@@ -327,7 +327,6 @@
 }
 
 .current-info-container {
-    margin-top: auto;
     padding: 16px;
     background-color: var(--blur-bg);
     border: 1px solid var(--blur-border);

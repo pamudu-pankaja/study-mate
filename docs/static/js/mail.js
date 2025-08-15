@@ -1,15 +1,19 @@
 function renderMessages(data) {
   const unseenMessages = data.filter((msg) => !msg.seen);
 
-  // Update red dot
   const dot = document.getElementById("red-dot");
   dot.style.display = unseenMessages.length > 0 ? "block" : "none";
 
-  // Update inbox UI
   const messageContainer = document.getElementById("index-messages");
-  messageContainer.innerHTML = ""; // Clear old messages
+  messageContainer.innerHTML = ""; 
 
-  data.forEach((msg) => {
+  const sortedData = data.sort((a, b) => {
+    const dateA = new Date(a.time);
+    const dateB = new Date(b.time);
+    return dateB - dateA; 
+  });
+
+  sortedData.forEach((msg) => {
     const messageItem = document.createElement("div");
     messageItem.className = "message-item";
 

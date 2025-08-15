@@ -169,7 +169,7 @@
 
       <div class="sidebar-content">
         <!-- Text Book Section -->
-        <div class="section">
+        <div class="section select">
           <div class="section-title">
             <i class="fa-solid fa-book"></i>
             <span>Text Book</span>
@@ -198,9 +198,15 @@
             </button>
           </div>
         </div>
+                <!-- Current Status -->
+        <div class="current-info-container">
+          <div class="current-status-title">Current Status</div>
+          <div class="current-index" id="current-index">Book Name: Not set</div>
+        </div>
+
 
         <!-- Import PDF Section -->
-        <div class="section">
+        <div class="section import">
           <div class="section-title">
             <i class="fa-solid fa-file-circle-plus"></i>
             <span>Import PDF File</span>
@@ -243,7 +249,7 @@
         </div>
 
         <!-- Delete Text Book Section -->
-        <div class="section">
+        <div class="section delete">
           <div class="section-title">
             <i class="fa-solid fa-trash"></i>
             <span>Delete Text Book</span>
@@ -261,16 +267,11 @@
               <div id="dropdown-2" class="dropdown-list"></div>
             </div>
 
-            <button class="btn" id="index-name-btn" onclick="deleteBook()">
+            <button class="btn" id="book-delete-btn" onclick="deleteBook()">
               <i class="fa-regular fa-layer-plus"></i>
               <span>Delete</span>
             </button>
           </div>
-        </div>
-        <!-- Current Status -->
-        <div class="current-info-container">
-          <div class="current-status-title">Current Status</div>
-          <div class="current-index" id="current-index">Text Book: Not set</div>
         </div>
       </div>
     </div>
@@ -290,7 +291,7 @@
     <script>
       window.conversation_id = "{{ chat_id or '' }}";
     </script>
-    <script src="static/js/icons.js" defer></script>
+    <!-- <script src="static/js/icons.js" defer></script> -->
     <script
       src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"
       defer
@@ -307,7 +308,7 @@
     <script src="static/js/index-name.js" defer></script>
     <script src="static/js/import-file.js" defer></script>
     <script src="static/js/chat.js" defer></script>
-    <script src="static/js/drop-down.js" defer></script>
+    <script src="static/js/book-drop-down.js" defer></script>
     <script src="static/js/mail.js" defer></script>
     <script src="static/js/alert.js" defer></script>
   </body>

@@ -106,13 +106,11 @@
   background-color: var(--blur-bg) !important;
   -webkit-box-shadow: 0 0 0 1000px var(--blur-bg) inset !important;
   -webkit-text-fill-color: var(--colour-3) !important;
-  -webkit-text-fill-color: var(--colour-3) !important;
   transition: background-color 9999s ease-in-out 0s;
   color: var(--colour-3) !important;
   caret-color: var(--colour-3);
 }
 
-.sidebar-content #index:-webkit-autofill:focus::after {
 .sidebar-content #index:-webkit-autofill:focus::after {
   -webkit-text-fill-color: var(--colour-3);
 }
@@ -329,7 +327,6 @@
 }
 
 .current-info-container {
-    margin-top: auto;
     padding: 16px;
     background-color: var(--blur-bg);
     border: 1px solid var(--blur-border);

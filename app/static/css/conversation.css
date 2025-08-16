@@ -12,6 +12,7 @@
 	overflow: auto;
 	overflow-wrap: break-word;
 	padding-bottom: 8px;
+	overflow-x: hidden;
 }
 
 .conversation .user-input {
@@ -146,9 +147,17 @@
 	transition: all 0.3s ease;
 }
 
+p{
+	white-space: normal;
+	overflow-wrap: break-word;
+}
+
 table {
 	border-collapse: collapse;
-	width: 100%;
+	display: block;
+    max-width: 100%;
+    overflow-x: auto;
+	white-space: nowrap;
 }
 
 th, td {
@@ -197,6 +206,19 @@ th, td {
 }
 
 .conversation #messages::-webkit-scrollbar-thumb {
+	background-color: var(--conversations); 
+	border-radius: 10px;
+}
+
+table::-webkit-scrollbar {
+	height: 6px;
+}
+
+table::-webkit-scrollbar-track {
+	background-color: #ffffff00;
+}
+
+table::-webkit-scrollbar-thumb {
 	background-color: var(--conversations); 
 	border-radius: 10px;
 }

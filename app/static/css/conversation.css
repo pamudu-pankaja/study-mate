@@ -147,14 +147,17 @@
 	transition: all 0.3s ease;
 }
 
+p{
+	white-space: normal;
+	overflow-wrap: break-word;
+}
+
 table {
 	border-collapse: collapse;
-	width: 100%;
 	display: block;
     max-width: 100%;
-    white-space: nowrap;
     overflow-x: auto;
-    padding-right: 30px;
+	white-space: nowrap;
 }
 
 th, td {

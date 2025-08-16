@@ -141,10 +141,10 @@ app/data/
 
 app/data/
 page_offsets.json
-file_transfer.json
-tmp/uploads
 mails.json
-
+.VSCodeCounter
+file_transfer.py
+tmp/uploads/
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -183,4 +183,5 @@ cython_debug/
 .pypirc
 
 file_transfer.py
-chat/
+chat/mails.json
+.VSCodeCounter/

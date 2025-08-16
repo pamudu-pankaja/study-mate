@@ -65,9 +65,10 @@ async function uploadFile() {
     return;
   }
 
+  showInfo("Sending..." , "We are currently sending your file to the server please wait.")
+
   button.disabled = true;
 
-  console.log(startPage);
   const formData = new FormData();
   formData.append("pdf", file);
   formData.append("startPage", startPage);
@@ -101,20 +102,4 @@ async function uploadFile() {
     button.disabled = false;
   }
 }
-
-// window.addEventListener("DOMContentLoaded", () => {
-//   let chatID = window.conversation_id;
-
-//   let endpointStartPage = chatID
-//     ? `${url_prefix}/chat/${chatID}/start-page`
-//     : `${url_prefix}/chat/start-page`;
-
-//   fetch(endpointStartPage)
-//     .then((res) => res.json())
-//     .then((data) => {
-//       const currentPage = data.start_page;
-//       console.log(data.startPage || 0);
-//       showStartPage.textContent = currentPage;
-//     });
-// });
 

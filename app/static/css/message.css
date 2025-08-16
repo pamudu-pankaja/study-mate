@@ -160,9 +160,10 @@ hr{
 .message.chat-bot .content ol li strong {
   font-size: 18px;
 }
-  
 
-
+.message.chat-bot .content img{
+  width: 100%;
+}
 
 .search-label {
   font-size: 0.9rem;

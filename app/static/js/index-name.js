@@ -32,20 +32,22 @@ function setIndex() {
         if (data.status == "success") {
           showSuccess("Success", data.message)
           console.log(`Book name submitted : ${indexName}`);
-          showIndex.textContent = `Book Name : ${indexName}`;
+          showIndex.textContent = indexName;
+          showIndex.title= indexName;
         }
 
         if (data.status == "error") {
           showError("Faild", data.message)
           console.log(data.error_msg);
-          showIndex.textContent = `Book Name : Not set`;
+          showIndex.textContent = `TextBook Not Selected`;
+          showIndex.title= indexName;
         }
       })
 
       .catch((error) => {
         showError("Failed", error)
         console.error("fetch error :", error);
-        showIndex.textContent = `Book Name : Not set`;
+        showIndex.textContent = `TextBook Not Selected`;
       })
 
       .finally(() => {
@@ -63,8 +65,8 @@ window.addEventListener("DOMContentLoaded", () => {
   fetch(endpoint)
     .then((res) => res.json())
     .then((data) => {
-      const currentIndex = data.index_name || "Book Name : Not set";
-      console.log("Current index name:", currentIndex);
+      const currentIndex = data.index_name || "TextBook Not Selected";
+      console.log("Current book name:", currentIndex);
       showIndex.textContent = currentIndex;
     });
 });

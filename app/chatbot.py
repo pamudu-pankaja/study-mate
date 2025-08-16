@@ -317,10 +317,10 @@ def index_name_get(conversation_id=None):
     if index_name:
         print(f"Sending... index name : {index_name} ")
         return jsonify(
-            {"index_name": f"Book Name : {index_name}", "indexName": index_name}
+            {"index_name": f"{index_name}", "indexName": index_name}
         )
     if not index_name:
-        return jsonify({"index_name": "Book Name : Not set", "indexName": index_name})
+        return jsonify({"index_name": "TextBook Not Selected", "indexName": index_name})
 
 
 def save_mail(sender, content, mail_file_path, seen=False):

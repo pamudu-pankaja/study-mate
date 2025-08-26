@@ -15,9 +15,11 @@ class Embedding:
         query = query.lower()
         try:
             result = client.models.embed_content(
-                model="text-embedding-004",
+                model="gemini-embedding-001",
                 contents=f"{query}",
-                config=types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY"),
+                config=types.EmbedContentConfig(
+                    task_type="RETRIEVAL_QUERY"
+                )
             )
             return result.embeddings[0].values
         except Exception as e:
@@ -38,7 +40,7 @@ class Embedding:
                         contents=batch,
                         config=types.EmbedContentConfig(
                             task_type="SEMANTIC_SIMILARITY"
-                        ),
+                        )
                     )
 
                     if result and result.embeddings:

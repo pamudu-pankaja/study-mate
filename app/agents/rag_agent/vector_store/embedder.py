@@ -17,7 +17,9 @@ class Embedding:
             result = client.models.embed_content(
                 model="text-embedding-004",
                 contents=f"{query}",
+
                 config=types.EmbedContentConfig(task_type="RETRIEVAL_QUERY"),
+
             )
             return result.embeddings[0].values
         except Exception as e:
@@ -34,11 +36,13 @@ class Embedding:
             while True:
                 try:
                     result = client.models.embed_content(
-                        model="text-embedding-004",
+                        model="text-multilingual-embedding-002",
                         contents=batch,
                         config=types.EmbedContentConfig(
                             task_type="RETRIEVAL_DOCUMENT"
+
                         ),
+
                     )
 
                     if result and result.embeddings:

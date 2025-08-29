@@ -17,7 +17,7 @@ class Embedding:
             result = client.models.embed_content(
                 model="text-embedding-004",
                 contents=f"{query}",
-                config=types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY"),
+                config=types.EmbedContentConfig(task_type="RETRIEVAL_QUERY"),
             )
             return result.embeddings[0].values
         except Exception as e:
@@ -37,7 +37,7 @@ class Embedding:
                         model="text-embedding-004",
                         contents=batch,
                         config=types.EmbedContentConfig(
-                            task_type="SEMANTIC_SIMILARITY"
+                            task_type="RETRIEVAL_DOCUMENT"
                         ),
                     )
 

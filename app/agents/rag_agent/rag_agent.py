@@ -1,33 +1,31 @@
 class RAGAgent:  # RAGAgent is more procedural than autonomous
     # MAJOR FUNCs
     @staticmethod
-    def import_file(file_path, index_name, start_page):
+    def import_file(file_path, book_name, start_page):
         try:
             print("Getting Chunks...")
-            chunks = RAGAgent.get_chunks(file_path, index_name, start_page)
+            chunks = RAGAgent.get_chunks(file_path, book_name, start_page)
 
             # RAGAgent.chunk_embedder(chunks)
-            result = RAGAgent.upsert_chunks(chunks, index_name)
+            result = RAGAgent.upsert_chunks(chunks, book_name)
             return result
-        
+
         except Exception as e:
             print(e)
-            
-
 
     @staticmethod
-    def vector_search(query, index_name):
+    def vector_search(query, book_name):
         from app.agents.rag_agent.vector_store import vectore_search
 
-        result = vectore_search.search(query, index_name)
+        result = vectore_search.search(query, book_name)
         return result
 
     # MINOR FUNCs
     @staticmethod
-    def get_chunks(file_path, index_name, start_page):
+    def get_chunks(file_path, book_name, start_page):
         from app.agents.rag_agent.vector_store import file_load
 
-        chunks = file_load.load_pdf(file_path, index_name, start_page=start_page)
+        chunks = file_load.load_pdf(file_path, book_name, start_page=start_page)
         return chunks
 
     # @staticmethod
@@ -39,10 +37,8 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
     #     return embeddings
 
     @staticmethod
-    def upsert_chunks(chunks, index_name):
+    def upsert_chunks(chunks, book_name):
         from app.agents.rag_agent.vector_store import pinecorn_client
 
         db = pinecorn_client.pinecone_db()
-        # db.create_index(index_name)
-        return db.upsert(chunks, index_name)
-
+        return db.upsert(chunks, book_name)

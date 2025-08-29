@@ -13,7 +13,10 @@
     />
 
     <meta property="og:title" content="StudyMate" />
-    <meta property="og:image" content="{{ url_for('static', filename='img/book.png') }}" />
+    <meta
+      property="og:image"
+      content="{{ url_for('static', filename='img/book.png') }}"
+    />
     <meta
       property="og:description"
       content="A conversational AI system that help users with school works"
@@ -23,7 +26,10 @@
     <title>StudyMate</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -41,7 +47,10 @@
       sizes="16x16"
       href="{{ url_for('static', filename='img/favicon-16x16.png') }}"
     />
-    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}" />
+    <link
+      rel="manifest"
+      href="{{ url_for('static', filename='img/site.webmanifest') }}"
+    />
     <link
       rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
@@ -79,59 +88,52 @@
           </div>
           <a
             class="info"
-            href="https://github.com/pamudu-pankaja/text-book-chat-bot"
+            href="https://github.com/pamudu-pankaja/study-mate"
             target="_blank"
           >
             <i class="fa-brands fa-github"></i>
-            <span class="conversation-title"> Version: 0.5.1 </span>
-
+            <span class="conversation-title"> GitHub</span>
           </a>
         </div>
       </div>
 
       <div class="conversation">
-          <div class="stop-generating stop-generating-hidden">
-            <button class="button" id="cancelButton">
-              <span>Stop Generating</span>
-            </button>
-          </div>
+        <div class="stop-generating stop-generating-hidden">
+          <button class="button" id="cancelButton">
+            <span>Stop Generating</span>
+          </button>
+        </div>
 
-          <div class="box" id="messages">
-            <div id="welcome-msg" style="display: none">
-              What do you want to know ?
+        <div class="box" id="messages">
+          <div id="welcome-msg" style="display: none">
+            What do you want to know ?
+          </div>
+        </div>
+
+        <div class="user-input">
+          <div class="box input-box">
+            <textarea
+              id="message-input"
+              placeholder="Ask a question"
+              cols="30"
+              rows="10"
+              style="white-space: pre-wrap"
+            ></textarea>
+            <div id="send-button">
+              <i class="fa-solid fa-arrow-right"></i>
             </div>
           </div>
+        </div>
 
-          <div class="user-input">
-            <div class="box input-box">
-              <textarea
-                id="message-input"
-                placeholder="Ask a question"
-                cols="30"
-                rows="10"
-                style="white-space: pre-wrap"
-              ></textarea>
-              <div id="send-button">
-                <i class="fa-solid fa-arrow-right"></i>
-              </div>
-            </div>
-          </div>
+        <div class="field checkbox toogle-group" id="resourceToggleGroup">
+          <input type="checkbox" id="switch_web" onchange="toggleOff(this)" />
+          <label for="switch_web"></label>
+          <span>Using Web</span>
 
-
-
-          <div class="field checkbox toogle-group" id="resourceToggleGroup">
-            <input type="checkbox" id="switch_web" onchange="toggleOff(this)" />
-            <label for="switch_web"></label>
-            <span>Using Web</span>
-
-            <input
-              type="checkbox"
-              id="switch_book"
-              onchange="toggleOff(this)"
-            />
-            <label for="switch_book" class="switch_book"></label>
-            <span>Using PDF</span>
-          </div>
+          <input type="checkbox" id="switch_book" onchange="toggleOff(this)" />
+          <label for="switch_book" class="switch_book"></label>
+          <span>Using PDF</span>
+        </div>
       </div>
 
       <div class="menu-button-container">
@@ -167,7 +169,7 @@
                 spellcheck="false"
                 type="text"
                 placeholder="Name of the textbook"
-                id="index"
+                id="book"
               />
               <div id="dropdown" class="dropdown-list">
                 <div class="dropdown-item add-new">
@@ -177,18 +179,23 @@
               </div>
             </div>
 
-            <button class="btn" id="index-name-btn" onclick="setIndex()">
+            <button class="btn" id="book-name-btn" onclick="setbook()">
               <i class="fa-regular fa-layer-plus"></i>
               <span>Select Book</span>
             </button>
           </div>
         </div>
-                <!-- Current Status -->
+        <!-- Current Status -->
         <div class="current-info-container">
-          <div class="current-status-title">- Current Book - </div>
-          <div class="current-index" id="current-index" style="text-align: center;">TextBook Not Selected</div>
+          <div class="current-status-title">- Current Book -</div>
+          <div
+            class="current-book"
+            id="current-book"
+            style="text-align: center"
+          >
+            TextBook Not Selected
+          </div>
         </div>
-
 
         <!-- Import PDF Section -->
         <div class="section import">
@@ -285,16 +292,43 @@
       src="https://kit.fontawesome.com/12c4d6a4a9.js"
       crossorigin="anonymous"
     ></script>
-    <script src="{{ url_for('static', filename='js/highlight.min.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/theme-toggler.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/sidebar-toggler.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/toggle-button.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/index-name.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/import-file.js') }}" defer></script>
+    <script
+      src="{{ url_for('static', filename='js/highlight.min.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/theme-toggler.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/sidebar-toggler.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/toggle-button.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/book-name.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/import-file.js') }}"
+      defer
+    ></script>
     <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/book-drop-down.js') }}" defer></script>
+    <script
+      src="{{ url_for('static', filename='js/book-drop-down.js') }}"
+      defer
+    ></script>
     <script src="{{ url_for('static', filename='js/mail.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/alert.js') }}" defer></script>
+    <script
+      src="{{ url_for('static', filename='js/alert.js') }}"
+      defer
+    ></script>
   </body>
 </html>

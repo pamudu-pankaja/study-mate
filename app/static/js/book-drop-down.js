@@ -1,4 +1,4 @@
-const nameSpaceInput = document.getElementById("index");
+const nameSpaceInput = document.getElementById("book");
 const deleteNameSpace = document.getElementById("namespace-delete");
 const deleteDropdown = document.getElementById("dropdown-2");
 const dropdown = document.getElementById("dropdown");
@@ -13,8 +13,8 @@ const API_BASE = chatID
 async function fetchBooks() {
   try {
     const response = await fetch(`${API_BASE}/list`);
-    if (!response.ok) showError("Faild to Fetch Books","We faild to fetch the books from the server. Please consider reloading the site")
-    
+    if (!response.ok) showError("Faild to Fetch Books", "We faild to fetch the books from the server. Please consider reloading the site")
+
     const data = await response.json();
     allBooks = [...data.systemBooks, ...data.userBooks];
     console.log('Books loaded:', allBooks.length);
@@ -35,13 +35,13 @@ async function saveBook(bookName) {
     });
 
     if (!response.ok) showError('Book Not Saved', `Your book "${bookName}" has not been saved , Please Try again`);
-    
+
     const result = await response.json();
     if (result.success) {
       if (!allBooks.includes(bookName)) {
         allBooks.push(bookName);
       }
-      showSuccess("Book Saved" , `Your book "${bookName}" has been saved successfully`)
+      showSuccess("Book Saved", `Your book "${bookName}" has been saved successfully`)
       showInfo("Import New Files", "You can import new files for your book using Import PDF File section")
       console.log(`Book "${bookName}" saved successfully`);
       return true;
@@ -64,15 +64,15 @@ async function deleteBook(bookName) {
       body: JSON.stringify({ bookName: bookName.trim() })
     });
 
-    if (!response.ok) showError("Faild to Delete" , `Book "${bookName}" has been faild to delete please try again`);
-    
+    if (!response.ok) showError("Faild to Delete", `Book "${bookName}" has been faild to delete please try again`);
+
     const result = await response.json();
     if (result.success) {
       const index = allBooks.indexOf(bookName);
       if (index > -1) {
         allBooks.splice(index, 1);
       }
-      showSuccess("Book Deleted" , `Book name "${bookName}" has been deleted successfully`)
+      showSuccess("Book Deleted", `Book name "${bookName}" has been deleted successfully`)
       console.log(`Book "${bookName}" deleted successfully`);
       return true;
     } else {
@@ -98,7 +98,7 @@ function createDropdown(inputElement, dropdownElement, showAddOption = false, sh
       return;
     }
 
-    const filtered = allBooks.filter(book => 
+    const filtered = allBooks.filter(book =>
       book.toLowerCase().includes(lowerValue)
     );
     const maxItems = 5;
@@ -115,7 +115,7 @@ function createDropdown(inputElement, dropdownElement, showAddOption = false, sh
       dropdownElement.appendChild(item);
     });
 
-    const exactMatch = allBooks.some(book => 
+    const exactMatch = allBooks.some(book =>
       book.toLowerCase() === lowerValue
     );
 
@@ -149,8 +149,8 @@ function createDropdown(inputElement, dropdownElement, showAddOption = false, sh
       dropdownElement.appendChild(addItem);
     }
 
-    dropdownElement.style.display = 
-      (itemsToShow.length > 0 || (showAddOption && !exactMatch && value.length > 0)) 
+    dropdownElement.style.display =
+      (itemsToShow.length > 0 || (showAddOption && !exactMatch && value.length > 0))
         ? "block" : "none";
   });
 }
@@ -166,7 +166,7 @@ if (deleteNameSpace && deleteDropdown) {
       return;
     }
 
-    const filtered = allBooks.filter(book => 
+    const filtered = allBooks.filter(book =>
       book.toLowerCase().includes(lowerValue)
     );
     const maxItems = 5;
@@ -176,7 +176,7 @@ if (deleteNameSpace && deleteDropdown) {
       const item = document.createElement("div");
       item.className = "dropdown-item delete-item";
       item.textContent = book;
-      
+
       item.onclick = (e) => {
         e.stopPropagation();
         deleteNameSpace.value = book;
@@ -199,7 +199,7 @@ if (externalDeleteBtn) {
   externalDeleteBtn.onclick = async (e) => {
     e.preventDefault();
     const bookToDelete = deleteNameSpace.value.trim();
-    
+
     if (!bookToDelete) {
       showWarning("Warning", "Please select a book to delete");
       return;

@@ -16,7 +16,8 @@ def int_to_roman(n):
             n -= val[i]
     return roman_num.lower()
 
-def load_pdf(file_path, index_name, chunk_size=450, chunk_overlap=60, start_page=0):
+
+def load_pdf(file_path, book_name, chunk_size=450, chunk_overlap=60, start_page=0):
     file_name = os.path.basename(file_path)
     base_name = os.path.splitext(file_name)[0]
 
@@ -72,7 +73,7 @@ def load_pdf(file_path, index_name, chunk_size=450, chunk_overlap=60, start_page
         for i, chunk in enumerate(chunks):
             text = chunk.page_content.strip()
             pdf_page = chunk.metadata.get("page", 0)
-            physical_page_number = pdf_page  + 1
+            physical_page_number = pdf_page + 1
 
             if physical_page_number < start_page:
                 logical_page = int_to_roman(physical_page_number)

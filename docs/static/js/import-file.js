@@ -11,7 +11,7 @@ input.addEventListener("change", () => {
   }
 
   if (file.type !== "application/pdf") {
-    showWarning("Invalid File Type","Only PDF files are allowed")
+    showWarning("Invalid File Type", "Only PDF files are allowed")
     input.value = "";
     display.textContent = "No file chosen";
     return;
@@ -31,7 +31,7 @@ input.addEventListener("change", () => {
 async function uploadFile() {
   let startPage = document.getElementById("starting-page").value;
 
-  if (startPage == null && startPage < 0 ){
+  if (startPage == null && startPage < 0) {
     startPage = 0
   }
 
@@ -39,31 +39,31 @@ async function uploadFile() {
   const url_prefix = document
     .querySelector("body")
     .getAttribute("data-urlprefix");
-  
+
   let chatID = window.conversation_id;
 
   let endpointIndex = chatID
-    ? `${url_prefix}/chat/${chatID}/index-name`
-    : `${url_prefix}/chat/index-name`;
+    ? `${url_prefix}/chat/${chatID}/book-name`
+    : `${url_prefix}/chat/book-name`;
 
-  const res = await fetch(endpointIndex , { method:"GET"});
+  const res = await fetch(endpointIndex, { method: "GET" });
   const data = await res.json();
-  const index_name = data.indexName;
+  const book_name = data.indexName;
 
-  if (!index_name || index_name == '') {
-    showError("Book Name Empty" , "Please set a valid Book Name to import file")
+  if (!book_name || book_name == '') {
+    showError("Book Name Empty", "Please set a valid Book Name to import file")
     console.log("Index name is missing , file uploading is aborting");
     return;
   }
 
-  if(index_name == allBooks)
+  if (book_name == allBooks)
 
-  if (!file) {
-    showWarning("No File","Please upload a file to be imported")
-    input.value = "";
-    display.textContent = "No file chosen";
-    return;
-  }
+    if (!file) {
+      showWarning("No File", "Please upload a file to be imported")
+      input.value = "";
+      display.textContent = "No file chosen";
+      return;
+    }
 
   button.disabled = true;
 
@@ -71,7 +71,7 @@ async function uploadFile() {
   const formData = new FormData();
   formData.append("pdf", file);
   formData.append("startPage", startPage);
-  formData.append("indexName", index_name);
+  formData.append("indexName", book_name);
 
   let endpointFile = chatID
     ? `${url_prefix}/chat/${chatID}/import-file`
@@ -86,12 +86,12 @@ async function uploadFile() {
     const data = await res.json();
 
     if (data.status == "processing") {
-      showSuccess("File is Processing",data.message)
+      showSuccess("File is Processing", data.message)
       console.log(`file is processing in the background`);
     }
 
     if (data.status == "error" || !data) {
-      showError("Faild to Import",data.message)
+      showError("Faild to Import", data.message)
       console.log(data.error_msg || "Check the local server terminal");
     }
   } catch (error) {

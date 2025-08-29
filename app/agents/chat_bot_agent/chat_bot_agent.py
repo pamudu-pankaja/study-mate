@@ -5,7 +5,7 @@ import re
 
 class ChatBotAgent:
     @staticmethod
-    def get_response(query, path, chat_history ,index_name=None ):
+    def get_response(query, path, chat_history ,book_name=None ):
 
 
         # if (
@@ -19,7 +19,7 @@ class ChatBotAgent:
             f"Answering using {'LLM Knowledge' if path is None else path.capitalize() + 'Search'}..."
         )
 
-        data = ToolHandle.get_context(query, path, index_name)
+        data = ToolHandle.get_context(query, path, book_name)
 
         prompt = ""
         if path == "vector":

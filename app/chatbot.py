@@ -22,7 +22,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-index_name = ""
+book_name = ""
 context = None
 
 
@@ -83,16 +83,16 @@ def remove_book_from_pinecone_data(book_name, PINECONE_DATA_FILE):
         data["booksWithData"].remove(book_name)
         write_pinecone_data(data, PINECONE_DATA_FILE)
 
-def process_mail_file(file_path, index_name, starting_page: int, file_name, mail_file, pinecone_data_file):
+def process_mail_file(file_path, book_name, starting_page: int, file_name, mail_file, pinecone_data_file):
     try:
         from app.agents.rag_agent.rag_agent import RAGAgent
 
         print(f"Background processing started for {file_name}")
 
-        result = RAGAgent.import_file(file_path, index_name, starting_page)
+        result = RAGAgent.import_file(file_path, book_name, starting_page)
 
         if result == "success":
-            add_book_to_pinecone_data(index_name, pinecone_data_file)
+            add_book_to_pinecone_data(book_name, pinecone_data_file)
             save_mail(
                 "System",
                 f"File '{file_name}' has been successfully processed and ready to use",
@@ -199,7 +199,7 @@ def get_context(conversation_id=None):
 @app.route("/chat", methods=["POST"])
 @app.route("/chat/<conversation_id>", methods=["POST"])
 def chat_req(conversation_id=None):
-    global index_name, context
+    global book_name, context
     try:
         data = request.get_json()
 
@@ -218,17 +218,17 @@ def chat_req(conversation_id=None):
         else:
             path = path
 
-        if path == "vector" and index_name == "":
+        if path == "vector" and book_name == "":
             reply = "Please set a valid Book name , using the side bar "
             print("Sending:", reply)
             return Response(event_stream(), mimetype="text/event-stream"), 500
         
-        if path == "vector" and index_name != "":
+        if path == "vector" and book_name != "":
             pinecone_data_file = current_app.config["PINECONE_DATA_FILE"]
             ensure_pinecone_data_file(pinecone_data_file)
             pinecone_data = read_pinecone_data(pinecone_data_file)
             
-            if index_name not in pinecone_data["booksWithData"]:
+            if book_name not in pinecone_data["booksWithData"]:
                 reply = "Your selected Book name dosent have any files imported or it must be an invalid one. Please select a valid book or import some files"
                 print("Sending:", reply)
                 return Response(event_stream(), mimetype="text/event-stream"), 500
@@ -238,7 +238,7 @@ def chat_req(conversation_id=None):
         from app.agents import ChatBotAgent
 
         response = ChatBotAgent.get_response(
-            user_message, path=path, chat_history=data, index_name=index_name
+            user_message, path=path, chat_history=data, book_name=book_name
         )
 
         reply = response["reply"]
@@ -285,34 +285,34 @@ def chat_req(conversation_id=None):
         return Response(event_stream(), mimetype="text/event-stream"), 500
 
 
-@app.route("/chat/index-name", methods=["POST"])
-@app.route("/chat/<conversation_id>/index-name", methods=["POST"])
-def index_name_post(conversation_id=None):
-    global index_name
+@app.route("/chat/book-name", methods=["POST"])
+@app.route("/chat/<conversation_id>/book-name", methods=["POST"])
+def book_name_post(conversation_id=None):
+    global book_name
     try:
         data = request.get_json()
-        index_name = data.get("index_name")
+        book_name = data.get("book_name")
 
-        if not index_name:
-            index_name = ""
+        if not book_name:
+            book_name = ""
             return (
                 jsonify(
                     {
                         "status": "error",
                         "message": "Something went wrong",
-                        "error_msg": "index_name not provided",
+                        "error_msg": "book_name not provided",
                     }
                 ),
                 400,
             )
 
-        print(f"Index Name updated : {index_name}")
+        print(f"Book Name updated : {book_name}")
         return jsonify(
             {"status": "success", "message": "Book name successfully updated"}
         )
 
     except Exception as e:
-        print(f"Something went wrong while getting index : {e}")
+        print(f"Something went wrong while getting namespace : {e}")
         return (
             jsonify(
                 {
@@ -325,17 +325,17 @@ def index_name_post(conversation_id=None):
         )
 
 
-@app.route("/chat/index-name", methods=["GET"])
-@app.route("/chat/<conversation_id>/index-name", methods=["GET"])
-def index_name_get(conversation_id=None):
-    global index_name
-    if index_name:
-        print(f"Sending... index name : {index_name} ")
+@app.route("/chat/book-name", methods=["GET"])
+@app.route("/chat/<conversation_id>/book-name", methods=["GET"])
+def book_name_get(conversation_id=None):
+    global book_name
+    if book_name:
+        print(f"Sending... book name : {book_name} ")
         return jsonify(
-            {"index_name": f"{index_name}", "indexName": index_name}
+            {"book_name": f"{book_name}", "bookName": book_name}
         )
-    if not index_name:
-        return jsonify({"index_name": "TextBook Not Selected", "indexName": index_name})
+    if not book_name:
+        return jsonify({"book_name": "TextBook Not Selected", "BookName": book_name})
 
 
 def save_mail(sender, content, mail_file_path, seen=False):
@@ -368,7 +368,7 @@ def save_mail(sender, content, mail_file_path, seen=False):
 @app.route("/chat/import-file", methods=["POST"])
 @app.route("/chat/<conversation_id>/import-file", methods=["POST"])
 def import_file(conversation_id=None):
-    global index_name
+    global book_name
     starting_page = 0
     upload_folder = current_app.config["UPLOAD_FOLDER"]
     mail_file = current_app.config["MAIL_FILE"]
@@ -381,7 +381,7 @@ def import_file(conversation_id=None):
     books = read_books(book_file)
     system_books = books.get("systemBooks", [])
     
-    if index_name in system_books :
+    if book_name in system_books :
         return jsonify({"message":"You cannot update system books" , "status" : "error"}),400
 
     try:
@@ -409,14 +409,14 @@ def import_file(conversation_id=None):
         print(
             f"""
 file path = {file_path}    
-index_name = {index_name}
+book_name = {book_name}
 start_page = {starting_page}
 Starting Background processing..."""
         )
 
         thread = threading.Thread(
             target=process_mail_file,
-            args=(file_path, index_name, starting_page, file_name, mail_file, pinecone_data_file),
+            args=(file_path, book_name, starting_page, file_name, mail_file, pinecone_data_file),
             daemon=True,
         )
         thread.start()

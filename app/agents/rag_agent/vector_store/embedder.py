@@ -15,7 +15,7 @@ class Embedding:
         query = query.lower()
         try:
             result = client.models.embed_content(
-                model="gemini-embedding-001",
+                model="text-embedding-004",
                 contents=f"{query}",
                 config=types.EmbedContentConfig(
                     task_type="RETRIEVAL_QUERY"
@@ -36,10 +36,10 @@ class Embedding:
             while True:
                 try:
                     result = client.models.embed_content(
-                        model="text-embedding-004",
+                        model="text-multilingual-embedding-002",
                         contents=batch,
                         config=types.EmbedContentConfig(
-                            task_type="SEMANTIC_SIMILARITY"
+                            task_type="RETRIEVAL_DOCUMENT"
                         )
                     )
 

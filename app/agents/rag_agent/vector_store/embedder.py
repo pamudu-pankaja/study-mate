@@ -36,7 +36,7 @@ class Embedding:
             while True:
                 try:
                     result = client.models.embed_content(
-                        model="text-multilingual-embedding-002",
+                        model="text-embedding-004",
                         contents=batch,
                         config=types.EmbedContentConfig(
                             task_type="RETRIEVAL_DOCUMENT"

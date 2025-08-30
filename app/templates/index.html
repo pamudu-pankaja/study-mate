@@ -133,6 +133,12 @@
           <input type="checkbox" id="switch_book" onchange="toggleOff(this)" />
           <label for="switch_book" class="switch_book"></label>
           <span>Using PDF</span>
+
+          <a href="{{ url_for('pdf_help_page') }}"
+          target="_blank">
+            <i class="fa fa-info-circle info-icon"></i>
+          </a>
+
         </div>
       </div>
 
@@ -140,12 +146,22 @@
         <div class="menu-button menu-button-2">
           <i class="fa-solid fa-database"></i>
         </div>
+
         <div class="dot-container">
           <div id="red-dot" class="red-dot"></div>
         </div>
+
         <div class="menu-button menu-button-3">
           <i class="fa-solid fa-envelope"></i>
         </div>
+
+        <a href="{{url_for('help_page')}}"
+        target="_blank">
+          <div class="menu-button main-info-button">
+            <i class="fa fa-info-circle info-icon"></i>
+          </div>
+        </a>
+
       </div>
     </div>
 
@@ -216,7 +232,10 @@
 
             <div class="starting-page-group">
               <div class="tooltip-wrapper">
-                <i class="fa fa-info-circle info-icon"></i>
+                <a href="{{url_for('starting_page_help')}}"
+                target="_blank">
+                  <i class="fa fa-info-circle info-icon"></i>
+                </a>
                 <span class="tooltip-text">
                   If the book you are choosing has any credits in the front
                   pages, please set the page you would like to start counting,

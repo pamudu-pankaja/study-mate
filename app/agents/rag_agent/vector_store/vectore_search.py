@@ -5,8 +5,7 @@ from pinecone import Pinecone
 pc = Pinecone(api_key=PINECORN_API_KEY)
 
 
-
-def search(query, index_name):
+def search(query, book_name):
     index = pc.Index("text-books")
     
 
@@ -18,7 +17,7 @@ def search(query, index_name):
 
     results = index.query(
 
-        vector=query_vector, top_k=5, include_metadata=True, include_values=False,namespace=index_name
+        vector=query_vector, top_k=5, include_metadata=True, include_values=False,namespace=book_name
 
     )
 

@@ -18,6 +18,8 @@ class GeminiLLM:
 
         chat_history = chat_history["meta"]["content"]["conversation"]
         chat_history = manage_chat_history(chat_history)
+        
+        chat_history = [msg for msg in chat_history if "Studymate Error :" not in msg["content"]]
 
         contents = []
         for msg in chat_history:
@@ -108,10 +110,10 @@ Emoji Usage:
                     print(f"503 received. Retrying in {wait_time:.2f}s...")
                     time.sleep(wait_time)
                 elif "429" in str(e):
-                    return "Quota exhausted or rate-limited. Try later." 
+                    return "StudyMate Error : Quota exhausted or rate-limited. Try later." 
                 else:
                     return f"LLM Error : {e}"    
-        return "⚠️ Gemini is overloaded. Please try again soon" 
+        return "StudyMate Error :⚠️ Gemini is overloaded. Please try again soon" 
 
 
     @staticmethod

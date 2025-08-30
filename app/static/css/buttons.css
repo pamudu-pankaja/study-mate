@@ -16,6 +16,18 @@
 	position: static !important;
 }
 
+.menu-button-container a{
+	margin-top: auto !important;
+}
+
+.menu-button-container .main-info-button i:hover{
+	cursor: pointer;
+}
+
+.main-info-button i{
+	font-size: 18px;
+}
+
 .clicked{
 	background-color: var(--hover);
 }

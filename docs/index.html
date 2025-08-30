@@ -9,11 +9,14 @@
     />
     <meta
       name="description"
-      content="A conversational AI system that listens, learns, and challenges"
+      content="A conversational AI system that help users with school works"
     />
 
     <meta property="og:title" content="StudyMate" />
-    <meta property="og:image" content="static/img/book.png" />
+    <meta
+      property="og:image"
+      content="static/img/book.png"
+    />
     <meta
       property="og:description"
       content="A conversational AI system that help users with school works"
@@ -23,7 +26,10 @@
     <title>StudyMate</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="static/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="static/css/style.css"
+    />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -41,7 +47,10 @@
       sizes="16x16"
       href="static/img/favicon-16x16.png"
     />
-    <link rel="manifest" href="static/img/site.webmanifest" />
+    <link
+      rel="manifest"
+      href="static/img/site.webmanifest"
+    />
     <link
       rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
@@ -79,11 +88,11 @@
           </div>
           <a
             class="info"
-            href="https://github.com/pamudu-pankaja/text-book-chat-bot"
+            href="https://github.com/pamudu-pankaja/study-mate"
             target="_blank"
           >
             <i class="fa-brands fa-github"></i>
-            <span class="conversation-title"> Version: 0.5.0 </span>
+            <span class="conversation-title"> GitHub</span>
           </a>
         </div>
       </div>
@@ -116,49 +125,43 @@
           </div>
         </div>
 
-        <div class="options-container">
-          <!-- <div class="buttons">
-					<div class="field">
-						<select class="dropdown" name="model" id="model">
-							<option value="gpt-3.5-turbo">GPT-3.5</option>
-							<option value="gpt-3.5-turbo-16k">GPT-3.5-turbo-16k</option>
-							<option value="gpt-4" selected>GPT-4</option>
-						</select>
-					</div> -->
-          <!-- <div class="field">
-						<select class="dropdown" name="jailbreak" id="jailbreak">
-							<option value="default" selected>Default</option>
-							<option value="gpt-dan-11.0">DAN</option>
-							<option value="gpt-evil">Evil</option>
-						</select>
-					</div>
-				</div> -->
+        <div class="field checkbox toogle-group" id="resourceToggleGroup">
+          <input type="checkbox" id="switch_web" onchange="toggleOff(this)" />
+          <label for="switch_web"></label>
+          <span>Using Web</span>
 
-          <div class="field checkbox toogle-group" id="resourceToggleGroup">
-            <input type="checkbox" id="switch_web" onchange="toggleOff(this)" />
-            <label for="switch_web"></label>
-            <span>Using Web</span>
+          <input type="checkbox" id="switch_book" onchange="toggleOff(this)" />
+          <label for="switch_book" class="switch_book"></label>
+          <span>Using PDF</span>
 
-            <input
-              type="checkbox"
-              id="switch_book"
-              onchange="toggleOff(this)"
-            />
-            <label for="switch_book" class="switch_book"></label>
-            <span>Using PDF</span>
-          </div>
+          <a href="{{ url_for('pdf_help_page') }}"
+          target="_blank">
+            <i class="fa fa-info-circle info-icon"></i>
+          </a>
+
         </div>
       </div>
+
       <div class="menu-button-container">
         <div class="menu-button menu-button-2">
           <i class="fa-solid fa-database"></i>
         </div>
+
         <div class="dot-container">
           <div id="red-dot" class="red-dot"></div>
         </div>
+
         <div class="menu-button menu-button-3">
           <i class="fa-solid fa-envelope"></i>
         </div>
+
+        <a href="{{url_for('help_page')}}"
+        target="_blank">
+          <div class="menu-button main-info-button">
+            <i class="fa fa-info-circle info-icon"></i>
+          </div>
+        </a>
+
       </div>
     </div>
 
@@ -172,7 +175,7 @@
         <div class="section select">
           <div class="section-title">
             <i class="fa-solid fa-book"></i>
-            <span>Text Book</span>
+            <span>Select a TextBook</span>
           </div>
 
           <div class="input-group">
@@ -181,8 +184,8 @@
                 autocomplete="off"
                 spellcheck="false"
                 type="text"
-                placeholder="Name of the text book"
-                id="index"
+                placeholder="Name of the textbook"
+                id="book"
               />
               <div id="dropdown" class="dropdown-list">
                 <div class="dropdown-item add-new">
@@ -192,18 +195,23 @@
               </div>
             </div>
 
-            <button class="btn" id="index-name-btn" onclick="setIndex()">
+            <button class="btn" id="book-name-btn" onclick="setbook()">
               <i class="fa-regular fa-layer-plus"></i>
-              <span>Set Book</span>
+              <span>Select Book</span>
             </button>
           </div>
         </div>
-                <!-- Current Status -->
+        <!-- Current Status -->
         <div class="current-info-container">
-          <div class="current-status-title">Current Status</div>
-          <div class="current-index" id="current-index">Book Name: Not set</div>
+          <div class="current-status-title">- Current Book -</div>
+          <div
+            class="current-book"
+            id="current-book"
+            style="text-align: center"
+          >
+            TextBook Not Selected
+          </div>
         </div>
-
 
         <!-- Import PDF Section -->
         <div class="section import">
@@ -224,7 +232,10 @@
 
             <div class="starting-page-group">
               <div class="tooltip-wrapper">
-                <i class="fa fa-info-circle info-icon"></i>
+                <a href="{{url_for('starting_page_help')}}"
+                target="_blank">
+                  <i class="fa fa-info-circle info-icon"></i>
+                </a>
                 <span class="tooltip-text">
                   If the book you are choosing has any credits in the front
                   pages, please set the page you would like to start counting,
@@ -252,7 +263,7 @@
         <div class="section delete">
           <div class="section-title">
             <i class="fa-solid fa-trash"></i>
-            <span>Delete Text Book</span>
+            <span>Delete TextBook</span>
           </div>
 
           <div class="input-group">
@@ -300,16 +311,43 @@
       src="https://kit.fontawesome.com/12c4d6a4a9.js"
       crossorigin="anonymous"
     ></script>
-    <script src="static/js/highlight.min.js" defer></script>
-    <script src="static/js/highlightjs-copy.min.js" defer></script>
-    <script src="static/js/theme-toggler.js" defer></script>
-    <script src="static/js/sidebar-toggler.js" defer></script>
-    <script src="static/js/toggle-button.js" defer></script>
-    <script src="static/js/index-name.js" defer></script>
-    <script src="static/js/import-file.js" defer></script>
+    <script
+      src="static/js/highlight.min.js"
+      defer
+    ></script>
+    <script
+      src="static/js/highlightjs-copy.min.js"
+      defer
+    ></script>
+    <script
+      src="static/js/theme-toggler.js"
+      defer
+    ></script>
+    <script
+      src="static/js/sidebar-toggler.js"
+      defer
+    ></script>
+    <script
+      src="static/js/toggle-button.js"
+      defer
+    ></script>
+    <script
+      src="static/js/book-name.js"
+      defer
+    ></script>
+    <script
+      src="static/js/import-file.js"
+      defer
+    ></script>
     <script src="static/js/chat.js" defer></script>
-    <script src="static/js/book-drop-down.js" defer></script>
+    <script
+      src="static/js/book-drop-down.js"
+      defer
+    ></script>
     <script src="static/js/mail.js" defer></script>
-    <script src="static/js/alert.js" defer></script>
+    <script
+      src="static/js/alert.js"
+      defer
+    ></script>
   </body>
 </html>

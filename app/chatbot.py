@@ -173,14 +173,14 @@ def help_page():
     return render_template("help.html")
 
 
-@app.route("/help/pdf" , methods=["GET"])
+@app.route("/help#-pdf-search" , methods=["GET"])
 def pdf_help_page():
-    return render_template("pdf_help.html")
+    return redirect(url_for("help_page") + "#-pdf-search")
 
 
-@app.route("/help/starting-page" , methods=["GET"])
+@app.route("/help#-starting-page" , methods=["GET"])
 def starting_page_help():
-    return render_template("starting_page_help.html")
+    return redirect(url_for("help_page") + "#-starting-page")
 
 
 @app.route("/chat/<conversation_id>", methods=["GET"])

@@ -219,7 +219,7 @@ def chat_req(conversation_id=None):
             path = path
 
         if path == "vector" and book_name == "":
-            reply = "Please set a valid Book name , using the side bar "
+            reply = "StudyMate Error : Please set a valid Book name , using the side bar "
             print("Sending:", reply)
             return Response(event_stream(), mimetype="text/event-stream"), 500
         
@@ -229,7 +229,7 @@ def chat_req(conversation_id=None):
             pinecone_data = read_pinecone_data(pinecone_data_file)
             
             if book_name not in pinecone_data["booksWithData"]:
-                reply = "Your selected Book name dosent have any files imported or it must be an invalid one. Please select a valid book or import some files"
+                reply = "StudyMate Error : Your selected Book name dosent have any files imported or it must be an invalid one. Please select a valid book or import some files"
                 print("Sending:", reply)
                 return Response(event_stream(), mimetype="text/event-stream"), 500
             else: 
@@ -273,7 +273,7 @@ def chat_req(conversation_id=None):
 
     except Exception as e:
         print(e)
-        reply = "Something went wrong while answering"
+        reply = "StudyMate Error : Something went wrong while answering"
 
         def event_stream():
             for word in reply.split():

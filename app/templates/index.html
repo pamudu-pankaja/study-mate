@@ -13,10 +13,7 @@
     />
 
     <meta property="og:title" content="StudyMate" />
-    <meta
-      property="og:image"
-      content="{{ url_for('static', filename='img/book.png') }}"
-    />
+    <meta property="og:image" content="{{ url_for('static', filename='img/book.png') }}" />
     <meta
       property="og:description"
       content="A conversational AI system that help users with school works"
@@ -26,10 +23,7 @@
     <title>StudyMate</title>
 
     <!-- Styles -->
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -47,10 +41,7 @@
       sizes="16x16"
       href="{{ url_for('static', filename='img/favicon-16x16.png') }}"
     />
-    <link
-      rel="manifest"
-      href="{{ url_for('static', filename='img/site.webmanifest') }}"
-    />
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}" />
     <link
       rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css"
@@ -134,11 +125,9 @@
           <label for="switch_book" class="switch_book"></label>
           <span>Using PDF</span>
 
-          <a href="{{ url_for('pdf_help_page') }}"
-          target="_blank">
+          <a href="{{ url_for('pdf_help_page') }}" target="_blank">
             <i class="fa fa-info-circle info-icon"></i>
           </a>
-
         </div>
       </div>
 
@@ -155,13 +144,11 @@
           <i class="fa-solid fa-envelope"></i>
         </div>
 
-        <a href="{{url_for('help_page')}}"
-        target="_blank">
+        <a href="{{url_for('help_page')}}" target="_blank">
           <div class="menu-button main-info-button">
             <i class="fa fa-info-circle info-icon"></i>
           </div>
         </a>
-
       </div>
     </div>
 
@@ -230,10 +217,42 @@
 
             <div id="file_name">No file chosen</div>
 
+            <div class="language-selection-group">
+              <div class="tooltip-wrapper">
+                <i class="fa fa-info-circle info-icon"></i>
+                <span class="tooltip-text">
+                  Select the language(s) present in your PDF for better OCR
+                  accuracy. You can select multiple languages or use Auto
+                  Detect.
+                </span>
+              </div>
+
+              <div class="language-dropdown-container">
+                <div class="language-selector" id="languageSelector">
+                  <div class="selected-languages" id="selectedLanguages">
+                    <span class="placeholder">Select languages...</span>
+                  </div>
+                  <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                </div>
+
+                <div id="languageDropdown" class="language-dropdown-list">
+                  <div class="language-search-container">
+                    <i class="fa-solid fa-search search-icon"></i>
+                    <input
+                      type="text"
+                      id="languageSearch"
+                      placeholder="Search languages..."
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="language-options" id="languageOptions"></div>
+                </div>
+              </div>
+            </div>
+
             <div class="starting-page-group">
               <div class="tooltip-wrapper">
-                <a href="{{url_for('starting_page_help')}}"
-                target="_blank">
+                <a href="{{url_for('starting_page_help')}}" target="_blank">
                   <i class="fa fa-info-circle info-icon"></i>
                 </a>
                 <span class="tooltip-text">
@@ -311,43 +330,17 @@
       src="https://kit.fontawesome.com/12c4d6a4a9.js"
       crossorigin="anonymous"
     ></script>
-    <script
-      src="{{ url_for('static', filename='js/highlight.min.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/theme-toggler.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/sidebar-toggler.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/toggle-button.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/book-name.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/import-file.js') }}"
-      defer
-    ></script>
+    <script src="{{ url_for('static', filename='js/highlight.min.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/highlightjs-copy.min.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/theme-toggler.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/sidebar-toggler.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/toggle-button.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/book-name.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/import-file.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/chat.js') }}" defer></script>
-    <script
-      src="{{ url_for('static', filename='js/book-drop-down.js') }}"
-      defer
-    ></script>
+    <script src="{{ url_for('static', filename='js/book-drop-down.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/mail.js') }}" defer></script>
-    <script
-      src="{{ url_for('static', filename='js/alert.js') }}"
-      defer
-    ></script>
+    <script src="{{ url_for('static', filename='js/alert.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/book_lang_selector.js') }}" defer></script>
   </body>
 </html>

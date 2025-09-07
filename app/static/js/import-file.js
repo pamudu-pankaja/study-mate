@@ -28,6 +28,10 @@ input.addEventListener("change", () => {
   display.title = file.name;
 });
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function uploadFile() {
   let startPage = document.getElementById("starting-page").value;
 
@@ -71,9 +75,10 @@ async function uploadFile() {
     showError("No Lanugauge Selected" , "Please select the language(s) of the book's content")
   }
 
-  showInfo("Sending...", "We are currently sending your file to the server please wait.")
+  showAlert("info","Sending...", "We are currently sending your file to the server please wait." ,3000)
 
   button.disabled = true;
+  await delay(5000)
 
   const formData = new FormData();
   formData.append("pdf", file);

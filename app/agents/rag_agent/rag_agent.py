@@ -21,7 +21,7 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
 
     # MINOR FUNCs
     @staticmethod
-    def get_chunks(file_path, start_page , pdf_language = "Auto"):
+    def get_chunks(file_path, start_page , pdf_language = "auto"):
         from app.agents.rag_agent.vector_store import file_load
 
         chunks , ocr_language = file_load.load_pdf(file_path, start_page , pdf_language)

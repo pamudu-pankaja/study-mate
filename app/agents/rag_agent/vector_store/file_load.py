@@ -25,6 +25,7 @@ language_patterns = {
     'kor': r'[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]',  # Korean (Hangul Syllables, Jamo, Compatibility)
     'eng': r'[A-Za-z0-9]',  # English (basic Latin alphabet)
     'rus': r'[\u0400-\u04FF]',  # Russian (Cyrillic)
+    'chi_sim' : r'[\u4e00-\u9fff]' #Chinese Simplified
 }
 
 def int_to_roman(n: int) -> str:
@@ -210,7 +211,8 @@ def determine_ocr_need_and_language(file_path: str, pdf_language: str, start_pag
                 img = Image.open(io.BytesIO(img_data))
 
                 try:
-                    ocr_result = pytesseract.image_to_string(img, config='--oem 3 --psm 6 -l sin+eng+tam+hin+jpn+kor+ara+rus+chi_sim')
+                    langs = "eng+ara+hin+jpn+kor+sin+tam+chi_sim+rus"
+                    ocr_result = pytesseract.image_to_string(img, config=f'--oem 3 --psm 6 -l {langs}')
                     page_languages = detect_language(ocr_result)
                     detected_languages.extend(page_languages)
                 except Exception as e:
@@ -333,7 +335,7 @@ def clean_text(text: str) -> str:
     
     return '\n'.join(lines)
 
-def load_pdf(file_path: str, start_page: int = 1, pdf_language: str = 'Auto', chunk_size: int = 450, chunk_overlap: int = 60) -> List[Dict]:
+def load_pdf(file_path: str, start_page: int = 1, pdf_language: str = 'auto', chunk_size: int = 450, chunk_overlap: int = 60) -> List[Dict]:
     """
     Load and process PDF with chunking and section detection
     

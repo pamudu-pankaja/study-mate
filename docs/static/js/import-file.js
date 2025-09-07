@@ -30,6 +30,7 @@ input.addEventListener("change", () => {
 
 async function uploadFile() {
   let startPage = document.getElementById("starting-page").value;
+  const selectedLanguagesString = getSelectedLanguagesForBackend();
 
   if (startPage == null && startPage < 0) {
     startPage = 0
@@ -73,6 +74,7 @@ async function uploadFile() {
   formData.append("pdf", file);
   formData.append("startPage", startPage);
   formData.append("bookName", book_name);
+  formData.append("pdfLang" , selectedLanguagesString)
 
   let endpointFile = chatID
     ? `${url_prefix}/chat/${chatID}/import-file`

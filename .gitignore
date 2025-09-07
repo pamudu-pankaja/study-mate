@@ -183,4 +183,8 @@ cython_debug/
 .pypirc
 
 file_transfer.py
-docs/
+chat/mails.json
+.VSCodeCounter/
+chat/
+models/LaBSE/model.safetensors
+models/SinhalaBERTo/model.safetensors

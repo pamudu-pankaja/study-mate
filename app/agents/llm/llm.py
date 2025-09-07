@@ -18,6 +18,8 @@ class GeminiLLM:
 
         chat_history = chat_history["meta"]["content"]["conversation"]
         chat_history = manage_chat_history(chat_history)
+        
+        chat_history = [msg for msg in chat_history if "Studymate Error :" not in msg["content"]]
 
         contents = []
         for msg in chat_history:
@@ -33,7 +35,6 @@ class GeminiLLM:
 
         contents.append({"role": "user", "parts": [{"text": prompt}]})
         
-        print(contents)
         
         retries = 3
         
@@ -46,7 +47,7 @@ class GeminiLLM:
                         system_instruction=(
                             """ 
 You are an academic assistant that helps students learn efficiently using textbook context, uploaded documents, or trusted online sources.
-Your name is StudyMate , And you are a large language model with a defualt name of Gemini 
+Your name is StudyMate , And you are powerd by the llm called Gemini
 
 ✅ BEHAVIOR:
 - Answer clearly, accurately, and concisely.
@@ -62,7 +63,7 @@ Your name is StudyMate , And you are a large language model with a defualt name 
 - Be natural and friendly. Match the user’s tone.
 - Avoid robotic phrases or unnecessary repetition.
 - Use Markdown elements like headings, lists, tables, footnotes, math, blockquotes, images, and inline code normally.
-- Use fenced code blocks ONLY for actual programming code snippets (like python, javascript), with language tags.
+- Only use code blocks for programming code with language tags, and always output properly rendered Markdown for all other elements.
 - NEVER wrap non-code Markdown elements (tables, lists, footnotes, math, definitions) inside triple backtick code blocks.
 - Do NOT show Markdown as code examples inside fenced blocks; instead, output the actual rendered Markdown.
 - Your response should be valid Markdown that renders properly without extra code fences.
@@ -78,7 +79,6 @@ Your name is StudyMate , And you are a large language model with a defualt name 
 
 ⚠️ LIMITATIONS:
 - You don’t have access to persistent memory beyond the session.
-- If a model error occurs (e.g., 503), retry logically without overloading.
 
 🎓 GOAL:
 - Deliver useful, exam-ready answers. Make it easier for the student to **understand, memorize, or directly use** in assignments or assessments.
@@ -110,10 +110,10 @@ Emoji Usage:
                     print(f"503 received. Retrying in {wait_time:.2f}s...")
                     time.sleep(wait_time)
                 elif "429" in str(e):
-                    return "Quota exhausted or rate-limited. Try later." 
+                    return "StudyMate Error : Quota exhausted or rate-limited. Try later." 
                 else:
                     return f"LLM Error : {e}"    
-        return "⚠️ Gemini is overloaded. Please try again soon" 
+        return "StudyMate Error :⚠️ Gemini is overloaded. Please try again soon" 
 
 
     @staticmethod

@@ -204,7 +204,7 @@ const ask_gpt = async (message) => {
       });
 
       window.scrollTo(0, 0);
-      message_box.scrollTo({ top: message_box.scrollHeight, behavior: "auto" });
+      // message_box.scrollTo({ top: message_box.scrollHeight, behavior: "auto" });
     }
 
     // if text contains :
@@ -245,7 +245,7 @@ const ask_gpt = async (message) => {
 
     history.pushState({}, null, `${url_prefix}/chat/${conversation_id}`);
 
-    message_box.scrollTop = message_box.scrollHeight;
+    // message_box.scrollTop = message_box.scrollHeight;
     await remove_cancel_button();
     prompt_lock = false;
 
@@ -254,7 +254,7 @@ const ask_gpt = async (message) => {
   } catch (e) {
     add_message(window.conversation_id, "user", message);
 
-    message_box.scrollTop = message_box.scrollHeight;
+    // message_box.scrollTop = message_box.scrollHeight;
     await remove_cancel_button();
     prompt_lock = false;
 

@@ -1,7 +1,5 @@
 const input = document.getElementById("file_input");
 const display = document.getElementById("file_name");
-const fallBackDisplay = document.getElementById("file-fallback-message");
-const fallBackDisplay_index = document.getElementById("index-fallback-message");
 const button = document.getElementById("file-upload-btn");
 
 input.addEventListener("change", () => {
@@ -13,79 +11,68 @@ input.addEventListener("change", () => {
   }
 
   if (file.type !== "application/pdf") {
-    fallBackDisplay_index.classList.remove("visble");
-    fallBackDisplay_index.classList.remove("success");
-    fallBackDisplay.textContent = "Only PDF file are allowed";
-    fallBackDisplay.classList.add("visible");
+    showWarning("Invalid File Type", "Only PDF files are allowed")
     input.value = "";
     display.textContent = "No file chosen";
     return;
   }
 
   if (file.size >= max_size) {
-    fallBackDisplay_index.classList.remove("visble");
-    fallBackDisplay_index.classList.remove("success");
-    fallBackDisplay.textContent = "File must be under 20 MB";
-    fallBackDisplay.classList.add("visible");
+    showWarning("Invalid File Size", "File size must be under 20MB")
     input.value = "";
     display.textContent = "No file chosen";
     return;
   }
 
-  // fallBackDisplay.textContent = "File added successfully";
-  fallBackDisplay.classList.remove("visible");
-  // fallBackDisplay.classList.add("success");
   display.textContent = ` ${file.name} `;
   display.title = file.name;
 });
 
 async function uploadFile() {
-  const startPage = document.getElementById("starting-page").value;
+  let startPage = document.getElementById("starting-page").value;
+
+  if (startPage == null && startPage < 0) {
+    startPage = 0
+  }
 
   const file = input.files[0];
   const url_prefix = document
     .querySelector("body")
     .getAttribute("data-urlprefix");
-  
+
   let chatID = window.conversation_id;
 
   let endpointIndex = chatID
-    ? `${url_prefix}/chat/${chatID}/index-name`
-    : `${url_prefix}/chat/index-name`;
+    ? `${url_prefix}/chat/${chatID}/book-name`
+    : `${url_prefix}/chat/book-name`;
 
-  const res = await fetch(endpointIndex , { method:"GET"});
+  const res = await fetch(endpointIndex, { method: "GET" });
   const data = await res.json();
-  const index_name = data.indexName;
+  const book_name = data.bookName;
 
-  if (!index_name || index_name == '') {
-    fallBackDisplay_index.classList.add("visible");
-    fallBackDisplay_index.classList.remove("success");
-    fallBackDisplay_index.textContent = "Please set a index name";
-    console.log("Index name is missing , file uploading is aborting");
+  if (!book_name || book_name == '') {
+    showError("Book Name Empty", "Please set a valid Book Name to import file")
+    console.log("book name is missing , file uploading is aborting");
     return;
   }
 
-  if (!file) {
-    fallBackDisplay.textContent = "Please upload a file";
-    fallBackDisplay.classList.add("visible");
-    fallBackDisplay_index.classList.remove("success");
-    input.value = "";
-    display.textContent = "No file chosen";
-    return;
-  }
+  if (book_name == allBooks)
 
-  fallBackDisplay.textContent = "Sending...";
-  fallBackDisplay.classList.add("visible");
-  fallBackDisplay.classList.remove("success");
-  fallBackDisplay.style.color = "#DADADA";
+    if (!file) {
+      showWarning("No File", "Please upload a file to be imported")
+      input.value = "";
+      display.textContent = "No file chosen";
+      return;
+    }
+
+  showInfo("Sending...", "We are currently sending your file to the server please wait.")
 
   button.disabled = true;
 
-  console.log(startPage);
   const formData = new FormData();
   formData.append("pdf", file);
   formData.append("startPage", startPage);
-  formData.append("indexName", index_name);
+  formData.append("bookName", book_name);
 
   let endpointFile = chatID
     ? `${url_prefix}/chat/${chatID}/import-file`
@@ -99,48 +86,20 @@ async function uploadFile() {
 
     const data = await res.json();
 
-    // If you are not me just dont get your head fucked up with these class names check the css file right side bar
     if (data.status == "processing") {
-      fallBackDisplay_index.classList.remove("visble");
-      fallBackDisplay_index.classList.remove("success");      
-      fallBackDisplay.classList.add("success");
-      fallBackDisplay.classList.remove("visible");
-      fallBackDisplay.textContent = data.message;
+      showSuccess("File is Processing", data.message)
       console.log(`file is processing in the background`);
     }
 
     if (data.status == "error" || !data) {
-      fallBackDisplay_index.classList.remove("visble");
-      fallBackDisplay_index.classList.remove("success");
-      fallBackDisplay.classList.add("visible");
-      fallBackDisplay.classList.remove("success");
-      fallBackDisplay.textContent = data.message;
+      showError("Faild to Import", data.message)
       console.log(data.error_msg || "Check the local server terminal");
     }
   } catch (error) {
-    fallBackDisplay.classList.add("visible");
-    fallBackDisplay.classList.remove("success");
-    fallBackDisplay.style.fontSize = "12px";
-    fallBackDisplay.textContent = "[check console] Something went wrong";
+    showError("Faild to Import", error)
     console.error("fetch error :", error);
   } finally {
     button.disabled = false;
   }
 }
-
-// window.addEventListener("DOMContentLoaded", () => {
-//   let chatID = window.conversation_id;
-
-//   let endpointStartPage = chatID
-//     ? `${url_prefix}/chat/${chatID}/start-page`
-//     : `${url_prefix}/chat/start-page`;
-
-//   fetch(endpointStartPage)
-//     .then((res) => res.json())
-//     .then((data) => {
-//       const currentPage = data.start_page;
-//       console.log(data.startPage || 0);
-//       showStartPage.textContent = currentPage;
-//     });
-// });
 

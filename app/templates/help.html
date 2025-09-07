@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StudyMate Help</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{{ url_for('static', filename='img/apple-touch-icon.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{{ url_for('static', filename='img/favicon-32x32.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{{ url_for('static', filename='img/favicon-16x16.png') }}"
+    />
+    <link
+      rel="manifest"
+      href="{{ url_for('static', filename='img/site.webmanifest') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/12c4d6a4a9.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      :root {
+        --bg: #0b0c0f;
+        --panel: #12141a;
+        --muted: #9aa3b2;
+        --text: #eef2f8;
+        --accent: #4f8cff;
+        --border: #232837;
+        --code-bg: #0f1117;
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        --scrollbar-track: #1a1d25;
+        --scrollbar-thumb: #404757;
+        --scrollbar-thumb-hover: #525a6a;
+      }
+      .light {
+        --bg: #ffffff;
+        --panel: #f6f7fb;
+        --muted: #586174;
+        --text: #101321;
+        --accent: #335dff;
+        --border: #e6e8ef;
+        --code-bg: #f5f7fb;
+        --shadow: 0 8px 24px rgba(16, 19, 33, 0.06);
+        --scrollbar-track: #f1f3f7;
+        --scrollbar-thumb: #d1d5db;
+        --scrollbar-thumb-hover: #9ca3af;
+      }
+
+      /* Custom scrollbar styling */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 4px;
+        transition: background 0.2s ease;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--scrollbar-thumb-hover);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter,
+          "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        grid-template-rows: 56px 1fr;
+        grid-template-areas:
+          "header header"
+          "sidebar main";
+        height: 100vh;
+      }
+
+      header {
+        grid-area: header;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 16px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel);
+        position: sticky;
+        top: 0;
+        z-index: 3;
+      }
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .spacer {
+        flex: 1;
+      }
+      .search {
+        position: relative;
+        width: min(560px, 60vw);
+      }
+      .search input {
+        width: 100%;
+        padding: 10px 12px 10px 36px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        outline: none;
+        box-shadow: var(--shadow);
+      }
+      .search .icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.7;
+      }
+      .kbd {
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .btn {
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+      }
+      .btn:hover {
+        border-color: var(--accent);
+      }
+
+      aside {
+        grid-area: sidebar;
+        border-right: 1px solid var(--border);
+        overflow: auto;
+        background: linear-gradient(180deg, var(--panel), transparent 160px);
+      }
+      nav {
+        padding: 12px;
+      }
+      .nav-group {
+        margin-bottom: 16px;
+      }
+      .nav-group h4 {
+        margin: 16px 8px 8px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+      }
+      .nav-item {
+        display: block;
+        padding: 10px 12px;
+        margin: 2px 4px;
+        border-radius: 8px;
+        color: var(--text);
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+      }
+      .nav-item:hover {
+        background: rgba(79, 140, 255, 0.08);
+        text-decoration: none;
+      }
+      .nav-item.active {
+        background: rgba(79, 140, 255, 0.15);
+        border-color: rgba(79, 140, 255, 0.3);
+        font-weight: 500;
+      }
+      .nested {
+        padding-left: 20px;
+        font-size: 14px;
+      }
+
+      main {
+        grid-area: main;
+        overflow: auto;
+        padding: 24px 32px 80px;
+        scroll-behavior: smooth;
+      }
+      article {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      article h1 {
+        font-size: 32px;
+        line-height: 1.2;
+        margin: 12px 0 20px;
+        color: var(--text);
+      }
+      article h2 {
+        font-size: 24px;
+        margin-top: 48px;
+        margin-bottom: 16px;
+        border-top: 2px solid var(--border);
+        padding-top: 24px;
+        position: relative;
+      }
+      article h2::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: 0;
+        width: 60px;
+        height: 2px;
+        background: var(--accent);
+      }
+      article h3 {
+        font-size: 20px;
+        margin-top: 32px;
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+      article p,
+      article li {
+        color: var(--text);
+        margin-bottom: 12px;
+      }
+      article ul,
+      article ol {
+        margin-bottom: 16px;
+      }
+      article code {
+        background: var(--code-bg);
+        padding: 3px 7px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        font-size: 14px;
+      }
+
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        padding: 16px;
+        border-radius: 12px;
+        overflow: auto;
+        position: relative;
+        margin: 20px 0;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 12px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+      }
+
+      blockquote {
+        margin: 20px 0;
+        padding: 16px 20px;
+        border-left: 4px solid var(--accent);
+        background: linear-gradient(
+          90deg,
+          rgba(79, 140, 255, 0.08),
+          transparent 70%
+        );
+        border-radius: 0 8px 8px 0;
+      }
+      .admonition {
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--accent);
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin: 20px 0;
+        background: linear-gradient(
+          90deg,
+          rgba(79, 140, 255, 0.06),
+          transparent 80%
+        );
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      details {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          transparent
+        );
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .search-empty {
+        padding: 12px 16px;
+        color: var(--muted);
+        text-align: center;
+        font-style: italic;
+      }
+
+      /* Image support */
+      article img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        margin: 20px 0;
+        display: block;
+      }
+
+      .img-caption {
+        text-align: center;
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 8px;
+        font-style: italic;
+      }
+
+      /* Better spacing and visual hierarchy */
+      article > * + h1 {
+        margin-top: 64px;
+      }
+
+      article > * + h2 {
+        margin-top: 56px;
+      }
+
+      article > * + h3 {
+        margin-top: 40px;
+      }
+
+      /* Improve link styling */
+      article a:not(.muted) {
+        color: var(--accent);
+        font-weight: 500;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+      }
+
+      article a:not(.muted):hover {
+        border-bottom-color: var(--accent);
+        text-decoration: none;
+      }
+
+      /* Anchor links for headings */
+      .anchor-link {
+        opacity: 0;
+        margin-left: 8px;
+        font-size: 0.8em;
+        transition: opacity 0.2s ease;
+        text-decoration: none !important;
+        border: none !important;
+      }
+
+      h1:hover .anchor-link,
+      h2:hover .anchor-link,
+      h3:hover .anchor-link {
+        opacity: 0.6;
+      }
+
+      @media (max-width: 980px) {
+        .app {
+          grid-template-columns: 1fr;
+          grid-template-rows: 56px auto 1fr;
+          grid-template-areas: "header" "sidebar" "main";
+        }
+        aside {
+          max-height: 40vh;
+        }
+        main {
+          padding: 20px 24px 64px;
+        }
+        article h1 {
+          font-size: 28px;
+        }
+        article h2 {
+          font-size: 22px;
+          margin-top: 40px;
+        }
+      }
+
+      @media print {
+        header,
+        aside,
+        .copy-btn {
+          display: none;
+        }
+        main {
+          padding: 0;
+        }
+        article h2 {
+          border-top: none;
+          padding-top: 0;
+        }
+        body {
+          background: #fff;
+          color: #000;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="brand">⚙ StudyMate Help</div>
+        <div class="spacer"></div>
+        <div class="search">
+          <svg
+            class="icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21 21l-4.35-4.35"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+          </svg>
+          <input
+            id="searchInput"
+            placeholder="Search topics (press /)"
+            autocomplete="off"
+          />
+        </div>
+        <button id="themeBtn" class="btn" title="Toggle theme">
+          <i class="fa-solid fa-sun themeIcon"></i>
+        </button>
+      </header>
+
+      <aside>
+        <nav id="nav"></nav>
+      </aside>
+
+      <main>
+        <article id="content"></article>
+      </main>
+    </div>
+
+    <script type="text/markdown" id="doc">
+# 📚 Study Mate
+
+Study Mate is your friendly study companion. a simple web app that lets you upload PDFs (like textbooks), ask questions, and get smart answers powered by Google Gemini!
+
+Whether you want detailed AI explanations or quick lookups inside your study materials, Study Mate makes it easy. all from a clean, user-friendly web interface.
+
+## 📖 About Study Mate
+
+Study Mate is a simple and friendly web app that helps you study smarter. Here's what it offers:
+
+- Web frontend: built with Flask, HTML, CSS, and JavaScript.
+- Upload PDFs and ask questions .
+- Powered by Google Gemini Flash 2.0 with conversation memory to keep your chats smooth.
+- Vector search for pinpointing answers inside your PDFs.
+
+## ✨ Features
+
+- Upload PDF files and have them automatically split and indexed.
+- Tracks real and logical page numbers (including Roman numerals for preface pages). You can set the logical page where you want counting to start in [Starting Page](#-starting-page).
+- Recognizes sections automatically.
+- Choose between:
+  - General Gemini LLM response
+  - Vector similarity search
+  - Web search
+
+## 🛠 Tech Stack
+
+- **Backend**: Python, Flask
+- **Frontend**: HTML, CSS, JavaScript
+- **AI**: Google Gemini API
+- **Vector Storage**: Pinecone
+- **Web Search**: Google Custom Search API
+
+---
+
+# 🔎 How It Works
+
+Study Mate gives you three modes of finding answers:
+
+1. **General Gemini Knowledge** – Ask questions and get responses from Gemini itself.
+2. **PDF Search** – Search within your uploaded textbooks using vector similarity.
+3. **Web Search** – Query the internet through Google Custom Search.
+
+## Switching Modes
+
+At the bottom of the app, you'll see toggle buttons. You can switch between PDF Search, Web Search, or just rely on the general LLM.
+
+- If you've already run a PDF search on a topic (say _Hitler_), the context is saved in chat memory. You don't need to keep the PDF toggle on—simply turn it off and continue with LLM mode.
+- Avoid asking **multiple unrelated questions** in one vector search. The PDF search works best when you stick to **one topic at a time**.
+- Vector search is tuned for **exam-style answers**. That means you may get concise responses instead of long essays. If you want a more detailed answer, turn the PDF toggle **off** and ask again using Gemini's general mode.
+
+👉 [Learn more about PDF Search](#pdf-search)
+
+---
+
+# 📚 PDF Search
+
+The PDF Search feature lets you query your own uploaded textbooks and notes directly inside the app. Below are the details on how it works and how to manage your uploaded books.
+
+## ⚙️ Under the Hood
+
+Here's the current pipeline (it will evolve soon):
+
+1. **Load PDF** – we read the file using [PyPDFLoader](https://python.langchain.com/docs/modules/data_connection/document_loaders/pdf).
+2. **Chunking** – the text is split into smaller pieces for better search.
+3. **Embedding** – chunks are embedded with Google Embeddings.
+4. **Upsert to Pinecone** – embeddings are stored in Pinecone.
+
+➡️ If you want to dig deeper, check out the full code here:  
+[GitHub: Study Mate](https://github.com/pamudu-pankaja/study-mate)
+
+## 📤 Uploading PDFs
+
+1. Open the **right sidebar** (top-right corner button).
+2. Pick a name for your book — we'll suggest one if possible.
+3. Save the book name (so you can reuse it later without retyping).
+4. Set the book by clicking the button below it.
+5. Select your PDF file.
+6. Enter a **starting page** (see [Starting Page](#-starting-page) below for details).
+7. Upload your file.
+
+⚠️ You **cannot upload files** to system-provided books. Only your own.
+
+📝 The in-app message system will keep you updated:
+
+- Message when the file is being processed.
+- Another message once the file is ready to use.
+
+## 📖 Using an Uploaded Book
+
+Super simple:
+
+1. Open the right sidebar.
+2. Set the book you uploaded.
+3. Toggle on the **PDF Search** button.
+4. Ask your questions and dive in.
+
+## 🗑️ Deleting Books
+
+- You can delete any book **you uploaded** from the right sidebar.
+- System-provided books **cannot** be deleted.
+- Your own books are yours to manage — add, remove, or re-upload freely.
+
+## 🔢 Starting Page
+
+The **starting page** setting helps align PDF page numbers with the _actual_ book page numbers.
+
+- Many books have blank pages or Roman numerals in the front.
+- Example: if your PDF viewer says _page 11_, but it's actually the _first page_ of the book → set the starting page to **11**.
+- If you're unsure, just leave it at **0** (default).
+
+This ensures that when we answer, the **page numbers and sections match up** with the real book.
+
+![PDF Reader Screenshot for the above example]({{ url_for('static', filename='img/help/starting-page-example#1.png') }})
+
+---
+
+# ❓ FAQ
+
+- **Q:** Do I need to re-upload my PDFs every time?
+  - **A:** No, once uploaded, they stay indexed in the vector DB.
+
+- **Q:** Why are some answers short?
+  - **A:** That's by design in PDF search mode—it's exam-focused.
+
+- **Q:** Can I mix search modes?
+  - **A:** Yes. Start with PDF, then switch to LLM for expansions.
+
+---
+
+# 📄 Troubleshooting
+
+- **Problem:** No results from PDF search.
+  - **Fix:** Make sure the PDF was uploaded and indexed correctly.
+
+- **Problem:** Web search is inconsistent.
+  - **Fix:** The feature is experimental and may not always return good results.
+
+---
+
+# 📜 Changelog
+
+- **v1.0** – First release with PDF + Web + LLM search
+    </script>
+
+    <script>
+      // --- Utilities ---
+      const slug = (s) =>
+        s
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-");
+
+      const md = window.markdownit({
+        html: true,
+        linkify: true,
+        highlight: function (str, lang) {
+          try {
+            if (lang && hljs.getLanguage(lang)) {
+              return hljs.highlight(str, { language: lang }).value;
+            }
+          } catch (e) {}
+          return md.utils.escapeHtml(str);
+        },
+      });
+
+      function renderMarkdown(raw) {
+        const html = md.render(raw);
+        const container = document.getElementById("content");
+        container.innerHTML = html;
+
+        // Ensure headings have ids and add anchor links (only visible on hover)
+        const headings = container.querySelectorAll("h1, h2, h3, h4");
+        headings.forEach((h) => {
+          if (!h.id) {
+            h.id = slug(h.textContent);
+          }
+          // add anchor link (only visible on hover in main content)
+          const a = document.createElement("a");
+          a.href = `#${h.id}`;
+          a.innerHTML = "#";
+          a.className = "anchor-link muted";
+          a.setAttribute("aria-label", "Permalink to this section");
+          h.appendChild(a);
+        });
+
+        // Process images and add captions
+        container.querySelectorAll("img").forEach((img) => {
+          if (img.alt) {
+            const caption = document.createElement("div");
+            caption.className = "img-caption";
+            caption.textContent = img.alt;
+            img.insertAdjacentElement("afterend", caption);
+          }
+
+          // Handle image loading errors - remove the fallback since you're using local images
+          img.onerror = function () {
+            console.warn("Image could not be loaded:", this.src);
+            // You can add a placeholder or error handling here if needed
+          };
+        });
+
+        // Copy buttons for code blocks
+        document.querySelectorAll("pre > code").forEach((code) => {
+          const pre = code.parentElement;
+          const btn = document.createElement("button");
+          btn.className = "btn copy-btn";
+          btn.textContent = "Copy";
+          btn.addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(code.innerText);
+              btn.textContent = "Copied!";
+              setTimeout(() => (btn.textContent = "Copy"), 1200);
+            } catch (e) {
+              // Fallback for older browsers
+              const textArea = document.createElement("textarea");
+              textArea.value = code.innerText;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand("copy");
+              document.body.removeChild(textArea);
+              btn.textContent = "Copied!";
+              setTimeout(() => (btn.textContent = "Copy"), 1200);
+            }
+          });
+          pre.appendChild(btn);
+        });
+
+        // Highlight.js
+        document
+          .querySelectorAll("pre code")
+          .forEach((el) => hljs.highlightElement(el));
+
+        buildNav();
+        setupScrollSpy();
+      }
+
+      function buildNav() {
+        const nav = document.getElementById("nav");
+        nav.innerHTML = "";
+        const hs = [
+          ...document.querySelectorAll("#content h1, #content h2, #content h3"),
+        ];
+
+        // group by h2 under current h1
+        let currentH1 = null;
+        let groupEl = null;
+        hs.forEach((h) => {
+          const level = Number(h.tagName.substring(1));
+          if (level === 1) {
+            currentH1 = h;
+            groupEl = document.createElement("div");
+            groupEl.className = "nav-group";
+            const gTitle = document.createElement("h4");
+            gTitle.textContent = h.textContent
+              .replace("📚", "")
+              .replace("🔎", "")
+              .replace("❓", "")
+              .replace("📄", "")
+              .replace("📜", "")
+              .replace("#", "")
+              .trim();
+            groupEl.appendChild(gTitle);
+            nav.appendChild(groupEl);
+          } else if (level === 2) {
+            if (!groupEl) {
+              groupEl = document.createElement("div");
+              groupEl.className = "nav-group";
+              nav.appendChild(groupEl);
+            }
+            const a = document.createElement("a");
+            a.className = "nav-item";
+            a.href = `#${h.id}`;
+            // Remove hashtag symbol from navigation text
+            a.textContent = h.textContent
+              .replace("📖", "")
+              .replace("✨", "")
+              .replace("🛠", "")
+              .replace("⚙️", "")
+              .replace("📤", "")
+              .replace("📖", "")
+              .replace("🗑️", "")
+              .replace("🔢", "")
+              .replace("#", "")
+              .trim();
+            a.dataset.anchor = h.id;
+            groupEl.appendChild(a);
+          } else if (level === 3) {
+            if (!groupEl) {
+              groupEl = document.createElement("div");
+              groupEl.className = "nav-group";
+              nav.appendChild(groupEl);
+            }
+            const a = document.createElement("a");
+            a.className = "nav-item nested";
+            a.href = `#${h.id}`;
+            // Remove hashtag symbol from navigation text
+            a.textContent = h.textContent.replace("#", "").trim();
+            a.dataset.anchor = h.id;
+            groupEl?.appendChild(a);
+          }
+        });
+
+        // Add click handlers for smooth navigation and immediate highlighting
+        nav.querySelectorAll(".nav-item").forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute("href").substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+              // Immediately update active state
+              nav
+                .querySelectorAll(".nav-item")
+                .forEach((x) => x.classList.remove("active"));
+              link.classList.add("active");
+
+              // Smooth scroll to target
+              targetElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+                inline: "nearest",
+              });
+
+              // Update URL without triggering navigation
+              history.replaceState(null, null, `#${targetId}`);
+            }
+          });
+        });
+
+        // Search functionality
+        const input = document.getElementById("searchInput");
+        input.addEventListener("input", () => {
+          const q = input.value.trim().toLowerCase();
+          const groups = nav.querySelectorAll(".nav-group");
+          let totalVisible = 0;
+
+          groups.forEach((group) => {
+            const items = group.querySelectorAll(".nav-item");
+            let groupVisible = 0;
+
+            items.forEach((it) => {
+              const ok = it.textContent.toLowerCase().includes(q);
+              it.style.display = ok ? "block" : "none";
+              if (ok) groupVisible++;
+            });
+
+            // Hide group title if no items visible
+            const title = group.querySelector("h4");
+            if (title) {
+              title.style.display = groupVisible > 0 ? "block" : "none";
+            }
+
+            totalVisible += groupVisible;
+          });
+
+          let empty = nav.querySelector(".search-empty");
+          if (!totalVisible && q) {
+            if (!empty) {
+              empty = document.createElement("div");
+              empty.className = "search-empty";
+              empty.textContent = "No results found";
+              nav.appendChild(empty);
+            }
+          } else if (empty) {
+            empty.remove();
+          }
+        });
+      }
+
+      function setupScrollSpy() {
+        const links = document.querySelectorAll("#nav .nav-item");
+        const map = new Map([...links].map((a) => [a.dataset.anchor, a]));
+
+        let ticking = false;
+        let activeElement = null;
+
+        const updateActiveLink = () => {
+          const scrollPos = window.scrollY + 100; // offset for header
+          const headings = [
+            ...document.querySelectorAll(
+              "#content h1, #content h2, #content h3"
+            ),
+          ];
+
+          // Find the currently active heading
+          let current = null;
+          headings.forEach((heading) => {
+            if (heading.offsetTop <= scrollPos) {
+              current = heading;
+            }
+          });
+
+          if (current && current !== activeElement) {
+            activeElement = current;
+            links.forEach((x) => x.classList.remove("active"));
+            const link = map.get(current.id);
+            if (link) {
+              link.classList.add("active");
+            }
+          }
+
+          ticking = false;
+        };
+
+        const requestTick = () => {
+          if (!ticking) {
+            requestAnimationFrame(updateActiveLink);
+            ticking = true;
+          }
+        };
+
+        window.addEventListener("scroll", requestTick);
+
+        // Initial call
+        updateActiveLink();
+      }
+
+      // Theme management
+      const themeBtn = document.getElementById("themeBtn");
+      const searchInput = document.getElementById("searchInput");
+      const themeIcon = document.querySelector(".themeIcon");
+
+      function applyTheme() {
+        const mode = localStorage.getItem("help:theme") || "dark";
+        if (mode === "light") {
+          document.documentElement.classList.add("light");
+          themeIcon.classList.replace("fa-sun", "fa-moon");
+        } else {
+          document.documentElement.classList.remove("light");
+          themeIcon.classList.replace("fa-moon", "fa-sun");
+        }
+      }
+
+      function toggleTheme() {
+        const isLight = document.documentElement.classList.toggle("light");
+        localStorage.setItem("help:theme", isLight ? "light" : "dark");
+        if (isLight) {
+          themeIcon.classList.replace("fa-sun", "fa-moon");
+        } else {
+          themeIcon.classList.replace("fa-moon", "fa-sun");
+        }
+      }
+
+      themeBtn.addEventListener("click", toggleTheme);
+
+      // Keyboard shortcuts
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "/" && !e.target.matches("input, textarea")) {
+          e.preventDefault();
+          searchInput.focus();
+        }
+        if (e.key === "Escape" && document.activeElement === searchInput) {
+          searchInput.blur();
+          searchInput.value = "";
+          searchInput.dispatchEvent(new Event("input"));
+        }
+      });
+
+      // Handle initial hash navigation
+      function handleInitialHash() {
+        const hash = window.location.hash;
+        if (hash) {
+          setTimeout(() => {
+            const element = document.querySelector(hash);
+            if (element) {
+              element.scrollIntoView({ behavior: "smooth" });
+              // Update nav
+              const link = document.querySelector(`[href="${hash}"]`);
+              if (link) {
+                document
+                  .querySelectorAll(".nav-item")
+                  .forEach((x) => x.classList.remove("active"));
+                link.classList.add("active");
+              }
+            }
+          }, 100);
+        }
+      }
+
+      // Initialize
+      applyTheme();
+      const raw =
+        document.getElementById("doc")?.textContent || "# Help\nAdd content.";
+      renderMarkdown(raw);
+      handleInitialHash();
+    </script>
+  </body>
+</html>

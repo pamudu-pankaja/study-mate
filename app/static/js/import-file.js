@@ -30,7 +30,6 @@ input.addEventListener("change", () => {
 
 async function uploadFile() {
   let startPage = document.getElementById("starting-page").value;
-  const selectedLanguagesString = getSelectedLanguagesForBackend();
 
   if (startPage == null && startPage < 0) {
     startPage = 0
@@ -65,6 +64,12 @@ async function uploadFile() {
       display.textContent = "No file chosen";
       return;
     }
+
+  const selectedLanguagesString = getSelectedLanguagesForBackend();
+
+  if (selectedLanguagesString == ''){
+    showError("No Lanugauge Selected" , "Please select the language(s) of the book's content")
+  }
 
   showInfo("Sending...", "We are currently sending your file to the server please wait.")
 

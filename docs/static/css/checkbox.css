@@ -37,6 +37,13 @@
 	left: calc(100% - 5px - 20px);
 }
 
+#resourceToggleGroup  a{
+	padding-left: 10px;
+}
+#resourceToggleGroup  i:hover{
+	cursor: pointer;
+}
+
 @media screen and (max-width: 990px) {
 	.checkbox label {
 		width: 25px;

@@ -1,8 +1,6 @@
-// Main function to show alerts - THIS IS THE LINE YOU'LL USE MOST
 function showAlert(type, title, message, duration = 5000) {
     const container = document.getElementById('alert-container');
-    
-    // Create alert element
+
     const alert = document.createElement('div');
     alert.className = `alert ${type}`;
     
@@ -15,10 +13,8 @@ function showAlert(type, title, message, duration = 5000) {
         <button class="alert-close" onclick="closeAlert(this)">×</button>
     `;
     
-    // Add to container
     container.appendChild(alert);
     
-    // Auto-remove after duration
     if (duration > 0) {
         setTimeout(() => {
             closeAlert(alert.querySelector('.alert-close'));
@@ -26,7 +22,6 @@ function showAlert(type, title, message, duration = 5000) {
     }
 }
 
-// Function to close individual alert
 function closeAlert(closeBtn) {
     const alert = closeBtn.closest('.alert');
     alert.classList.add('removing');
@@ -38,7 +33,6 @@ function closeAlert(closeBtn) {
     }, 300);
 }
 
-// Convenience functions - USE THESE IN YOUR CODE
 function showSuccess(title = 'Success', message = 'Your operation was successful!') {
     showAlert('success', title, message);
 }
@@ -55,13 +49,12 @@ function showWarning(title = 'Are you sure?', message = 'This action cannot be u
     showAlert('warning', title, message);
 }
 
-// Clear all alerts
 function clearAllAlerts() {
     const container = document.getElementById('alert-container');
     container.innerHTML = '';
 }
 
-// EXAMPLES OF HOW TO TRIGGER ALERTS IN YOUR CODE:
+// EXAMPLES:
 // showSuccess('File Uploaded', 'Your PDF has been successfully imported!');
 // showError('Upload Failed', 'Please select a valid PDF file.');
 // showInfo('Processing', 'Your file is being processed...');

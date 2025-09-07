@@ -1,13 +1,12 @@
 class RAGAgent:  # RAGAgent is more procedural than autonomous
     # MAJOR FUNCs
     @staticmethod
-    def import_file(file_path, book_name, start_page):
+    def import_file(file_path, book_name, start_page , pdf_language):
         try:
             print("Getting Chunks...")
-            chunks = RAGAgent.get_chunks(file_path, book_name, start_page)
+            chunks , ocr_language = RAGAgent.get_chunks(file_path, start_page , pdf_language)
 
-            # RAGAgent.chunk_embedder(chunks)
-            result = RAGAgent.upsert_chunks(chunks, book_name)
+            result = RAGAgent.upsert_chunks(chunks, book_name , ocr_language)
             return result
 
         except Exception as e:
@@ -22,19 +21,11 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
 
     # MINOR FUNCs
     @staticmethod
-    def get_chunks(file_path, book_name, start_page):
+    def get_chunks(file_path, start_page , pdf_language = "Auto"):
         from app.agents.rag_agent.vector_store import file_load
 
-        chunks = file_load.load_pdf(file_path, book_name, start_page=start_page)
-        return chunks
-
-    # @staticmethod
-    # def chunk_embedder(chunks):
-    #     from app.agents.rag_agent.vector_store import embedder
-
-    #     embed = embedder.Embedding()
-    #     embeddings = embed.get_embedding_chunks(chunks)
-    #     return embeddings
+        chunks , ocr_language = file_load.load_pdf(file_path, start_page , pdf_language)
+        return chunks , ocr_language
 
     @staticmethod
     def upsert_chunks(chunks, book_name):

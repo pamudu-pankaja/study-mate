@@ -40,11 +40,11 @@ class pinecone_db:
             return text
 
     @staticmethod
-    def upsert(data, namespace, index_name="text-books", batch_size=500):
+    def upsert(data, namespace, ocr_language ,index_name="text-books", batch_size=500):
 
         pinecone_db.create_index(index_name)
 
-        from app.agents.rag_agent.vector_store.embedder import Embedding
+        from app.agents.rag_agent.vector_store.embedder import Embed_text
 
         try:
             data = [
@@ -55,13 +55,17 @@ class pinecone_db:
             embedding_texts = [pinecone_db.create_embedding_text(d) for d in data]
 
             print("Embedding the Chunks...")
-            embeddings = Embedding.get_embedding_chunks(embedding_texts)
+            embeddings = Embed_text.embed_chunks(embedding_texts ,ocr_language )
+            if embeddings.startswith("StudyMate Error :"):
+                return embeddings
+            else:
+                pass
 
             if len(embeddings) != len(data):
                 print(
                     f"Error: Mismatch between data ({len(data)}) and embeddings ({len(embeddings)})"
                 )
-                return "error"
+                return f"Error: Mismatch between data ({len(data)}) and embeddings ({len(embeddings)})"
 
             vectors = []
             for d, e in zip(data, embeddings):
@@ -121,4 +125,4 @@ class pinecone_db:
 
         except Exception as e:
             print(f"Error while storing: {e}")
-            return "error"
+            return f"Error while storing: {e}"

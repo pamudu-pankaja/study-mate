@@ -85,15 +85,15 @@ def remove_book_from_pinecone_data(book_name, PINECONE_DATA_FILE):
         write_pinecone_data(data, PINECONE_DATA_FILE)
 
 
-def process_mail_file(
-    file_path, book_name, starting_page: int, file_name, mail_file, pinecone_data_file
+def process_file(
+    file_path, book_name, starting_page: int, pdf_language ,file_name, mail_file, pinecone_data_file
 ):
     try:
         from app.agents.rag_agent.rag_agent import RAGAgent
 
         print(f"Background processing started for {file_name}")
 
-        result = RAGAgent.import_file(file_path, book_name, starting_page)
+        result = RAGAgent.import_file(file_path, book_name, starting_page , pdf_language)
 
         if result == "success":
             add_book_to_pinecone_data(book_name, pinecone_data_file)
@@ -106,7 +106,7 @@ def process_mail_file(
         else:
             save_mail(
                 "System",
-                f"Failed to process file '{file_name}'. Please try again",
+                f"Failed to process file '{file_name}'. {result} .Please try again",
                 mail_file_path=mail_file,
             )
             print(f"Background processing failed for {file_name}")
@@ -416,6 +416,8 @@ def import_file(conversation_id=None):
             print("error :  No file has selected")
             return jsonify({"message": "No file has selected", "status": "error"}), 400
 
+        pdf_language = request.form.get("pdfLang")
+
         start_page = request.form.get("startPage")
         starting_page = (
             int(start_page) if start_page and start_page.strip() != "" else 0
@@ -433,15 +435,17 @@ def import_file(conversation_id=None):
 file path = {file_path}    
 book_name = {book_name}
 start_page = {starting_page}
+pdf_language = {pdf_language}
 Starting Background processing..."""
         )
 
         thread = threading.Thread(
-            target=process_mail_file,
+            target=process_file,
             args=(
                 file_path,
                 book_name,
                 starting_page,
+                pdf_language,
                 file_name,
                 mail_file,
                 pinecone_data_file,

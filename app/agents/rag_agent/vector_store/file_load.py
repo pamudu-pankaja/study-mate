@@ -1,6 +1,6 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, as_completed, ThreadPoolExecutor
 import os
 import re
 import json
@@ -10,8 +10,9 @@ import pytesseract
 import io
 import numpy as np
 import random
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple
 import multiprocessing
+
 
 # Configure Tesseract path (adjust for your system)
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
@@ -25,7 +26,7 @@ language_patterns = {
     'kor': r'[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]',  # Korean (Hangul Syllables, Jamo, Compatibility)
     'eng': r'[A-Za-z0-9]',  # English (basic Latin alphabet)
     'rus': r'[\u0400-\u04FF]',  # Russian (Cyrillic)
-    'chi_sim' : r'[\u4e00-\u9fff]' #Chinese Simplified
+    'chi_sim': r'[\u4e00-\u9fff]'  # Chinese Simplified
 }
 
 def int_to_roman(n: int) -> str:
@@ -47,18 +48,18 @@ def detect_language(text_sample: str) -> List[str]:
     Detect the primary language in text sample
     Returns list of appropriate Tesseract language codes
     """
-    
-    #THIS GATE IS ALSO NOT MINE
-    if not text_sample.strip():
+    if not text_sample or not text_sample.strip():
         return ['eng']
     
     detected_languages = []
     text_length = len(text_sample)
     language_stats = {}
     
+    print(f"Analyzing text sample of {text_length} characters...")
+    
     for lang_code, pattern in language_patterns.items():
         matches = re.findall(pattern, text_sample)
-        match_count = len(''.join(matches)) 
+        match_count = len(''.join(matches))
         
         if match_count > 0:
             percentage = (match_count / text_length) * 100
@@ -72,35 +73,22 @@ def detect_language(text_sample: str) -> List[str]:
             else:
                 print(f"  Language {lang_code}: {match_count} chars ({percentage:.1f}%) - below threshold ({threshold}%)")
     
-    #THIS STAYS AS A COMMENT FOR ACCUARCY OF THE TEXT
-    # Always include English as the default fallback
-    # if 'eng' not in detected_languages:
-    #     detected_languages.append('eng')
-    #     print(f"  Language eng: added as default fallback")
-    
-    
-    #THIS STYAS AS A COMMENT BECAUSE THIS ISNT A MY IDEA I WILL CONSIDER USING THIS IF THIS LOOKS FITS
-    # If we have Sinhala with high confidence (>60%), and other languages with much lower confidence, 
-    # only keep Sinhala + English to avoid confusion
-    # if 'sin' in language_stats and language_stats['sin']['percentage'] > 60:
-    #     # Check if other languages (except English) have significantly lower percentages
-    #     other_significant_langs = []
-    #     for lang in detected_languages:
-    #         if lang not in ['eng', 'sin'] and lang in language_stats:
-    #             if language_stats[lang]['percentage'] > language_stats['sin']['percentage'] * 0.4:  # If other lang is >40% of Sinhala percentage
-    #                 other_significant_langs.append(lang)
-        
-    #     if not other_significant_langs:
-    #         detected_languages = ['eng', 'sin']
-    #         print(f"  Simplified to primary languages: eng+sin (Sinhala dominant at {language_stats['sin']['percentage']:.1f}%)")
+    if not detected_languages:
+        detected_languages = ['eng']
+        print("  No languages detected above threshold, defaulting to English")
     
     return detected_languages
 
 def is_page_corrupted(text: str, threshold: float = 0.7) -> bool:
     """Check if page text is corrupted/unreadable"""
-    total_chars = len(text.strip())
-    if total_chars == 0:
+    if not text or not text.strip():
         return True  # empty page = corrupted
+
+    text = text.strip()
+    total_chars = len(text)
+    
+    if total_chars == 0:
+        return True
 
     matched_chars = 0
     for pattern in language_patterns.values():
@@ -109,145 +97,47 @@ def is_page_corrupted(text: str, threshold: float = 0.7) -> bool:
     coverage = matched_chars / total_chars if total_chars > 0 else 0
     return coverage < threshold
 
-def process_page_ocr(file_path: str, page_num: int, ocr_language: str) -> Dict:
-    """Extract text from a single page using OCR - for multiprocessing"""
+def safe_extract_page_data(args) -> Dict:
+    """Safely extract page data for multiprocessing"""
+    file_path, page_num, use_ocr = args
+    
     try:
         doc = fitz.open(file_path)
         page = doc.load_page(page_num)
         
-        mat = fitz.Matrix(2, 2)  # Increase resolution for better OCR
-        pix = page.get_pixmap(matrix=mat)
-        img_data = pix.tobytes("png")
-        
-        img = Image.open(io.BytesIO(img_data))
-        
-        custom_config = f'--oem 3 --psm 6 -l {ocr_language}'
-        ocr_text = pytesseract.image_to_string(img, config=custom_config)
+        if use_ocr:
+            mat = fitz.Matrix(2, 2)  # Increase resolution for better OCR
+            pix = page.get_pixmap(matrix=mat)
+            img_data = pix.tobytes("png")
+            result = {
+                'page_num': page_num,
+                'data': img_data,
+                'type': 'image',
+                'success': True
+            }
+        else:
+            extracted_text = page.get_text()
+            result = {
+                'page_num': page_num,
+                'data': extracted_text,
+                'type': 'text',
+                'success': True
+            }
         
         doc.close()
+        return result
         
-        return {
-            'text': ocr_text,
-            'page_num': page_num,
-            'success': True
-        }
     except Exception as e:
-        print(f"OCR failed for page {page_num}: {e}")
         return {
-            'text': '',
             'page_num': page_num,
+            'data': None,
+            'type': 'error',
             'success': False,
             'error': str(e)
         }
 
-def process_page_direct(file_path: str, page_num: int) -> Dict:
-    """Extract text from a single page using direct extraction - for multiprocessing"""
-    try:
-        doc = fitz.open(file_path)
-        page = doc.load_page(page_num)
-        
-        extracted_text = page.get_text()
-        doc.close()
-        
-        return {
-            'text': extracted_text,
-            'page_num': page_num,
-            'success': True
-        }
-    except Exception as e:
-        print(f"Direct extraction failed for page {page_num}: {e}")
-        return {
-            'text': '',
-            'page_num': page_num,
-            'success': False,
-            'error': str(e)
-        }
-
-def determine_ocr_need_and_language(file_path: str, pdf_language: str, start_page: int, total_pages: int) -> Tuple[bool, str]:
-    """Determine if OCR is needed and what languages to use"""
-    doc = fitz.open(file_path)
-    use_ocr = False
-    ocr_language = ""
-    
-    auto_detect_language = True if pdf_language.lower() == "auto" else False
-    try:
-        # Convert start_page to 0-indexed for internal processing
-        start_page_idx = max(0, start_page - 1) if start_page > 0 else 0
-        
-        # Sample from start_page onwards where the actual content is
-        available_pages = max(0, total_pages - start_page_idx)
-        population = list(range(start_page_idx, total_pages))
-        if not population:
-            return False, "eng"
-
-        # Sample up to 3 pages, but not more than population size
-        sample_size = min(len(population), 3)
-        sample_pages = random.sample(population, sample_size)
-
-        mojibake_count = 0
-        for page_num in sample_pages:
-            page = doc.load_page(page_num)
-            text = page.get_text()
-            if is_page_corrupted(text):
-                mojibake_count += 1
-
-        use_ocr = mojibake_count >= max(1, sample_size // 2)
-
-        if use_ocr and auto_detect_language:
-            detected_languages = []
-
-            # Sample from start_page onwards for language detection (where actual content is)
-            lang_population = list(range(start_page_idx, min(start_page_idx + available_pages // 2, total_pages)))
-            if not lang_population:
-                return True, "eng"  
-            language_sample_size = min(len(lang_population), 2)
-            language_sample_pages = random.sample(lang_population, language_sample_size)
-
-            for page_num in language_sample_pages:
-                page = doc.load_page(page_num)
-                mat = fitz.Matrix(2, 2)
-                pix = page.get_pixmap(matrix=mat)
-                img_data = pix.tobytes("png")
-                img = Image.open(io.BytesIO(img_data))
-
-                try:
-                    langs = "eng+ara+hin+jpn+kor+sin+tam+chi_sim+rus"
-                    ocr_result = pytesseract.image_to_string(img, config=f'--oem 3 --psm 6 -l {langs}')
-                    page_languages = detect_language(ocr_result)
-                    detected_languages.extend(page_languages)
-                except Exception as e:
-                    print(f"Language detection failed for page {page_num}: {e}")
-                    detected_languages.append("eng")
-
-            unique_languages = list(set(detected_languages))
-            ocr_language = "+".join(unique_languages) if unique_languages else "eng"
-            print(f"Using OCR with languages: {ocr_language}")
-
-        elif use_ocr and not auto_detect_language:
-            ocr_language = pdf_language
-            print(f"Using OCR with languages: {ocr_language}")
-
-    except Exception as e:
-        print(f"Error during OCR need determination: {e}")
-        use_ocr = False
-        ocr_language = "eng"
-    finally:
-        doc.close()
-
-    return use_ocr, ocr_language
-
-
-def read_pdf_text(file_path: str, pdf_language: str, start_page: int = 0) -> List[Dict]:
-    """
-    Load PDF using PyMuPDF with optional parallel OCR
-    
-    Args:
-        file_path: Path to PDF file
-        start_page: Starting page number (0-indexed) - NOT used to filter pages, only for logical numbering
-    
-    Returns:
-        List of dictionaries with text and page_num
-    """
+def extract_page_data(file_path: str, use_ocr: bool, max_workers: int = None) -> List[Dict]:
+    """Pre-extract all page data with parallel processing"""
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"PDF file not found: {file_path}")
     
@@ -256,31 +146,295 @@ def read_pdf_text(file_path: str, pdf_language: str, start_page: int = 0) -> Lis
     total_pages = len(doc)
     doc.close()
     
-    # Process ALL pages, regardless of start_page
-    # start_page is only used for logical page numbering, not for filtering
+    if total_pages == 0:
+        print("PDF has no pages")
+        return []
+    
+    print(f"Extracting data from {total_pages} pages...")
+    
+    # Prepare arguments for parallel processing
+    if max_workers is None:
+        max_workers = min(multiprocessing.cpu_count(), total_pages, 8)  # Cap at 8 workers
+    
+    args_list = [(file_path, page_num, use_ocr) for page_num in range(total_pages)]
+    pages_data = []
+    
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Submit all extraction tasks
+        future_to_page = {
+            executor.submit(safe_extract_page_data, args): args[1] 
+            for args in args_list
+        }
+        
+        completed = 0
+        for future in as_completed(future_to_page):
+            result = future.result()
+            
+            if result['success']:
+                pages_data.append(result)
+            else:
+                print(f"Failed to extract page {result['page_num']}: {result.get('error', 'Unknown error')}")
+            
+            completed += 1
+            if completed % 20 == 0 or completed == total_pages:
+                print(f"Extracted {completed}/{total_pages} pages")
+    
+    # Sort by page number to maintain order
+    pages_data.sort(key=lambda x: x['page_num'])
+    
+    print(f"Successfully extracted {len(pages_data)} pages out of {total_pages}")
+    return pages_data
+
+def process_page_ocr(page_data: Dict, ocr_language: str) -> Dict:
+    """Extract text from page image data using OCR - for multiprocessing"""
+    try:
+        img_data = page_data['data']
+        page_num = page_data['page_num']
+        
+        if img_data is None:
+            return {
+                'text': '',
+                'page_num': page_num,
+                'success': False,
+                'error': 'No image data'
+            }
+        
+        img = Image.open(io.BytesIO(img_data))
+        
+        # Optimize OCR configuration
+        custom_config = f'--oem 3 --psm 6 -l {ocr_language}'
+        
+        try:
+            ocr_text = pytesseract.image_to_string(img, config=custom_config)
+        except Exception as ocr_error:
+            # Fallback to basic OCR without specific language
+            print(f"OCR with language {ocr_language} failed for page {page_num}, trying basic OCR: {ocr_error}")
+            try:
+                ocr_text = pytesseract.image_to_string(img, config='--oem 3 --psm 6')
+            except Exception as fallback_error:
+                print(f"Fallback OCR also failed for page {page_num}: {fallback_error}")
+                return {
+                    'text': '',
+                    'page_num': page_num,
+                    'success': False,
+                    'error': f'OCR failed: {fallback_error}'
+                }
+        
+        return {
+            'text': ocr_text,
+            'page_num': page_num,
+            'success': True
+        }
+    except Exception as e:
+        print(f"OCR processing failed for page {page_data.get('page_num', 'unknown')}: {e}")
+        return {
+            'text': '',
+            'page_num': page_data.get('page_num', 0),
+            'success': False,
+            'error': str(e)
+        }
+
+def process_page_direct(page_data: Dict) -> Dict:
+    """Process pre-extracted text - for multiprocessing"""
+    try:
+        extracted_text = page_data['data']
+        page_num = page_data['page_num']
+        
+        if extracted_text is None:
+            extracted_text = ''
+        
+        return {
+            'text': extracted_text,
+            'page_num': page_num,
+            'success': True
+        }
+    except Exception as e:
+        print(f"Direct processing failed for page {page_data.get('page_num', 'unknown')}: {e}")
+        return {
+            'text': '',
+            'page_num': page_data.get('page_num', 0),
+            'success': False,
+            'error': str(e)
+        }
+
+def determine_ocr_need_and_language(file_path: str, pdf_language: str, start_page: int, total_pages: int) -> Tuple[bool, str]:
+    """Determine if OCR is needed and what languages to use with improved error handling"""
+    if not os.path.exists(file_path):
+        print(f"File not found: {file_path}")
+        return False, "eng"
+    
+    doc = None
+    use_ocr = False
+    ocr_language = "eng"
+    
+    auto_detect_language = True if pdf_language.lower() == "auto" else False
+    
+    try:
+        doc = fitz.open(file_path)
+        
+        # Convert start_page to 0-indexed for internal processing
+        start_page_idx = max(0, start_page - 1) if start_page > 0 else 0
+        
+        # Sample from start_page onwards where the actual content is
+        available_pages = max(0, total_pages - start_page_idx)
+        
+        if available_pages == 0:
+            print("No pages available for analysis after start_page")
+            return False, "eng"
+            
+        population = list(range(start_page_idx, total_pages))
+        if not population:
+            return False, "eng"
+
+        # Sample up to 3 pages, but not more than population size
+        sample_size = min(len(population), 3)
+        sample_pages = random.sample(population, sample_size)
+        
+        print(f"Analyzing {sample_size} sample pages for OCR need: {sample_pages}")
+
+        mojibake_count = 0
+        for page_num in sample_pages:
+            try:
+                page = doc.load_page(page_num)
+                text = page.get_text()
+                if is_page_corrupted(text):
+                    mojibake_count += 1
+                    print(f"Page {page_num + 1} appears corrupted/unreadable")
+                else:
+                    print(f"Page {page_num + 1} has readable text")
+            except Exception as e:
+                print(f"Error analyzing page {page_num}: {e}")
+                mojibake_count += 1
+
+        use_ocr = mojibake_count >= max(1, sample_size // 2)
+        print(f"OCR needed: {use_ocr} ({mojibake_count}/{sample_size} pages corrupted)")
+
+        if use_ocr and auto_detect_language:
+            detected_languages = []
+            print("Auto-detecting language from OCR samples...")
+
+            # Sample from start_page onwards for language detection
+            lang_population = list(range(start_page_idx, min(start_page_idx + available_pages // 2, total_pages)))
+            if not lang_population:
+                lang_population = [start_page_idx] if start_page_idx < total_pages else [0]
+                
+            language_sample_size = min(len(lang_population), 2)
+            language_sample_pages = random.sample(lang_population, language_sample_size)
+            
+            print(f"Using pages {language_sample_pages} for language detection")
+
+            for page_num in language_sample_pages:
+                try:
+                    page = doc.load_page(page_num)
+                    mat = fitz.Matrix(2, 2)
+                    pix = page.get_pixmap(matrix=mat)
+                    img_data = pix.tobytes("png")
+                    img = Image.open(io.BytesIO(img_data))
+
+                    # Try OCR with multiple languages for detection
+                    langs = "eng+ara+hin+jpn+kor+sin+tam+chi_sim+rus"
+                    try:
+                        ocr_result = pytesseract.image_to_string(img, config=f'--oem 3 --psm 6 -l {langs}')
+                        if ocr_result and ocr_result.strip():
+                            page_languages = detect_language(ocr_result)
+                            detected_languages.extend(page_languages)
+                            print(f"Page {page_num + 1} detected languages: {page_languages}")
+                        else:
+                            print(f"Page {page_num + 1}: No OCR text detected")
+                            detected_languages.append("eng")
+                    except Exception as ocr_e:
+                        print(f"OCR language detection failed for page {page_num + 1}: {ocr_e}")
+                        detected_languages.append("eng")
+                        
+                except Exception as e:
+                    print(f"Language detection failed for page {page_num + 1}: {e}")
+                    detected_languages.append("eng")
+
+            unique_languages = list(set(detected_languages))
+            ocr_language = "+".join(unique_languages) if unique_languages else "eng"
+            print(f"Final detected languages: {unique_languages}")
+
+        elif use_ocr and not auto_detect_language:
+            ocr_language = pdf_language
+            print(f"Using specified language: {ocr_language}")
+
+    except Exception as e:
+        print(f"Error during OCR need determination: {e}")
+        use_ocr = False
+        ocr_language = "eng"
+    finally:
+        if doc:
+            doc.close()
+
+    print(f"Final decision - Use OCR: {use_ocr}, Language: {ocr_language}")
+    return use_ocr, ocr_language
+
+def read_pdf_text(file_path: str, pdf_language: str, start_page: int = 0) -> Tuple[List[Dict], bool, str]:
+    """
+    Load PDF using PyMuPDF with optional parallel OCR
+    
+    Args:
+        file_path: Path to PDF file
+        pdf_language: Language code or 'auto'
+        start_page: Starting page number (1-indexed) - NOT used to filter pages, only for logical numbering
+    
+    Returns:
+        Tuple of (documents, use_ocr, ocr_language)
+    """
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"PDF file not found: {file_path}")
+    
+    print(f"Loading PDF: {file_path}")
+    
+    # Get total pages first
+    try:
+        doc = fitz.open(file_path)
+        total_pages = len(doc)
+        doc.close()
+        print(f"PDF has {total_pages} pages")
+    except Exception as e:
+        print(f"Error reading PDF: {e}")
+        return [], False, "eng"
+    
+    if total_pages == 0:
+        print("PDF has no pages")
+        return [], False, "eng"
     
     # Determine OCR need and language
     use_ocr, ocr_language = determine_ocr_need_and_language(file_path, pdf_language, start_page, total_pages)
     
+    # Pre-extract all page data to avoid file handle conflicts
+    try:
+        pages_data = extract_page_data(file_path, use_ocr)
+    except Exception as e:
+        print(f"Error extracting page data: {e}")
+        return [], use_ocr, ocr_language
+    
+    if not pages_data:
+        print("No page data extracted")
+        return [], use_ocr, ocr_language
+    
     documents = []
-    page_range = list(range(0, total_pages))  # Process all pages
     
     try:
         if use_ocr:
-            print(f"Processing {len(page_range)} pages with OCR using {multiprocessing.cpu_count()} processes...")
-            # Use ProcessPoolExecutor for CPU-intensive OCR
-            max_workers = min(multiprocessing.cpu_count(), len(page_range))
+            print(f"Processing {len(pages_data)} pages with OCR using up to {min(multiprocessing.cpu_count(), 4)} processes...")
+            # Use ProcessPoolExecutor for CPU-intensive OCR, but limit workers to avoid memory issues
+            max_workers = min(multiprocessing.cpu_count(), 4, len(pages_data))
             
             with ProcessPoolExecutor(max_workers=max_workers) as executor:
-                # Submit all OCR tasks
+                # Submit all OCR tasks with pre-extracted image data
                 future_to_page = {
-                    executor.submit(process_page_ocr, file_path, page_num, ocr_language): page_num 
-                    for page_num in page_range
+                    executor.submit(process_page_ocr, page_data, ocr_language): page_data['page_num'] 
+                    for page_data in pages_data
                 }
                 
+                completed = 0
                 # Collect results as they complete
                 for future in as_completed(future_to_page):
                     result = future.result()
+                    completed += 1
+                    
                     if result['success']:
                         documents.append({
                             'text': result['text'],
@@ -288,22 +442,29 @@ def read_pdf_text(file_path: str, pdf_language: str, start_page: int = 0) -> Lis
                         })
                     else:
                         print(f"Failed to process page {result['page_num']}: {result.get('error', 'Unknown error')}")
+                    
+                    # Progress update every 10 pages or on completion
+                    if completed % 10 == 0 or completed == len(pages_data):
+                        print(f"OCR Progress: {completed}/{len(pages_data)} pages processed")
+                        
         else:
-            print(f"Processing {len(page_range)} pages with direct text extraction...")
-            # For direct text extraction, we can also use parallel processing
-            # but it's less CPU-intensive, so we might use fewer workers
-            max_workers = min(4, len(page_range))  # Fewer workers for I/O bound operations
+            print(f"Processing {len(pages_data)} pages with direct text extraction...")
+            # For direct text extraction, use ThreadPoolExecutor (I/O bound)
+            max_workers = min(8, len(pages_data))
             
-            with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 # Submit all direct extraction tasks
                 future_to_page = {
-                    executor.submit(process_page_direct, file_path, page_num): page_num 
-                    for page_num in page_range
+                    executor.submit(process_page_direct, page_data): page_data['page_num'] 
+                    for page_data in pages_data
                 }
                 
+                completed = 0
                 # Collect results as they complete
                 for future in as_completed(future_to_page):
                     result = future.result()
+                    completed += 1
+                    
                     if result['success']:
                         documents.append({
                             'text': result['text'],
@@ -311,124 +472,198 @@ def read_pdf_text(file_path: str, pdf_language: str, start_page: int = 0) -> Lis
                         })
                     else:
                         print(f"Failed to process page {result['page_num']}: {result.get('error', 'Unknown error')}")
+                    
+                    # Progress update every 20 pages or on completion
+                    if completed % 20 == 0 or completed == len(pages_data):
+                        print(f"Text Extraction Progress: {completed}/{len(pages_data)} pages processed")
         
         # Sort documents by page number to maintain order
         documents.sort(key=lambda x: x['page_num'])
         
     except Exception as e:
         print(f"Error during parallel processing: {e}")
-        return []
+        import traceback
+        traceback.print_exc()
+        return [], use_ocr, ocr_language
     
     print(f"Successfully processed {len(documents)} pages")
-    return documents , use_ocr , ocr_language
+    return documents, use_ocr, ocr_language
 
 def clean_text(text: str) -> str:
     """Clean and normalize multilingual text (including Sinhala)"""
     if not text:
         return ""
     
-    # Remove excessive whitespace
-    text = re.sub(r'\s+', ' ', text)
+    # Remove excessive whitespace while preserving structure
+    text = re.sub(r'[ \t]+', ' ', text)  # Multiple spaces/tabs to single space
+    text = re.sub(r'\n\s*\n\s*\n+', '\n\n', text)  # Multiple newlines to double newline
+    text = re.sub(r'[\u200c\u200d]', '', text)
     
-    # Remove empty lines
-    lines = [line.strip() for line in text.split('\n') if line.strip()]
+    # Remove empty lines but preserve paragraph structure
+    lines = text.split('\n')
+    cleaned_lines = []
     
-    return '\n'.join(lines)
+    for line in lines:
+        line = line.strip()
+        if line:  # Keep non-empty lines
+            cleaned_lines.append(line)
+        elif cleaned_lines and cleaned_lines[-1]:  # Keep one empty line after content
+            cleaned_lines.append('')
+    
+    return '\n'.join(cleaned_lines)
 
-def load_pdf(file_path: str, start_page: int = 1, pdf_language: str = 'auto', chunk_size: int = 450, chunk_overlap: int = 60) -> List[Dict]:
+def detect_sections(docs: List[Document]) -> Dict[int, str]:
+    """Detect sections across all pages with improved pattern matching"""
+    page_sections = {}
+    
+    # Enhanced section detection patterns
+    numbered_section = re.compile(
+        r"^\s*(?:Chapter\s*)?(\d+)\s*[\.\s]\s*(\d+)\s+([A-Za-z].+)$", 
+        re.IGNORECASE | re.UNICODE
+    )
+    
+    bullet_section = re.compile(
+        r"^\s*[]+\s*(.*)", re.UNICODE
+    )
+    
+    # Additional patterns for different numbering systems
+    simple_numbered = re.compile(
+        r"^\s*(\d+)\.\s*([A-Za-z].+)$",
+        re.UNICODE
+    )
+    
+    roman_numbered = re.compile(
+        r"^\s*([IVXLCDMivxlcdm]+)\.\s*([A-Za-z].+)$",
+        re.UNICODE
+    )
+
+    for doc in docs:
+        text = doc.page_content
+        page = doc.metadata.get("page", 0)
+        lines = text.splitlines()
+        
+        for line in lines:
+            line = line.strip()
+            if not line or len(line) < 5:  # Skip very short lines
+                continue
+
+            # Try different section patterns in order of specificity
+            patterns_to_try = [
+                (numbered_section, lambda m: f"{m.group(1)}.{m.group(2)} {m.group(3).strip()}"),
+                (simple_numbered, lambda m: f"{m.group(1)} {m.group(2).strip()}"),
+                (roman_numbered, lambda m: f"{m.group(1)} {m.group(2).strip()}"),
+                (bullet_section, lambda m: m.group(1).strip())
+            ]
+            
+            section_found = False
+            for pattern, formatter in patterns_to_try:
+                match = pattern.match(line)
+                if match:
+                    section = formatter(match)
+                    word_count = len(section.split())
+                    
+                    # Skip if looks like an activity or is too long
+                    if (section.lower().startswith("activity") or 
+                        word_count > 8 or 
+                        len(section) > 100):
+                        continue
+                    
+                    page_sections[page] = section
+                    print(f"Found section on page {page + 1}: {section}")
+                    section_found = True
+                    break
+            
+            if section_found:
+                break
+    
+    print(f"Detected {len(page_sections)} sections across all pages")
+    return page_sections
+
+def load_pdf(file_path: str, start_page: int = 1, pdf_language: str = 'auto', 
+             chunk_size: int = 450, chunk_overlap: int = 60) -> Tuple[List[Dict], str]:
     """
     Load and process PDF with chunking and section detection
     
     Args:
         file_path: Path to PDF file
+        start_page: The PDF page number that corresponds to logical page 1 (1-indexed)
+        pdf_language: Language code or 'auto'
         chunk_size: Size of text chunks
         chunk_overlap: Overlap between chunks
-        start_page: The PDF page number that corresponds to logical page 1 (1-indexed)
-                   Pages before this will be numbered with Roman numerals
     
     Returns:
-        List of formatted chunks with metadata
+        Tuple of (formatted_chunks, ocr_language)
     """
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"PDF file not found: {file_path}")
     
     file_name = os.path.basename(file_path)
     base_name = os.path.splitext(file_name)[0]
+    
+    print(f"Loading PDF: {file_name}")
+    print(f"Start page: {start_page}, Language: {pdf_language}")
 
     try:
-        # Read PDF text with parallel processing (process all pages)
-        pages_data, use_ocr , ocr_language = read_pdf_text(file_path=file_path, pdf_language=pdf_language, start_page=start_page)
+        # Read PDF text with parallel processing
+        pages_data, use_ocr, ocr_language = read_pdf_text(
+            file_path=file_path, 
+            pdf_language=pdf_language, 
+            start_page=start_page
+        )
         
         if not pages_data:
             print("No pages could be processed")
-            return []
+            return [], ocr_language
         
-        # Create Document objects
+        print(f"Creating document objects from {len(pages_data)} pages...")
+        
+        # Create Document objects with text cleaning
         docs = []
         for page_data in pages_data:
-            # cleaned_text = clean_text(page_data['text']) DO NOT RUN THIS , THIS WILL FUCK UP THE SECTION 
-            if page_data['text'].strip():  # Only add non-empty pages
-                doc = Document(
-                    page_content=page_data['text'],
-                    metadata={'page': page_data['page_num']}
-                )
-                docs.append(doc)
+            text = page_data['text']
+            
+            if text and text.strip():  # Only add non-empty pages
+                # Apply light cleaning - be careful not to break section detection
+                cleaned_text = clean_text(text)
+                
+                if len(cleaned_text.strip()) > 10:  # Minimum content threshold
+                    doc = Document(
+                        page_content=cleaned_text,
+                        metadata={'page': page_data['page_num']}
+                    )
+                    docs.append(doc)
 
         if not docs:
-            print("No valid document content found")
-            return []
+            print("No valid document content found after cleaning")
+            return [], ocr_language
+        
+        print(f"Created {len(docs)} valid documents")
 
-        # Section detection patterns
-        bullet_section = re.compile(r"^\s*[•\-\*]+\s*(.*)", re.UNICODE)
-        numbered_section = re.compile(
-            r"^\s*(?:Chapter\s*)?(\d+)\s*[\.\s]\s*(\d+)\s+([A-Za-z].+)$", re.IGNORECASE
-        )
-
-        page_sections = {}
-
-        for doc in docs:
-            text = doc.page_content
-            page = doc.metadata.get("page", 0)
-            lines = text.splitlines()
-            for line in lines:
-                line = line.strip()
-                if not line:
-                    continue
-
-                match = numbered_section.match(line)
-                if match:
-                    section = (
-                        f"{match.group(1)}.{match.group(2)} {match.group(3).strip()}"
-                    )
-                    page_sections[page] = section
-                    break
-
-                match = bullet_section.match(line)
-                if match:
-                    section = match.group(1).strip()
-                    word_count = len(section.split())
-
-                    if section.lower().startswith("activity"):
-                        continue
-
-                    if word_count > 4:
-                        continue
-
-                    page_sections[page] = section
-                    break
+        # Enhanced section detection
+        print("Detecting sections...")
+        page_sections = detect_sections(docs)
 
         # Split documents into chunks
+        print(f"Splitting documents into chunks (size: {chunk_size}, overlap: {chunk_overlap})...")
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size, 
-            chunk_overlap=chunk_overlap
+            chunk_overlap=chunk_overlap,
+            length_function=len,
+            separators=["\n\n", "\n", ". ", " ", ""]
         )
+        
         chunks = splitter.split_documents(docs)
+        print(f"Created {len(chunks)} chunks")
 
         # Format chunks with metadata
         formatted_chunks = []
+        skipped_chunks = 0
+        
         for i, chunk in enumerate(chunks):
             text = chunk.page_content.strip()
-            if not text:  # Skip empty chunks
+            
+            if not text or len(text) < 20:  # Skip very short chunks
+                skipped_chunks += 1
                 continue
                 
             pdf_page = chunk.metadata.get("page", 0)
@@ -441,9 +676,9 @@ def load_pdf(file_path: str, start_page: int = 1, pdf_language: str = 'auto', ch
                 logical_page = int_to_roman(roman_page)
             else:
                 # Pages from start_page onwards get regular numbering starting from 1
-                logical_page = physical_page_number - start_page + 1
+                logical_page = physical_page_number - start_page + 1 if start_page > 0 else physical_page_number 
 
-            # Find current section
+            # Find current section by looking backwards from current page
             current_section = ""
             for p in range(pdf_page, -1, -1):
                 if p in page_sections:
@@ -451,18 +686,23 @@ def load_pdf(file_path: str, start_page: int = 1, pdf_language: str = 'auto', ch
                     break
 
             # Only add chunks with meaningful content
-            if len(text.split()) > 5:  # At least 5 words
+            word_count = len(text.split())
+            if word_count >= 5:  # At least 5 words
                 formatted_chunks.append({
-                    "id": f"{base_name}-vec{i+1}",
+                    "id": f"{base_name}-vec{len(formatted_chunks)+1}",  # Sequential numbering
                     "text": text,
                     "page": logical_page,
                     "section": current_section,
                 })
 
         print(f"Successfully processed {len(formatted_chunks)} chunks from {len(docs)} pages")
-        return formatted_chunks , ocr_language
+        if skipped_chunks > 0:
+            print(f"Skipped {skipped_chunks} chunks that were too short")
+            
+        return formatted_chunks, ocr_language
 
     except Exception as e:
         print(f"Error while loading file: {e}")
-        return []
-
+        import traceback
+        traceback.print_exc()
+        return [], "eng"

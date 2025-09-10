@@ -41,7 +41,7 @@ Answer:
 - If only the user is asking for a explained answer , make sure to explain the answer and the quation more clearly with more words.
 - If the provided contet does not contain information about the quation , tell the users that "we couldnt find the information to answer your quation with in your book". 
 - If the provided context dosen't match the given quation at all . check the previous conversatino history for the answer, but if that did not worked either tell the user to be more spesific.
-
+- The language for the answer should be the user's quation language, if the user's quation has multiple language use the most used lanugauage in the quation to make the answer.(Do not think about the previous languages used in the conversation)
 
 Pages and Sections: Format it exactly like this, using bullet points
 - 📄 Pages: Only the page numbers that were used to get the answer,

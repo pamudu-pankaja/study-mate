@@ -73,6 +73,7 @@ async function uploadFile() {
 
   if (selectedLanguagesString == ''){
     showError("No Lanugauge Selected" , "Please select the language(s) of the book's content")
+    return;
   }
 
   showAlert("info","Sending...", "We are currently sending your file to the server please wait." ,3000)

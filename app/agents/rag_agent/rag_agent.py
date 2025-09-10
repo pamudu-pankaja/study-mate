@@ -28,8 +28,8 @@ class RAGAgent:  # RAGAgent is more procedural than autonomous
         return chunks , ocr_language
 
     @staticmethod
-    def upsert_chunks(chunks, book_name):
+    def upsert_chunks(chunks, book_name ,ocr_language):
         from app.agents.rag_agent.vector_store import pinecorn_client
 
         db = pinecorn_client.pinecone_db()
-        return db.upsert(chunks, book_name)
+        return db.upsert(chunks,book_name , ocr_language )

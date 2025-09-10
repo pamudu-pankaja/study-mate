@@ -411,7 +411,7 @@
   position: absolute;
   top: -8px;
   left: calc(100% + 12px);
-  width: 240px;
+  width: 230px;
   padding: 12px;
   background-color: var(--colour-6);
   color: white;

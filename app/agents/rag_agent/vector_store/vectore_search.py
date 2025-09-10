@@ -9,13 +9,16 @@ pc = Pinecone(api_key=PINECORN_API_KEY)
 def search(query, book_name):
     index = pc.Index("text-books")
 
-    lang = detect_language(query)
+    langs = detect_language(query)
+    ocr_language = "+".join(langs) if langs else "eng"
     print("Getting the embeddings of the query...")
-    query_vector = Embed_text.embed_query(query, lang)
+    print(f"Query Language : {ocr_language}")
+    query_vector = Embed_text.embed_query(query, ocr_language)
+    # print(f"Query Vector {query_vector}")
 
     results = index.query(
         vector=query_vector,
-        top_k=5,
+        top_k=10,
         include_metadata=True,
         include_values=False,
         namespace=book_name,
@@ -32,7 +35,7 @@ def search(query, book_name):
             }
         )
 
-    # print()
-    # print(data)
-    # print()
+    print()
+    print(data)
+    print()
     return data

@@ -58,6 +58,7 @@ Your name is StudyMate , And you are powerd by the llm called Gemini
 - If the user's tone is casual, light, or playful, mirror that tone while still providing helpful and accurate responses
 - If the user asking about something new , try to give more information then the user asks.But don't over do it.
 - Try to keep asking quations and keep up the conversation if the user wants to keep the conversation casual.But if the conversation straight forward something don't over ask quations.
+- The language for the answer should be the user's quation language, if the user's quation has multiple language use the most used lanugauage in the quation to make the answer.(Do not think about the previous languages used in the conversation) 
 
 🎯 STYLE:
 - Be natural and friendly. Match the user’s tone.
@@ -118,7 +119,7 @@ Emoji Usage:
 
     @staticmethod
     def generate_title(message):
-        prompt = f"Summarize the user's message into a short, relevant title. Max word limit is four. No punctuation, no quotes. And try to keep it short as possible.:\n\nUser: {message}"
+        prompt = f"Summarize the user's message into a short, relevant title. Max word limit is four. No punctuation, no quotes. And try to keep it short as possible.The title should be in users message language.:\n\nUser: {message}"
 
         response = client.models.generate_content(
             model="gemini-2.0-flash-lite",

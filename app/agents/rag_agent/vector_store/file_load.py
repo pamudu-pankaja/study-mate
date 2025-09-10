@@ -78,7 +78,7 @@ def load_pdf(file_path, book_name, chunk_size=450, chunk_overlap=60, start_page=
             if physical_page_number < start_page:
                 logical_page = int_to_roman(physical_page_number)
             else:
-                logical_page = physical_page_number - start_page + 1
+                logical_page = physical_page_number - start_page + 1 if start_page > 0 else physical_page_number
 
             current_section = ""
             for p in range(pdf_page, -1, -1):
